@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TestController {
 	private final TestService service;
-	
+	//2차 test
 	@GetMapping("/check-server")
 	public ResponseEntity<?> checkLogin() {
 		log.info("** React SpringBoot Connection 확인중 **");
@@ -38,7 +38,7 @@ public class TestController {
         //	- 그러나 10개 까지만 초기화 가능 (10개 이상은 ofEntries() 사용)
         //	- unmodifiable(수정불가능) map을 리턴하므로 초기화후 수정불가능 (Immutable 객체)
         //	- 초기화 이후에 조회만 하는경우 주로사용함.(Key 관리 등)
-		
+		//  hg 1차 테스트
 	}//checkLogin
 	
 	
