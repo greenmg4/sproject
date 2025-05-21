@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapperInterface.TestMapper">
+
+	<select id="selectList" resultType="map">
+		select 1 as num, '철수' as name union all select 2 as num, '영희' as name	union all select 3 as num, '민수' as name	
+	</select>
+
+</mapper>
+

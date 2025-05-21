@@ -1,0 +1,159 @@
+/* ====================header 공통==================== */
+
+a { color: Gray; text-decoration: none; }
+/* font-weight:bold; */
+a:hover { color:DeepSkyBlue; font-size:1.2em; cursor:pointer; }
+a:active { color:Blue; }
+
+ /* Span MenuLink */
+ .textlink { color: DarkSlateBlue;; font-weight:bold; }
+ .textlink:hover { 
+     color:DeepSkyBlue; 
+     font-size:1.2em; 
+     font-weight:bold;
+     cursor:pointer;
+ }
+
+#header {
+    /* height: 120px; */
+    margin-bottom: 50px;
+}
+
+.headerTop {
+    background-color: Lavender ;
+    height: 100px;
+    padding: 0 10px 0 10px;
+    display: grid;
+    grid-template: 20fr 1fr 1fr /1fr;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.headerLeft {
+    position: absolute;
+    top: 75px;
+    left: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.header_cover {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    box-shadow: 1px 1px 2px lightgray;
+    /* height: 60px; */
+    padding: 0 10px 0 10px;
+    position: sticky;
+    top: -1px;
+    z-index: 9999;
+}
+
+/* ----------- 상단 헤더 ----------- */
+.mainLogo {
+    width: 150px;
+    text-indent: -9999em;
+    margin-left: 15px;
+}
+
+/* 로그인탭 */
+.serviceTab {
+    line-height: 80px;
+    padding-right: 20px;
+    position: absolute;
+    top: 30px;
+    right: 0;
+}
+
+.serviceTabList {
+    white-space: nowrap;
+}
+
+.serviceTabList li {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.serviceTabList li a {
+    color: grey;
+}
+
+.serviceTabList li+li::before {
+    content: ' | ';
+    color: grey;
+}
+
+/* ----------- 하단 헤더 ----------- */
+.headerMenu {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+/* 좌측 카테고리 */
+.mainCategoryList {
+    display: flex;
+}
+
+.mainCategoryList>li {
+    padding: 20px;
+}
+
+.mainCategoryList>li>a {
+    color: black;
+    font-weight: bold;
+}
+
+
+.hidden {
+    visibility: hidden;
+}
+
+/* 우측 검색창 */
+.mainSearch {
+    box-sizing: border-box;
+    width: 250px;
+    height: 40px;
+    background-color: white;
+    padding: 0 10px 0 10px;
+}
+
+.mainSearch input {
+    box-sizing: border-box;
+    width: 90%;
+    border: none;
+    outline: none;
+}
+
+.mainSearch button {
+    width: 10%;
+    border: none;
+    background: none;
+
+    cursor: pointer;
+}
+
+.mainSearch img {
+    height: 20px;
+}
+
+.mainSearch {
+    height: 100%;
+    display: flex;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+}
+
+.mainSearch form {
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.mainSearch form input {
+    background: none;
+    height: 17px;
+    width: 210px;
+}

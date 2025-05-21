@@ -1,0 +1,236 @@
+/* ========================== 공통 ======================= */
+.body_container {
+    height: 400px;
+}
+
+.contents{
+    align-items: center;
+    align-content: center;
+}
+
+.pageTitle {
+    margin: 20px 0 30px 0;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: gray;
+}
+
+/* ========================== 헤더아래 로케이션 ======================= */
+.location_wrap {
+    margin: 0 auto;
+    width: 1320px;
+    padding: 20px 0 20px 40px;
+    border-bottom: 1px solid #efefef;
+}
+
+/* ############################### mainpage_container 전체 ############################ */
+#mainpage_container {
+    display: flex;
+    padding: 0 40px 100px 40px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    clear: both;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    /* =================================container 공통======================================== */
+    .searchSorter .sortFilter,
+    .btnSection {
+        text-align: center;
+    }
+
+    /* ################################### 왼쪽 네비게이션바 ################################### */
+
+    #mainpage_search {
+        width: 240px;
+        /* border: 1px solid; */
+
+        .search_tit {
+            margin-left: 0;
+            font-size: 1.8em;
+        }
+
+        .search_list.cate_list {
+            padding: 30px 10px;
+            border-bottom: 2px solid #efefef;
+        }
+
+        .search_list.cate_list .cate_list_item {
+            padding: 10px 0;
+            font-size: 1.15em;
+        }
+
+        .cate_list_item a {
+            font-weight: bold;
+        }
+
+        .searchSorter dl dt {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .searchSorter dl dd ul li {
+            display: inline-block;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+            background-color: #f9f9f9;
+        }
+
+        .searchSorter .sortFilter {
+            text-align: center;
+            border: 1px solid #ededed;
+        }
+
+        .searchSorter .sortFilter a {
+            display: block;
+            padding: 10px 0;
+        }
+
+        .sortListCon dl {
+            margin: 20px 0 20px 0;
+            border-bottom: 2px solid #efefef;
+        }
+
+        .sortListCon dl dt {
+            display: flex;
+            font-weight: bold;
+            justify-content: space-between;
+        }
+
+        .sortListCon dl dt img {
+            height: 22px;
+            padding-bottom: 5px;
+            cursor: pointer;
+            vertical-align: middle;
+            transition: 0.3s;
+        }
+
+        .rotate {
+            transform: rotateX(180deg);
+        }
+
+        .sortListCon dl:first-child li {
+            width: 130px;
+        }
+
+        .sortList ul {
+            margin-bottom: 20px;
+        }
+
+        .sortList li {
+            box-sizing: border-box;
+            text-align: center;
+            width: 75px;
+            height: 30px;
+            line-height: 30px;
+            margin-left: 5px;
+        }
+
+        .sortList a {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .btnClick {
+            background-color: #333;
+            color: white;
+        }
+
+        .sortList:last-child {
+            margin-bottom: 15px;
+        }
+
+        .sortFilter {
+            margin-top: 40px;
+        }
+    }
+
+    /* ################################### 메인콘텐트 ################################### */
+
+    #contents {
+        flex: 1;
+        margin-left: 100px;
+    }
+
+     /* 상품리스트 */
+    #productList {
+        margin-top: 60px;
+        display: flex;
+        flex-wrap: wrap;
+
+        justify-content: space-between;
+
+        .tit > p,
+        .price {
+            /* float: left; */
+            padding: 10px;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .tit p {
+            font-size: 17px;
+        }
+    }
+
+    #productList li:nth-of-type(n + 4) {
+        margin-top: 65px;
+    }
+
+    .listInfo1 {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f9f9f9;
+        padding: 25px 5px;
+    }
+
+    .listLeng {
+        margin-left: 20px;
+    }
+
+    .listStyle1 {
+        min-width: 800px;
+    }
+
+    .listStyle1 .list > li {
+        width: 32%;
+    }
+
+    div[class='img'] > img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .listSort {
+        margin-right: 20px;
+        text-align: right;
+        display: flex;
+    }
+
+    .listSort li {
+        margin-left: 10px;
+    }
+
+    .txt_bold {
+        font-weight: bold;
+    }
+
+    /* =======================================더보기 버튼============================ */
+
+    .btnSection {
+        margin-top: 50px;
+        width: 100%;
+    }
+
+    .btnMore {
+        display: inline-block;
+        width: 200px;
+        line-height: 46px;
+        background-color: #efefef;
+        box-sizing: border-box;
+    }
+
+    .collapse_img {
+        display: none;
+    }
+}
