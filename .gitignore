@@ -1,0 +1,57 @@
+HELP.md
+
+# Maven 빌드 디렉터리
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Eclipse 설정 파일
+.classpath
+.project
+.settings/
+.metadata/
+
+# OS별 불필요한 파일
+.DS_Store
+Thumbs.db
+
+# 로그 및 실행 파일
+*.log
+*.jar
+*.war
+*.class
+
+# Git 자체 정보
+.git/
+
+# react
+node_modules/
