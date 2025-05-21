@@ -41,6 +41,11 @@ function Header() {
         }); //apiCall
     } //serverDataRequest
 
+    //채팅상담 이동 함수
+    const goToChat = () => {
+        navigate("/chat/rooms");
+    };
+
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}>  도서 판매 </h2>
@@ -48,7 +53,8 @@ function Header() {
                 <span onClick={serverTest} className="textlink">Server</span>&nbsp;&nbsp;
                 <Link to="/">Home</Link>&nbsp;&nbsp;
                 <span onClick={() => { serverDataRequest("/test/memberlist") }} 
-                                  className="textlink">DbTestList</span>
+                                  className="textlink">DbTestList</span>&nbsp;&nbsp;
+                <span onClick={goToChat} className="textlink">채팅상담</span>
             </div>
         </div> //headerTop
     ); //return

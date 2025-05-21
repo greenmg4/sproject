@@ -91,6 +91,14 @@
 		    <version>3.0.3</version>
 		    <scope>test</scope>
 		</dependency>
+				
+		<!-- Mybatis 테스트용 (선택 사항) -->
+		<dependency>
+		    <groupId>org.mybatis.spring.boot</groupId>
+		    <artifactId>mybatis-spring-boot-starter-test</artifactId>
+		    <version>3.0.3</version>
+		    <scope>test</scope>
+		</dependency>	
 		
 	</dependencies>
 

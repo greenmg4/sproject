@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapperInterface.ChatMessageMapper">
+
+	<select id="selectMaxSeq" resultType="int">
+	  SELECT IFNULL(MAX(seq), 0) FROM qna WHERE qna_no = #{qnaNo}
+	</select>
+	
+	<!-- 메시지 저장 -->
+	<insert id="insertMessage">
+	  INSERT INTO qna (qna_no, seq, cust_id, content, qna_dtm, qna_class, qna_type)
+	  VALUES (#{roomId}, #{seq}, #{sender}, #{message}, #{createdAt}, #{qnaclass}, #{qnatype})
+	</insert>
+
+	<select id="getMessagesByRoomId" parameterType="long" resultType="com.example.demo.domain.ChatMessageDTO">
+	  SELECT
+	  	q.seq AS seq,
+	    q.qna_no AS roomId,
+	    q.content AS message,
+	    q.qna_dtm AS createdAt,
+	    c.cust_id AS sender,
+	    c.grade AS grade
+	  FROM qna q
+	  JOIN custom c ON q.cust_id = c.cust_id
+	  WHERE q.qna_no = #{roomId}
+	  ORDER BY q.qna_dtm ASC
+	</select>
+    
+	<select id="getRoomSummaries" resultType="com.example.demo.domain.ChatMessageDTO">
+	  SELECT 
+	    q.qna_no AS roomId,
+	    SUBSTRING_INDEX(q.content, '\n', 1) AS lastMessage
+	  FROM qna q
+	  INNER JOIN (
+	    SELECT qna_no, MAX(qna_dtm) AS max_time
+	    FROM qna
+	    GROUP BY qna_no
+	  ) t ON q.qna_no = t.qna_no AND q.qna_dtm = t.max_time
+	  ORDER BY q.qna_no DESC
+	</select>
+	
+	<select id="getUserInfo" parameterType="string" resultType="com.example.demo.domain.CustomDTO">
+	    SELECT
+	      cust_id AS custId,
+	      grade AS grade
+	    FROM custom
+	    WHERE cust_id = #{custId}
+	</select>
+
+</mapper>
