@@ -44,6 +44,7 @@ public class TestController {
 	
  	@GetMapping("/memberlist")
  	public ResponseEntity<?> memberlist() {
+ 		// coding...
  		List<Map<String,Object>> list = service.selectList();
     	if ( list !=null && list.size() > 0 ) {	
 			return ResponseEntity.ok().body(list);

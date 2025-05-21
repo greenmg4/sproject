@@ -41,6 +41,11 @@ function Header() {
         }); //apiCall
     } //serverDataRequest
 
+    //상담사가 채팅상담하러 가기
+    const goToChat = () => {
+        navigate("/chat/rooms");
+    };
+
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}>  도서 판매 </h2>
