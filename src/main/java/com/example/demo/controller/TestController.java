@@ -27,7 +27,7 @@ public class TestController {
 		log.info("** React SpringBoot Connection 확인중 **");
 		return  ResponseEntity.ok()
 				.body(Map.of("checkData","** Port:8080 **"
-							,"checkLogin","** 로그인확인안됨 **"));
+							,"checkLogin","** 로그인확인안됨aa **"));
 		
 		// => Map.of()
         //	- java 9 버전 부터 추가, 간편하게 초기화 가능
