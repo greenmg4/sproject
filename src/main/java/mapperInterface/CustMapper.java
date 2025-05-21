@@ -10,10 +10,10 @@ import com.example.demo.model.CustDTO;
 public interface CustMapper {
 
 
-	@Select("select password from cumtom where cust_id = #{mdto.cust_id}")
+	@Select("select password from custom where cust_id = #{mdto.cust_id}")
 	String login(@Param("mdto")CustDTO cdto);
 	
-	@Select("select cust_nm from cumtom where cust_id = #{cust_id}")
+	@Select("select cust_nm from custom where cust_id = #{cust_id}")
 	String search_name(@Param("cust_id")String cust_id);
 	
 }

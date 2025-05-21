@@ -1,50 +1,51 @@
 package com.example.demo.controller;
 
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.CustDTO;
 import com.example.demo.service.CustService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
-@Controller
-@RequestMapping("/test")
-@Log4j2
+@RestController
+@RequestMapping("/cust")
 @RequiredArgsConstructor
 public class CustController {
-	@Autowired
-	private CustService cservice;
-	
-	/**로그인 기능*/
-	@PostMapping("login")
-	public String login(CustDTO cdto, Model model, HttpServletRequest request) {
-		String cust_pw = cservice.login(cdto);
-		String cust_id = (String)cdto.getCust_id();	
-		String cust_nm = cservice.search_name(cust_id);
-		if(cust_pw == null) {//id가 존재하지 않는경우
-			model.addAttribute("msg","아이디가 존재하지않습니다.");
-			model.addAttribute("url","/");
-			return "api/alert_api";
-		}else if(cust_pw.equals(cdto.getPassword())) {//로그인 성공
-			HttpSession session = request.getSession();
-			model.addAttribute("user_id",cdto.getCust_id());
-			model.addAttribute("user_name", cust_nm);
-			session.setAttribute("user_id",cdto.getCust_id());
-			return "redirect:/index";
-		}else {// 비밀번호 틀렸을시
-			model.addAttribute("msg","비밀번호가 틀렸습니다.");
-			model.addAttribute("url","/");
-			return "api/alert_api";
-		}
-	}
- 	
+
+    @Autowired
+    private CustService cservice;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody CustDTO cdto, HttpSession session) {
+        String cust_pw = cservice.login(cdto);
+        String cust_id = cdto.getCust_id();
+        String cust_nm = cservice.search_name(cust_id);
+
+        if (cust_pw == null) {
+            // 아이디 없음
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("msg", "아이디가 존재하지 않습니다."));
+        } else if (cust_pw.equals(cdto.getPassword())) {
+            // 로그인 성공
+            session.setAttribute("cust_id", cust_id);
+            return ResponseEntity.ok(Map.of(
+                "cust_id", cust_id,
+                "cust_nm", cust_nm,
+                "msg", "로그인 성공"
+            ));
+        } else {
+            // 비밀번호 불일치
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("msg", "비밀번호가 틀렸습니다."));
+        }
+    }
 }
