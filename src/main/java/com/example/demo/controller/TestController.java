@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TestController {
 	private final TestService service;
-	
+	//2차 test
 	@GetMapping("/check-server")
 	public ResponseEntity<?> checkLogin() {
 		log.info("** React SpringBoot Connection 확인중 **");
