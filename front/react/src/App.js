@@ -86,6 +86,7 @@ function App() {
       <Header userName={loginInfo.username} token={loginInfo.token} isLoggedIn={isLoggedIn} onLogout={onLogout} />
       <Main token={loginInfo.token}
             onLoginSubmit={onLoginSubmit}
+            
       />
       <Footer />
     </div>
