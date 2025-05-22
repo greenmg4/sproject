@@ -1,17 +1,35 @@
-
+import { useNavigate } from 'react-router-dom';
+import { apiCall } from '../service/apiService';
 import '../styles/Main.css';
 
 function MainDefault() {
+    const navigate = useNavigate();
+        const serverDataRequest = (url) => {
+            // token 적용 이전
+            //apiCall(url, 'GET', null, null)
+    
+            // token 적용 이후
+            //alert(`** serverDataRequest 요청전 token 확인 =${token}`);
+            apiCall(url, 'GET', null, null)
+            .then((response) => {
+                alert(`** serverDataRequest 성공 url=${url}`);
+                sessionStorage.setItem("serverData", JSON.stringify(response));
+                navigate(url);
+            }).catch((err) => {
+                if (err===502) { alert(`** 처리도중 오류 발생, err=${err}`);
+                }else if (err===403) {
+                      alert(`** Server Reject : 접근권한이 없습니다. => ${err}`); 
+                }else alert(`** serverDataRequest 시스템 오류, err=${err}`);
+            }); //apiCall
+        } //serverDataRequest
     return (
         <div className='body_container'>
             <hr></hr>
             {/* <h3>~~ Main 영역 ~~</h3> */}
             <div id="contents">
-                {/* => img 폴더가 public 하위에 존재하는경우 
-                    -> 리액트 프로젝트의  public 폴더는 root 디렉토리 이기 때문에 간편하게 지정 가능 
-                    <img src={require('../assets/home_img/greenApple.jpg')} alt="MainImage" />
-                */}
                 <img alt="MainImage" src="images/library01.png" width={800} height={400} /> 
+                <span onClick={() => { serverDataRequest("/product/proList") }} 
+                                  className="textlink">상품 리스트</span>
             </div>
         </div>
     );  
