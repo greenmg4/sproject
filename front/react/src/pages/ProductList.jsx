@@ -1,6 +1,7 @@
 import '../styles/Main.css';
 import React, { useState, useEffect } from 'react';
 import { getStorageData } from '../service/apiService';
+import { Link } from 'react-router-dom';
 
 export default function ProductList(){
     const [list, setList] = useState(null); 
@@ -27,17 +28,16 @@ export default function ProductList(){
                   <table className="listTable">
                     <thead>
                       <tr style={{backgroundColor:'AliceBlue', height:'20px'}}>
-                        <th>상품번호</th><th>상품명</th><th>상품가격</th><th>상품구분</th><th>판매유무</th>
-                        <th>판매유무</th><th>재고수</th><th>출판사</th><th>저자</th>
+                        <th>상품번호</th><th>상품명</th><th>상품가격</th><th>상품 카테고리</th>
+                        <th>재고수</th><th>출판사</th><th>저자</th>
                       </tr>
                     </thead>  
                     <tbody>
                       {list.map((item, i) => (
                           <tr key={'memberitem' + i}>
-                            <td>{item.prod_no}</td><td>{item.prod_nm}</td><td>{item.prod_price}</td><td>{item.category}</td>
-                            <td>{item.status}</td><td>{item.prod_cnt}</td><td>{item.publisher}</td><td>{item.author_nm}</td>
-                            {/*<td><img src={`${API_BASE_URL}/resources/uploadImages/${item.uploadfile}`} 
-                                    alt="MyImage" width={50} height={60} /></td>*/}
+                            <td>{item.prod_no}</td><td><Link to={`/product/${item.prod_no}`}>{item.prod_nm}</Link></td>
+                            <td>{item.prod_price}</td><td>{item.category}</td>
+                            <td>{item.prod_cnt}</td><td>{item.publisher}</td><td>{item.author_nm}</td>
                           </tr>
                           )) }
                     </tbody>

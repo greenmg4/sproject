@@ -21,4 +21,10 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductDTO> proList() {
 		return ProductMapper.proList();
 	}
+
+	@Override
+	public ProductDTO ProDetail(int prod_no) {
+		return ProductMapper.ProDetail(prod_no);
+	}
+
 }

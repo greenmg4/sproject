@@ -8,6 +8,9 @@ public interface ProductService {
 
 	List<ProductDTO> proList();
 
+	ProductDTO ProDetail(int prod_no);
+
+
 	
 	
 }
