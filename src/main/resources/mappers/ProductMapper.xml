@@ -58,5 +58,9 @@
 	    book_desc = #{bookDesc}
 	  WHERE prod_no = #{prodNo}
 	</update>
+	
+	<delete id="deleteProduct">
+		DELETE FROM product where prod_no = #{prodNo}
+	</delete>
 
 </mapper>

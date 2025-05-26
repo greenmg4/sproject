@@ -35,4 +35,9 @@ public class ProductServiceImpl implements ProductService {
     public void updateProduct(ProductDTO product) {
         productMapper.updateProduct(product);
     }
+    
+    @Override
+    public int deleteProduct(int prodNo) {
+    	return productMapper.deleteProduct(prodNo);
+    }
 }

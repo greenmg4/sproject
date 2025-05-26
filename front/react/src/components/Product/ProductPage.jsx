@@ -18,6 +18,17 @@ const ProductPage = () => {
       .catch((err) => console.error("상품이미지 조회 실패:", err));
   }, []);
 
+	const productDelete = (prodNo) => {
+		axios.delete(`http://localhost:8080/product/delete` ,{params: { prodNo: prodNo }})
+		.then((res) => {
+			alert("삭제완료"); 
+			window.location.reload();
+		})
+		.catch((err) => {
+			alert("삭제실패", err);
+		});
+	}
+
   const getImageByProdNo = (prodNo) => {
     const image = productImages.find(img => img.prodno === prodNo);
     return image ? `http://localhost:8080${image.imgpath}` : null;
@@ -82,7 +93,8 @@ const ProductPage = () => {
               수정일: {p.updDtm || "없음"}<br />
               설명: {p.bookDesc}
             </div>
-            <button onClick={() => goToUpdateProductPage(p.prodNo)}>상품수정</button>
+            <button onClick={() => goToUpdateProductPage(p.prodNo)}>상품수정</button>&nbsp;&nbsp;
+						<button onClick={() => productDelete(p.prodNo)}>상품삭제</button>
           </div>
         ))}
       </div>

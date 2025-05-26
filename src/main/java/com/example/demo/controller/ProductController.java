@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -101,5 +103,15 @@ public class ProductController {
         return ResponseEntity.ok("상품 수정 완료");
     }
     
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteProduct(@RequestParam int prodNo) {   	
+    	if(productService.deleteProduct(prodNo) > 0 && productImageService.deleteImageProduct(prodNo) > 0) {
+    		return ResponseEntity.ok("상품 삭제 완료");
+    	}else {
+    		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("삭제 실패");
+    	}
+    }
     
-}
+    
+    
+}//class

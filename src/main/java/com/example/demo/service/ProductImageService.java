@@ -9,5 +9,5 @@ public interface ProductImageService {
 	void insertImage(ProductImageDTO img);
 	ProductImageDTO getImageByProdNo(int prodNo);
 	void updateImage(ProductImageDTO image);
-
+	int deleteImageProduct(int prodNo);
 }

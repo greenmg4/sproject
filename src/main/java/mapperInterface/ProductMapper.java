@@ -12,4 +12,5 @@ public interface ProductMapper {
     void insertProduct(ProductDTO product);
     ProductDTO getProductById(int prodNo);
     void updateProduct(ProductDTO product);
+    int deleteProduct(int prodNo);
 }

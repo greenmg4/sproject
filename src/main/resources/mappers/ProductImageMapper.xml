@@ -39,5 +39,9 @@
         img_class = #{imgclass}
     WHERE prod_no = #{prodno}
   </update>
+  
+  <delete id="deleteImageProduct">
+  	DELETE FROM product_img WHERE prod_no = #{prodNo}
+  </delete>
 
 </mapper>

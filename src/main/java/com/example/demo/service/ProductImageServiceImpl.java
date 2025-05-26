@@ -34,5 +34,10 @@ public class ProductImageServiceImpl implements ProductImageService{
     public void updateImage(ProductImageDTO image) {
         productImageMapper.updateImage(image);
     }
+    
+    @Override
+    public int deleteImageProduct(int prodNo) {
+    	return productImageMapper.deleteImageProduct(prodNo);
+    }
 
 }

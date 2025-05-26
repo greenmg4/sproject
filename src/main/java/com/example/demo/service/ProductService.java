@@ -8,4 +8,5 @@ public interface ProductService {
     int insertProduct(ProductDTO product);
     ProductDTO getProductById(int prodNo);
     void updateProduct(ProductDTO product);
+    int deleteProduct(int prodNo);
 }
