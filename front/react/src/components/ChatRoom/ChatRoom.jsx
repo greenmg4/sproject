@@ -26,7 +26,7 @@ const ChatRoom = () => {
       webSocketFactory: () => new SockJS(`${BASE_URL}/ws`),
       connectHeaders: {},
       onConnect: () => {
-        console.log("✅ WebSocket 연결됨");
+        console.log("WebSocket 연결됨");
 
         // ✅ 실시간 메시지 수신 구독
         client.subscribe(`/sub/chat/room/${roomId}`, (res) => {
@@ -35,7 +35,7 @@ const ChatRoom = () => {
         });
       },
       onStompError: (err) => {
-        console.error("❌ STOMP 에러:", err);
+        console.error("STOMP 에러:", err);
       },
     });
 
@@ -48,7 +48,7 @@ const ChatRoom = () => {
       setChatList(res.data); // axios는 응답 본문이 res.data에 있음
     })
     .catch((err) => {
-      console.error("❌ 채팅 내역 불러오기 실패:", err);
+      console.error("채팅 내역 불러오기 실패:", err);
   });
 
   // 유저정보 받기

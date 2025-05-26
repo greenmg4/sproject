@@ -35,6 +35,7 @@ public class ChatController {
         message.setCreatedAt(LocalDateTime.now());
         chatService.saveMessage(message);
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        messagingTemplate.convertAndSend("/sub/chat/summary", message);
     }
 
     @GetMapping("/history/{roomId}")

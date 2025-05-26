@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //** WebMvcConfigurer
@@ -30,5 +31,12 @@ public class WebMvcConfig implements WebMvcConfigurer  {
 				//    (그러므로 origins 속성값은 구체적으로 명시함) 
 				.maxAge(MAX_AGE_SECS);
 	} //addCorsMappings	/------------------
+	
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploadimages/**")
+                .addResourceLocations("file:///C:/Users/USER/git/sproject/uploadimages/");
+        // ↑ 실제 파일 시스템 경로를 매핑
+    }
 
 }
