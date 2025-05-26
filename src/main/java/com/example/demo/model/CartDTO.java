@@ -15,6 +15,9 @@ public class CartDTO {
 	private int cnt = 1;
 	private LocalDateTime reg_dtm, upd_dtm;
 	
+	private String prod_nm, img_path;
+	private int prod_price;
+	
 	
 	
 }

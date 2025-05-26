@@ -5,7 +5,7 @@ import DbTestList from '../pages/DbTestList';
 import Login from '../pages/Login';
 import ProductList from '../pages/ProductList';
 import ProductDetail from '../pages/ProductDetail';
-import CartPage from '../pages/CartPage';
+import Cart from '../pages/Cart';
 function Main({onLoginSubmit }) {
     return (
         <div>
@@ -16,7 +16,7 @@ function Main({onLoginSubmit }) {
                    element={<Login onLoginSubmit={onLoginSubmit}/>}/>
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
-            <Route path="/cart" element={<CartPage />} />
+            <Route path="/cart/addCart" element={<Cart />} />
         </Routes>
         </div>
     );

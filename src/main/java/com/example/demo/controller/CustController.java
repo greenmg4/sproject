@@ -36,7 +36,7 @@ public class CustController {
                 .body(Map.of("msg", "아이디가 존재하지 않습니다."));
         } else if (cust_pw.equals(cdto.getPassword())) {
             // 로그인 성공
-            session.setAttribute("cust_id", cust_id);
+        	session.setAttribute("loginID", cust_id);
             return ResponseEntity.ok(Map.of(
                 "cust_id", cust_id,
                 "cust_nm", cust_nm,

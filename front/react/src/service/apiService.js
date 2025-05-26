@@ -27,6 +27,7 @@ export async function apiCall(url, method, requestData, token) {
       url: API_BASE_URL + url, 
       method: method, 
       headers: headers,
+      withCredentials: true,  
   };  
   
   // 1.3) 전송 Data(requestData) 있는 경우 data 속성 추가
@@ -57,6 +58,9 @@ export function getStorageData() {
 
 
 export async function addCart(product) {
-  return await apiCall('/cart', 'POST', product, null);
+  return await apiCall('/cart/addCart', 'POST', product, null);
 }
 
+export async function CartDetail(cust_id) {
+  return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
+}

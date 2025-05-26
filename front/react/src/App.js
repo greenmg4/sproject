@@ -28,17 +28,15 @@ function App() {
   const onLoginSubmit = (cust_Id, Password) => {
 
     let url = "/cust/login";
-    // => 서버 API 에서 스프링시큐리티 인증.인가 적용하면 
-    //    인자명을 username , password 로 전달해야함.
+    
     const data = { cust_id: cust_Id, password: Password };
 
     apiCall(url, 'POST', data, null)
     .then((response) => {
-        // => 로그인 성공
-        //  -> 브라우져의 sessionStorage에 로그인정보 보관 (JSON 포맷으로), 
-        //     로그인상태값 과 loginInfo 상태값  set  
-        //  -> apiCall 함수 에서는 response.data 값을 return 함.
+ 
         sessionStorage.setItem("loginInfo", JSON.stringify(response));
+        sessionStorage.setItem("loginID", response.cust_id);
+
         alert('로그인 성공');
         setIsLoggedIn(true);
         setLoginInfo(response);

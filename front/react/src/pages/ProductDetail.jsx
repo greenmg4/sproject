@@ -16,15 +16,30 @@ export default function ProductDetail() {
     }, [prod_no]);
 
     const handleAddCart = async () => {
-        try {
-            await addCart(product); // DB 저장
-            alert('장바구니에 상품이 추가되었습니다.');
-            navigate('/cart'); // 장바구니 페이지로 이동
-        } catch (error) {
-            alert('장바구니 추가에 실패했습니다.');
-        }
+    const cust_id = sessionStorage.getItem("loginID");
+    console.log("현재 로그인 ID:", cust_id); // 추가
+
+    if (!cust_id) {
+        alert("로그인 후 이용해 주세요.");
+        return;
+    }
+
+    const cartItem = {
+        cust_id: cust_id,
+        prod_no: product.prod_no,
+        cnt: 1,
     };
 
+    try {
+        await addCart(cartItem); // 서버에 전송
+        alert('장바구니에 상품이 추가되었습니다.');
+        console.log('장바구니 추가 성공, 페이지 이동 시작');
+        navigate('/cart/addCart');  // 소문자로 변경
+    } catch (error) {
+        alert('장바구니 추가에 실패했습니다.');
+        console.error(error);
+    }
+};
     if (!product) {
         return <div>상품 정보를 찾을 수 없습니다.</div>;
     }
