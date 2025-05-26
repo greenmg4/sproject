@@ -38,3 +38,18 @@
   color: #000;
   font-weight: 500;
 }
+
+.chat-room-list .notification-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+/* 상대 위치 지정 */
+.chat-room-list .chat-room {
+  position: relative;
+}

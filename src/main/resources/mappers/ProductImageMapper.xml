@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapperInterface.ProductImageMapper">
+
+  <select id="getAllProductImgs" resultType="com.example.demo.domain.ProductImageDTO">
+    SELECT 
+      seq,
+      prod_no AS prodno,
+      img_class AS imgclass,
+      img_path AS imgpath,
+      order_seq AS orderseq
+    FROM product_img
+  </select>
+  
+  <insert id="insertImage">
+    INSERT INTO product_img
+    (prod_no, img_path, img_class)
+    VALUES
+    (#{prodno}, #{imgpath}, #{imgclass})
+  </insert>
+  
+  <select id="getImageByProdNo" resultType="com.example.demo.domain.ProductImageDTO">
+	  SELECT 
+	    seq,
+	    prod_no AS prodno,
+	    img_class AS imgclass,
+	    img_path AS imgpath,
+	    order_seq AS orderseq
+	  FROM product_img
+	  WHERE prod_no = #{prodNo}
+	  LIMIT 1
+  </select>
+  
+  <update id="updateImage">
+    UPDATE product_img
+    SET img_path = #{imgpath},
+        img_class = #{imgclass}
+    WHERE prod_no = #{prodno}
+  </update>
+
+</mapper>

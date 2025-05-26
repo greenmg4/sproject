@@ -46,6 +46,14 @@ function Header() {
         navigate("/chat/rooms");
     };
 
+    const goToProductPage = () => {
+        navigate("product")
+    }
+
+    const goToPL = () => {
+        navigate("productupload")
+    }
+
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}>  도서 판매 </h2>
@@ -54,7 +62,9 @@ function Header() {
                 <Link to="/">Home</Link>&nbsp;&nbsp;
                 <span onClick={() => { serverDataRequest("/test/memberlist") }} 
                                   className="textlink">DbTestList</span>&nbsp;&nbsp;
-                <span onClick={goToChat} className="textlink">채팅상담</span>
+                <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
+                <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
+                <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
             </div>
         </div> //headerTop
     ); //return
