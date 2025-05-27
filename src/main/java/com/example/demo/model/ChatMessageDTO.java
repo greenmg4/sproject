@@ -6,14 +6,13 @@ import lombok.Data;
 
 @Data
 public class ChatMessageDTO {
-    private Long id;
-    private Long roomId;
-    private String sender;
-    private String message;
-    private LocalDateTime createdAt;
+	private int qna_no;
+    private int seq;
+    private int qna_class;
+    private int qna_type;
+    private String cust_id;
+    private String content;
+    private LocalDateTime qna_dtm;
     private String lastMessage;
     private String grade;
-    private int seq;
-    private int qnaclass;
-    private int qnatype;
 }

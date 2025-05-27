@@ -6,61 +6,61 @@
 
   <select id="getAllProducts" resultType="com.example.demo.model.ProductDTO">
     SELECT 
-      prod_no AS prodNo,
-      prod_nm AS prodNm,
-      prod_price AS prodPrice,
+      prod_no,
+      prod_nm,
+      prod_price,
       category,
       status,
-      prod_cnt AS prodCnt,
+      prod_cnt,
       publisher,
-      author_nm AS authorNm,
-      DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS regDtm,
-      DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS updDtm,
-      book_desc AS bookDesc
+      author_nm,
+      DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS reg_dtm,
+      DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS upd_dtm,
+      book_desc
     FROM product
   </select>
   
-  <insert id="insertProduct" useGeneratedKeys="true" keyProperty="prodNo">
+  <insert id="insertProduct" useGeneratedKeys="true" keyProperty="prod_no">
     INSERT INTO product
     (prod_nm, prod_price, category, status, prod_cnt, publisher, author_nm, reg_dtm, book_desc)
     VALUES
-    (#{prodNm}, #{prodPrice}, #{category}, #{status}, #{prodCnt}, #{publisher}, #{authorNm}, NOW(), #{bookDesc})
+    (#{prod_nm}, #{prod_price}, #{category}, #{status}, #{prod_cnt}, #{publisher}, #{author_nm}, NOW(), #{book_desc})
   </insert>
   
 	<select id="getProductById" parameterType="int" resultType="com.example.demo.model.ProductDTO">
 	  SELECT 
-	    prod_no AS prodNo,
-	    prod_nm AS prodNm,
-	    prod_price AS prodPrice,
+	    prod_no,
+	    prod_nm,
+	    prod_price,
 	    category,
 	    status,
-	    prod_cnt AS prodCnt,
+	    prod_cnt,
 	    publisher,
-	    author_nm AS authorNm,
-	    DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS regDtm,
-	    DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS updDtm,
-	    book_desc AS bookDesc
+	    author_nm,
+	    DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS reg_dtm,
+	    DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS upd_dtm,
+	    book_desc
 	  FROM product
-	  WHERE prod_no = #{prodNo}
+	  WHERE prod_no = #{prod_no}
 	</select>
 	
 	<update id="updateProduct" parameterType="com.example.demo.model.ProductDTO">
 	  UPDATE product
 	  SET
-	    prod_nm = #{prodNm},
-	    prod_price = #{prodPrice},
+	    prod_nm = #{prod_nm},
+	    prod_price = #{prod_price},
 	    category = #{category},
 	    status = #{status},
-	    prod_cnt = #{prodCnt},
+	    prod_cnt = #{prod_cnt},
 	    publisher = #{publisher},
-	    author_nm = #{authorNm},
+	    author_nm = #{author_nm},
 	    upd_dtm = NOW(),
-	    book_desc = #{bookDesc}
-	  WHERE prod_no = #{prodNo}
+	    book_desc = #{book_desc}
+	  WHERE prod_no = #{prod_no}
 	</update>
 	
 	<delete id="deleteProduct">
-		DELETE FROM product where prod_no = #{prodNo}
+		DELETE FROM product where prod_no = #{prod_no}
 	</delete>
 
 </mapper>

@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class ProductImageDTO {
 	private int seq;
-	private int prodno;
-	private String imgclass;
-	private String imgpath;
-	private int orderseq;
+	private int prod_no;
+	private String img_class;
+	private String img_path;
+	private int order_seq;
 }
