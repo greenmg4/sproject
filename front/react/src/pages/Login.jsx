@@ -24,7 +24,7 @@ const Login = ({onLoginSubmit}) => {
                            size={20} value={Password} 
                            onChange={(e) => setUserPassword(e.target.value)} 
                            required
-                           minlength="4"
+                           minLength="4"
                     /><br/><br/>
                     <input type="submit" className="loginBtn" value="로그인" style={{width:175}}/><br/><br/>
                 </form>
