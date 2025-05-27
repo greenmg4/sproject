@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapperInterface.StatisticsMapper">
+
+	<select id="selectYearSaleList" resultType="map">
+		SELECT YEAR(ord_dtm) AS year, MONTH(ord_dtm) AS month, COUNT(*) AS total_count, SUM(tot_amount) as tot_amt
+		FROM order_mst
+		where 1=1
+		and ord_dtm LIKE CONCAT(#{year}, '%')
+		GROUP BY year, month;
+	</select>
+
+	<select id="selectMonthSaleList" resultType="map">
+		SELECT YEAR(ord_dtm) AS year, MONTH(ord_dtm) AS month, DATE(ord_dtm) AS dt, COUNT(*) AS total_count, SUM(tot_amount) as tot_amt
+		FROM order_mst
+		where 1=1
+		and ord_dtm LIKE CONCAT(#{month}, '%')
+		GROUP BY year, month, dt;
+	</select>
+	
+</mapper>

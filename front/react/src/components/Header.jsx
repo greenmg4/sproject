@@ -54,6 +54,10 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
         navigate("productupload")
     }
 
+    const callstatistics = (url) => {
+        navigate(url);
+    }
+    
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}> 도서관 </h2>
@@ -66,6 +70,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
                 <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
                 <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
+                <span onClick={() => { callstatistics("/statistics/data") }}  className="textlink">통계</span>&nbsp;&nbsp;
             </div>
                 <li><Link to="/login">로그인</Link></li>
         </div> //headerTop
