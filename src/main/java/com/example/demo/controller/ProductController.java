@@ -75,9 +75,9 @@ public class ProductController {
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
-        img.setProdno(prodNo);
-        img.setImgpath("/uploadimages/" + fileName);
-        img.setImgclass(imgClass);
+        img.setProd_no(prodNo);
+        img.setImg_path("/uploadimages/" + fileName);
+        img.setImg_class(imgClass);
 
         productImageService.insertImage(img);
         return ResponseEntity.ok("등록 완료");
@@ -104,9 +104,9 @@ public class ProductController {
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
-        img.setProdno(prodNo);
-        img.setImgpath("/uploadimages/" + fileName);
-        img.setImgclass(imgClass);
+        img.setProd_no(prodNo);
+        img.setImg_path("/uploadimages/" + fileName);
+        img.setImg_class(imgClass);
 
         productImageService.updateImage(img);
         return ResponseEntity.ok("이미지 수정 완료");

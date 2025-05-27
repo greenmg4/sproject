@@ -9,14 +9,13 @@ const BASE_URL = "http://localhost:8080";
 
 const ChatRoomList = () => {
   const [rooms, setRooms] = useState([]);
-  const [sender, setSender] = useState("");
+  const [custId, setCustId] = useState("");
   const stompClient = useRef(null);
 
   useEffect(() => {
     // 채팅방 목록 조회
     axios.get(`${BASE_URL}/chat/rooms`)
       .then((res) => {
-        // 초기 상태: unread false
         const initialRooms = res.data.map(room => ({ ...room, unread: false }));
         setRooms(initialRooms);
       })
@@ -24,13 +23,13 @@ const ChatRoomList = () => {
         console.error("방 목록 조회 실패:", err);
       });
 
-    // 사용자 정보
+    // 사용자 정보 조회
     axios.get(`${BASE_URL}/chat/userinfo`, {
-      params: { custId: "user1234" }
+      params: { cust_id: "user1234" }
     })
-    .then((res) => {
-      setSender(res.data.custId);
-    });
+      .then((res) => {
+        setCustId(res.data.cust_id);  // 필드명 변경
+      });
 
     // WebSocket 연결
     const client = new Client({
@@ -44,14 +43,13 @@ const ChatRoomList = () => {
 
           setRooms((prevRooms) => {
             const updated = prevRooms.map((room) =>
-              room.roomId === incomingMsg.roomId
-                ? { ...room, lastMessage: incomingMsg.message, unread: true }
+              room.qna_no === incomingMsg.qna_no
+                ? { ...room, lastMessage: incomingMsg.content, unread: true }
                 : room
             );
 
-            // 새 메시지 온 방을 맨 앞으로
-            const target = updated.find((r) => r.roomId === incomingMsg.roomId);
-            const others = updated.filter((r) => r.roomId !== incomingMsg.roomId);
+            const target = updated.find((r) => r.qna_no === incomingMsg.qna_no);
+            const others = updated.filter((r) => r.qna_no !== incomingMsg.qna_no);
             return [target, ...others];
           });
         });
@@ -74,10 +72,10 @@ const ChatRoomList = () => {
       <h2>상담 목록</h2>
       <ul>
         {rooms.map((room) => (
-          <li key={room.roomId}>
-            <Link to={`/chat/${room.roomId}`} className="chat-room">
+          <li key={room.qna_no}>
+            <Link to={`/chat/${room.qna_no}`} className="chat-room">
               <div className="room-title">
-                {sender}님의 문의
+                {custId}님의 문의
                 {room.unread && <span className="notification-dot" />}
               </div>
               <div className="last-message">{room.lastMessage || "(메시지 없음)"}</div>

@@ -7,10 +7,10 @@
   <select id="getAllProductImgs" resultType="com.example.demo.model.ProductImageDTO">
     SELECT 
       seq,
-      prod_no AS prodno,
-      img_class AS imgclass,
-      img_path AS imgpath,
-      order_seq AS orderseq
+      prod_no,
+      img_class,
+      img_path,
+      order_seq
     FROM product_img
   </select>
   
@@ -18,30 +18,30 @@
     INSERT INTO product_img
     (prod_no, img_path, img_class)
     VALUES
-    (#{prodno}, #{imgpath}, #{imgclass})
+    (#{prod_no}, #{img_path}, #{img_class})
   </insert>
   
   <select id="getImageByProdNo" resultType="com.example.demo.model.ProductImageDTO">
 	  SELECT 
 	    seq,
-	    prod_no AS prodno,
-	    img_class AS imgclass,
-	    img_path AS imgpath,
-	    order_seq AS orderseq
+	    prod_no,
+	    img_class,
+	    img_path,
+	    order_seq
 	  FROM product_img
-	  WHERE prod_no = #{prodNo}
+	  WHERE prod_no = #{prod_no}
 	  LIMIT 1
   </select>
   
   <update id="updateImage">
     UPDATE product_img
-    SET img_path = #{imgpath},
-        img_class = #{imgclass}
-    WHERE prod_no = #{prodno}
+    SET img_path = #{img_path},
+        img_class = #{img_class}
+    WHERE prod_no = #{prod_no}
   </update>
   
   <delete id="deleteImageProduct">
-  	DELETE FROM product_img WHERE prod_no = #{prodNo}
+  	DELETE FROM product_img WHERE prod_no = #{prod_no}
   </delete>
 
 </mapper>

@@ -10,9 +10,9 @@ import com.example.demo.model.CustDTO;
 
 @Mapper
 public interface ChatMessageMapper {
-    int selectMaxSeq(@Param("qnaNo") Long roomId);
-    void insertMessage(ChatMessageDTO message);
-    List<ChatMessageDTO> getMessagesByRoomId(Long roomId);
+    int selectMaxSeq(@Param("qna_no") int qna_no);
+    void insertMessage(ChatMessageDTO content);
+    List<ChatMessageDTO> getMessagesByRoomId(int qna_no);
     List<ChatMessageDTO> getRoomSummaries();
-    CustDTO getUserInfo(String custId);
+    CustDTO getUserInfo(String cust_Id);
 }

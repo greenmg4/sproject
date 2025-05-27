@@ -2,12 +2,15 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.demo.model.ChatMessageDTO;
 import com.example.demo.model.CustDTO;
 
 public interface ChatService {
-    void saveMessage(ChatMessageDTO message);
-    List<ChatMessageDTO> getMessageHistory(Long roomId);
+    int selectMaxSeq(@Param("qna_no") int qna_no);
+    void insertMessage(ChatMessageDTO content);
+    List<ChatMessageDTO> getMessagesByRoomId(int qna_no);
     List<ChatMessageDTO> getRoomSummaries();
-    CustDTO getUserInfo(String custId);
+    CustDTO getUserInfo(String cust_Id);
 }

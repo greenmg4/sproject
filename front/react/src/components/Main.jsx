@@ -20,7 +20,7 @@ function Main({onLoginSubmit }) {
         <Routes>
           {/* <Route path="/" element={<Main />} /> */}
           <Route path="/chat/rooms" element={<ChatRoomList />} /> 
-          <Route path="/chat/:roomId" element={<ChatRoom />} />
+          <Route path="/chat/:qna_no" element={<ChatRoom />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/productupload" element={<ProductUpload />} />
             <Route path="/product/update/:prodNo" element={<ProductUpdate />} />
