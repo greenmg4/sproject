@@ -4,19 +4,55 @@
 <mapper namespace="mapperInterface.StatisticsMapper">
 
 	<select id="selectYearSaleList" resultType="map">
-		SELECT YEAR(ord_dtm) AS year, MONTH(ord_dtm) AS month, COUNT(*) AS total_count, SUM(tot_amount) as tot_amt
-		FROM order_mst
-		where 1=1
-		and ord_dtm LIKE CONCAT(#{year}, '%')
-		GROUP BY year, month;
-	</select>
-
-	<select id="selectMonthSaleList" resultType="map">
-		SELECT YEAR(ord_dtm) AS year, MONTH(ord_dtm) AS month, DATE(ord_dtm) AS dt, COUNT(*) AS total_count, SUM(tot_amount) as tot_amt
-		FROM order_mst
-		where 1=1
-		and ord_dtm LIKE CONCAT(#{month}, '%')
-		GROUP BY year, month, dt;
+		SELECT 
+		       A.year
+		     , A.month 
+		     , A.mm 
+		     , A.tot_amt
+		     , FLOOR(AVG(A.tot_amt) OVER(PARTITION BY A.year)) AS avg_tot_amount
+		     , MAX(A.tot_amt) OVER(PARTITION BY A.year) AS max_month_amount
+		     , MIN(A.tot_amt) OVER(PARTITION BY A.year) AS min_month_amount
+		     , FIRST_VALUE(A.month) OVER(PARTITION BY A.year ORDER BY A.tot_amt DESC) AS max_month
+		     , FIRST_VALUE(A.month) OVER(PARTITION BY A.year ORDER BY A.tot_amt ASC) AS min_month
+		FROM (
+		    SELECT YEAR(ord_dtm) AS year 
+		         , MONTH(ord_dtm) AS month
+		         , LPAD(MONTH(ord_dtm), 2, '0') AS mm
+		         , SUM(tot_amount) as tot_amt
+		    FROM order_mst
+		    WHERE ord_dtm LIKE CONCAT(#{year}, '%')
+		    GROUP BY year, month, mm
+		    ) A
+		order by year, month, mm
 	</select>
 	
+	<select id="selectMonthSaleList" resultType="map">
+		SELECT 
+		       A.year
+		     , A.month
+		     , A.dt
+		     , A.dd
+		     , A.tot_amt
+		     , FLOOR(AVG(A.tot_amt) OVER(PARTITION BY A.yearmonth)) AS avg_tot_amount
+		     , MAX(A.tot_amt) OVER(PARTITION BY A.yearmonth) AS max_month_amount
+		     , MIN(A.tot_amt) OVER(PARTITION BY A.yearmonth) AS min_month_amount
+		     , FIRST_VALUE(A.dd) OVER(PARTITION BY A.yearmonth ORDER BY A.tot_amt DESC) AS max_dd
+		     , FIRST_VALUE(A.dd) OVER(PARTITION BY A.yearmonth ORDER BY A.tot_amt ASC) AS min_dd
+		from (
+				SELECT YEAR(ord_dtm) AS year
+				     , CONCAT(YEAR(ord_dtm), '-', LPAD(MONTH(ord_dtm), 2, '0')) AS yearmonth
+				     , MONTH(ord_dtm) AS month
+				     , DATE(ord_dtm) AS dt 
+		             , DAY(ord_dtm) AS dd
+		             , COUNT(*) AS total_count
+		             , SUM(tot_amount) as tot_amt
+				FROM order_mst
+				where 1=1
+				and ord_dtm LIKE CONCAT(#{month}, '%')
+				GROUP by year,yearmonth, month, dt, dd
+		     ) A
+		order by year, month, dt, dd
+	</select>
+	
+
 </mapper>

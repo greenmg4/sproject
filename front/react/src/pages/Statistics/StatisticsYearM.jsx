@@ -25,13 +25,21 @@ const StatisticsYearM = () => {
     const monthRef = useRef(null);
 
     // YYYY
-    const currentYear = new Date().getFullYear(); // 현재 연도
-    const [selectedYear, setSelectedYear] = useState(currentYear); // 기본값 설정
+    //const currentYear = new Date().getFullYear(); // 현재 연도
+    //const [selectedYear, setSelectedYear] = useState(currentYear); // 기본값 설정
 
     // YYYYMM
     const today = new Date();
     const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
     const [selectedYm, setSelectedYm] = useState(formattedDate);
+
+    const [monthResult, setMonthResult] = useState({
+        avgTotAmount: 0,
+        maxMonth: "1",
+        maxMohthAmount: 0,
+        minMonth: "1",
+        minMonthAmount: 0,
+    });
 
     // YYYYMMDD
     //const [selectedDate, setSelectedDate] = useState(new Date());
@@ -58,11 +66,37 @@ const StatisticsYearM = () => {
         apiCall(url, 'POST', requestData, null)
         .then((response) => {
             //alert(`** serverDataRequest 성공 url=${url}`);
-            sessionStorage.setItem("serverMonthData", JSON.stringify(response));
-            const dataArray = response; // 응답 데이터를 배열로 저장
+            //sessionStorage.setItem("serverMonthData", JSON.stringify(response));
+            //const dataArray = response; // 응답 데이터를 배열로 저장
+            //setDataValuesYm(dataArray.map(item => item.tot_amt)); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+            //const data = JSON.stringify(response);
             
-            setDataValuesYm(dataArray.map(item => item.tot_amt)); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
-            
+            if( response.length === 0) {
+                const resultArray = Array(30).fill(0);  // 매출 정보가 없다면 기본적으로 30 개 배열 생성 후, 0 초기화
+                setDataValuesYm(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+            } else {
+                // 최대 month 값 찾기
+                const maxDay = Math.max(...response.map(item => Number(item.dd)));
+                // maxMonth 개 배열 생성 후 초기값 0 설정
+                const resultArray = Array(maxDay).fill(0);
+    
+                response.forEach(item => {
+                    resultArray[item.dd - 1] = item.tot_amt;
+                });
+                setDataValuesYm(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+                // 월별 결과데이터 설정.
+                setMonthResult({
+                    avgTotAmount: response[0].avg_tot_amount,
+                    maxMonth: response[0].max_dd,
+                    maxMonthAmount: response[0].max_month_amount, 
+                    minMonth: response[0].min_dd,
+                    minMonthAmount: response[0].min_month_amount,
+                });
+            }
+
+
         }).catch((err) => {
             if (err===502) { alert(`** 처리도중 오류 발생, err=${err}`);
             }else if (err===403) {
@@ -111,6 +145,33 @@ const StatisticsYearM = () => {
                 </div>
                 <div >
                     <Bar data={dataYm} options={optionsYm} />
+                </div>
+
+                <div className="-chstatisticsild-initial">
+                <table className="statistics-table">
+                    <tr>
+                        <th>월평균 매출</th>
+                        <td>{`${monthResult.avgTotAmount}`} 원</td>
+                    </tr>
+                    <tr>
+                        <th>최대 매출일</th>
+                        <td>{`${monthResult.maxMonth}`}일</td>
+                    </tr>
+                    <tr>
+                        <th>최대 매출액</th>
+                        <td>{`${monthResult.maxMonthAmount}`} 원</td>   
+                    </tr>
+                    <tr>
+                        <th>최소 매출일</th>
+                        <td>{`${monthResult.minMonth}`}일</td>
+                    </tr>
+                    <tr>
+                        <th>최소 매출액</th>
+                        <td>{`${monthResult.minMonthAmount}`} 원</td>
+                    </tr>
+                    
+                </table>
+                
                 </div>
             </div>
         </div>
