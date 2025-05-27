@@ -12,6 +12,7 @@ import ChatRoom from './ChatRoom/ChatRoom';
 import ProductPage from './Product/ProductPage';
 import ProductUpload from './Product/ProductUpload';
 import ProductUpdate from './Product/ProductUpdate';
+import Statistics from '../pages/Statistics/Statistics';
 
 function Main({onLoginSubmit }) {
     return (
@@ -30,6 +31,7 @@ function Main({onLoginSubmit }) {
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
             <Route path="/cart/addCart" element={<Cart />} />
+            <Route path="/statistics/data" element={<Statistics />} />
         </Routes>
         </div>
     );
