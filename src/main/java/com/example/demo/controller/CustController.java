@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class CustController {
         String cust_pw = cservice.login(cdto);
         String cust_id = cdto.getCust_id();
         String cust_nm = cservice.search_name(cust_id);
+    	String grade = cservice.selectGradeByCustId(cust_id); //등급 가져오기
 
         if (cust_pw == null) {
             // 아이디 없음
@@ -37,6 +39,7 @@ public class CustController {
         } else if (cust_pw.equals(cdto.getPassword())) {
             // 로그인 성공
         	session.setAttribute("loginID", cust_id);
+        	session.setAttribute("grade", grade); //등급 저장
             return ResponseEntity.ok(Map.of(
                 "cust_id", cust_id,
                 "cust_nm", cust_nm,
@@ -48,4 +51,16 @@ public class CustController {
                 .body(Map.of("msg", "비밀번호가 틀렸습니다."));
         }
     }
+    
+    //어드민 체크
+    @GetMapping("/admincheck")
+    public ResponseEntity<?> admincheck(HttpSession session, CustDTO dto){
+    	String grade = (String) session.getAttribute("grade");
+    	
+    	if (!"A".equals(grade)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한 없음");
+        }
+        return ResponseEntity.ok("관리자 페이지입니다");
+    }
+    
 }

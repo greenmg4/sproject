@@ -16,4 +16,5 @@ public interface CustMapper {
 	@Select("select cust_nm from custom where cust_id = #{cust_id}")
 	String search_name(@Param("cust_id")String cust_id);
 	
+	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기
 }
