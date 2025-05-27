@@ -4,7 +4,7 @@
 
 <mapper namespace="mapperInterface.ProductMapper">
 
-  <select id="getAllProducts" resultType="com.example.demo.domain.ProductDTO">
+  <select id="getAllProducts" resultType="com.example.demo.model.ProductDTO">
     SELECT 
       prod_no AS prodNo,
       prod_nm AS prodNm,
@@ -27,7 +27,7 @@
     (#{prodNm}, #{prodPrice}, #{category}, #{status}, #{prodCnt}, #{publisher}, #{authorNm}, NOW(), #{bookDesc})
   </insert>
   
-	<select id="getProductById" parameterType="int" resultType="ProductDTO">
+	<select id="getProductById" parameterType="int" resultType="com.example.demo.model.ProductDTO">
 	  SELECT 
 	    prod_no AS prodNo,
 	    prod_nm AS prodNm,
@@ -44,7 +44,7 @@
 	  WHERE prod_no = #{prodNo}
 	</select>
 	
-	<update id="updateProduct" parameterType="com.example.demo.domain.ProductDTO">
+	<update id="updateProduct" parameterType="com.example.demo.model.ProductDTO">
 	  UPDATE product
 	  SET
 	    prod_nm = #{prodNm},

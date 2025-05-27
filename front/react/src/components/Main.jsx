@@ -7,17 +7,17 @@ import ProductList from '../pages/ProductList';
 import ProductDetail from '../pages/ProductDetail';
 import Cart from '../pages/Cart';
 
-import ChatRoomList from './components/ChatRoom/ChatRoomList';
-import ChatRoom from './components/ChatRoom/ChatRoom';
-import ProductPage from "./components/Product/ProductPage";
-import ProductUpload from "./components/Product/ProductUpload";
-import ProductUpdate from "./components/Product/ProductUpdate";
+import ChatRoomList from './ChatRoom/ChatRoomList';
+import ChatRoom from './ChatRoom/ChatRoom';
+import ProductPage from './Product/ProductPage';
+import ProductUpload from './Product/ProductUpload';
+import ProductUpdate from './Product/ProductUpdate';
 
 function Main({onLoginSubmit }) {
     return (
         <div>
         <Routes>
-          <Route path="/" element={<Main />} />
+          {/* <Route path="/" element={<Main />} /> */}
           <Route path="/chat/rooms" element={<ChatRoomList />} /> 
           <Route path="/chat/:roomId" element={<ChatRoom />} />
           <Route path="/product" element={<ProductPage />} />

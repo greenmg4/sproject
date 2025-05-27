@@ -10,4 +10,12 @@ public interface ProductService {
     ProductDTO getProductById(int prodNo);
     void updateProduct(ProductDTO product);
     int deleteProduct(int prodNo);
+	
+    
+    
+    // 회원 상품 리스트 출력
+    List<ProductDTO> ProList();
+	
+    // 회원 상품 디테일 출력
+    ProductDTO ProDetail(int prod_no);
 }

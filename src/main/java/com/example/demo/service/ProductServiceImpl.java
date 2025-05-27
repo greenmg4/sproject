@@ -40,4 +40,17 @@ public class ProductServiceImpl implements ProductService {
     public int deleteProduct(int prodNo) {
     	return productMapper.deleteProduct(prodNo);
     }
+
+    
+    // 회원 상품 리스트 출력
+	@Override
+	public List<ProductDTO> ProList() {
+		return productMapper.ProList();
+	}
+
+	//회원 상품 디테일 출력
+	@Override
+	public ProductDTO ProDetail(int prod_no) {
+		return productMapper.ProDetail(prod_no);
+	}
 }

@@ -66,8 +66,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
                 <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
                 <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
-                <li><Link to="/login">로그인</Link></li>
             </div>
+                <li><Link to="/login">로그인</Link></li>
         </div> //headerTop
     ); //return
 } //Header

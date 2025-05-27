@@ -33,6 +33,21 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductImageService productImageService;
+    
+    //회원 상품 리스트 출력
+    @GetMapping("/proList")
+    public List<ProductDTO> proList(){
+    	return productService.ProList();
+    	
+    }
+    
+    //회원 상품 디테일 출력
+    @GetMapping("/proDetail")
+    public ProductDTO ProDetail(int prod_no) {
+        return productService.ProDetail(prod_no);
+    }
+    
+    
 
     @GetMapping("/page")
     public List<ProductDTO> getAllProducts() {

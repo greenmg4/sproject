@@ -13,7 +13,7 @@
 	  VALUES (#{roomId}, #{seq}, #{sender}, #{message}, #{createdAt}, #{qnaclass}, #{qnatype})
 	</insert>
 
-	<select id="getMessagesByRoomId" parameterType="long" resultType="com.example.demo.domain.ChatMessageDTO">
+	<select id="getMessagesByRoomId" parameterType="long" resultType="com.example.demo.model.ChatMessageDTO">
 	  SELECT
 	  	q.seq AS seq,
 	    q.qna_no AS roomId,
@@ -27,7 +27,7 @@
 	  ORDER BY q.qna_dtm ASC
 	</select>
     
-	<select id="getRoomSummaries" resultType="com.example.demo.domain.ChatMessageDTO">
+	<select id="getRoomSummaries" resultType="com.example.demo.model.ChatMessageDTO">
 	  SELECT 
 	    q.qna_no AS roomId,
 	    SUBSTRING_INDEX(q.content, '\n', 1) AS lastMessage
@@ -40,7 +40,7 @@
 	  ORDER BY q.qna_no DESC
 	</select>
 	
-	<select id="getUserInfo" parameterType="string" resultType="com.example.demo.domain.CustomDTO">
+	<select id="getUserInfo" parameterType="string" resultType="com.example.demo.model.CustDTO">
 	    SELECT
 	      cust_id AS custId,
 	      grade AS grade
