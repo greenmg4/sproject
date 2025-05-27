@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.ProductDTO;
+import com.example.demo.model.ProductDTO;
 
 import lombok.RequiredArgsConstructor;
 import mapperInterface.ProductMapper;
@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int insertProduct(ProductDTO product) {
         productMapper.insertProduct(product);
-        return product.getProdNo(); // useGeneratedKeys 적용됨
+        return product.getProd_no();
     }
     
     @Override
@@ -40,4 +40,17 @@ public class ProductServiceImpl implements ProductService {
     public int deleteProduct(int prodNo) {
     	return productMapper.deleteProduct(prodNo);
     }
+
+    
+    // 회원 상품 리스트 출력
+	@Override
+	public List<ProductDTO> ProList() {
+		return productMapper.ProList();
+	}
+
+	//회원 상품 디테일 출력
+	@Override
+	public ProductDTO ProDetail(int prod_no) {
+		return productMapper.ProDetail(prod_no);
+	}
 }

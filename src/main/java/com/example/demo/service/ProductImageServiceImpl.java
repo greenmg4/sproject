@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.ProductImageDTO;
+import com.example.demo.model.ProductImageDTO;
 
 import lombok.RequiredArgsConstructor;
 import mapperInterface.ProductImageMapper;

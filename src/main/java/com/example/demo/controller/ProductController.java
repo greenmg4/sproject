@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.domain.ProductDTO;
-import com.example.demo.domain.ProductImageDTO;
+import com.example.demo.model.ProductDTO;
+import com.example.demo.model.ProductImageDTO;
 import com.example.demo.service.ProductImageService;
 import com.example.demo.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +33,21 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductImageService productImageService;
+    
+    //회원 상품 리스트 출력
+    @GetMapping("/proList")
+    public List<ProductDTO> proList(){
+    	return productService.ProList();
+    	
+    }
+    
+    //회원 상품 디테일 출력
+    @GetMapping("/proDetail")
+    public ProductDTO ProDetail(int prod_no) {
+        return productService.ProDetail(prod_no);
+    }
+    
+    
 
     @GetMapping("/page")
     public List<ProductDTO> getAllProducts() {

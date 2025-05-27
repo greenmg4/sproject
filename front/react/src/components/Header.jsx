@@ -2,8 +2,8 @@ import '../styles/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiCall } from '../service/apiService';
 
-//function Header({ userName, token, isLoggedIn, onLogout }) {
-function Header() {
+function Header({ cust_nm, token, isLoggedIn, onLogout }) {
+
     // ** 우측메뉴 처리에 대해 수정사항
     // => 현재는 Link 로 넘기고 각 Page 에서 fetchData 를 처리하지만,
     //    화면 흐름상 메뉴 클릭시 fetchData 결과에 따라 화면이동 하는것이 좋을듯
@@ -56,16 +56,18 @@ function Header() {
 
     return (
         <div className="headerTop">
-            <h2 style={{ color:'#444444'}}>  도서 판매 </h2>
+            <h2 style={{ color:'#444444'}}> 도서관 </h2>
             <div className="headerLeft">
                 <span onClick={serverTest} className="textlink">Server</span>&nbsp;&nbsp;
-                <Link to="/">Home</Link>&nbsp;&nbsp;
+
+            <Link to="/">Home</Link>&nbsp;&nbsp;
                 <span onClick={() => { serverDataRequest("/test/memberlist") }} 
                                   className="textlink">DbTestList</span>&nbsp;&nbsp;
                 <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
                 <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
                 <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
             </div>
+                <li><Link to="/login">로그인</Link></li>
         </div> //headerTop
     ); //return
 } //Header

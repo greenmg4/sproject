@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.ChatMessageDTO;
-import com.example.demo.domain.CustomDTO;
+import com.example.demo.model.ChatMessageDTO;
+import com.example.demo.model.CustDTO;
 import com.example.demo.service.ChatService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,8 +49,8 @@ public class ChatController {
     }
     
     @GetMapping("/userinfo")
-    public ResponseEntity<CustomDTO> getUserInfo(@RequestParam String custId) {
-        CustomDTO user = chatService.getUserInfo(custId);
+    public ResponseEntity<CustDTO> getUserInfo(@RequestParam String custId) {
+        CustDTO user = chatService.getUserInfo(custId);
         return ResponseEntity.ok(user);
     }
 }

@@ -54,6 +54,8 @@ public class TestController {
 					.status(HttpStatus.BAD_GATEWAY) 
 					.body("memberlist NotFound");
 		}
+    	
+    	// 소스코딩중...
  	} //memberlist
  	
 }

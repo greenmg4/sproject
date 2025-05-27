@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.domain.ProductImageDTO;
+import com.example.demo.model.ProductImageDTO;
 
 public interface ProductImageService {
 	List<ProductImageDTO> getAllProductImgs();

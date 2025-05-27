@@ -4,7 +4,7 @@
 
 <mapper namespace="mapperInterface.ProductImageMapper">
 
-  <select id="getAllProductImgs" resultType="com.example.demo.domain.ProductImageDTO">
+  <select id="getAllProductImgs" resultType="com.example.demo.model.ProductImageDTO">
     SELECT 
       seq,
       prod_no AS prodno,
@@ -21,7 +21,7 @@
     (#{prodno}, #{imgpath}, #{imgclass})
   </insert>
   
-  <select id="getImageByProdNo" resultType="com.example.demo.domain.ProductImageDTO">
+  <select id="getImageByProdNo" resultType="com.example.demo.model.ProductImageDTO">
 	  SELECT 
 	    seq,
 	    prod_no AS prodno,

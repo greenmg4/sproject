@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.domain.ChatMessageDTO;
-import com.example.demo.domain.CustomDTO;
+import com.example.demo.model.ChatMessageDTO;
+import com.example.demo.model.CustDTO;
 
 import lombok.RequiredArgsConstructor;
 import mapperInterface.ChatMessageMapper;
@@ -36,7 +36,7 @@ public class ChatServiceImpl implements ChatService {
     }
     
     @Override
-    public CustomDTO getUserInfo(String custId) {
+    public CustDTO getUserInfo(String custId) {
         return chatMessageMapper.getUserInfo(custId);
     }
     
