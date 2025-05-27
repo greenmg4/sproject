@@ -1,0 +1,55 @@
+.chat-room-list {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+.chat-room-list h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.chat-room-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-room-list li {
+  margin-bottom: 1rem;
+}
+
+.chat-room-list a {
+  display: block;
+  padding: 1rem;
+  text-decoration: none;
+  color: #333;
+  background-color: #e8f4fc;
+  border-radius: 8px;
+  border: 1px solid #c8e6f9;
+  transition: background-color 0.2s ease;
+}
+
+.chat-room-list a:hover {
+  background-color: #d0ecff;
+  color: #000;
+  font-weight: 500;
+}
+
+.chat-room-list .notification-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+/* 상대 위치 지정 */
+.chat-room-list .chat-room {
+  position: relative;
+}

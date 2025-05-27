@@ -41,34 +41,32 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
         }); //apiCall
     } //serverDataRequest
 
+    //채팅상담 이동 함수
+    const goToChat = () => {
+        navigate("/chat/rooms");
+    };
+
+    const goToProductPage = () => {
+        navigate("product")
+    }
+
+    const goToPL = () => {
+        navigate("productupload")
+    }
+
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}> 도서관 </h2>
             <div className="headerLeft">
                 <span onClick={serverTest} className="textlink">Server</span>&nbsp;&nbsp;
-                <a href='http://localhost:8080/' >SHome</a>&nbsp;&nbsp;
-                {/*<a href='http://3.36.144.10:8080/home' >SHome</a>&nbsp;&nbsp;*/}
-                        {/* JSP 실행가능한 war 배포주소 */}
-                <Link to="/">FHome</Link>
-            </div>
-            <div className="serviceTab">
-                <ul className="serviceTabList">{ isLoggedIn ? 
-                    ( <>
-                        <li>{cust_nm}님</li>
-                        <li><Link to="/" onClick={onLogout}>로그아웃</Link></li>
-                        {/* <li><Link to="/myinfo/">마이페이지</Link></li> */}
-                        <li><span onClick={() => { serverDataRequest("/auth/userdetail") }} 
-                                  className="textlink">마이페이지</span></li>
-                        <li><span onClick={() => { serverDataRequest("/auth/memberlist") }} 
-                                  className="textlink">MList</span></li>
-                        <li><span onClick={() => { serverDataRequest("/user/boardlist") }} 
-                                  className="textlink">BList</span></li>
-                        </> ) : 
-                    ( <>
-                        <li><Link to="/login">로그인</Link></li>
-                        <li><Link to="/join">회원가입</Link></li>
-                        </> ) }
-                </ul>
+
+            <Link to="/">Home</Link>&nbsp;&nbsp;
+                <span onClick={() => { serverDataRequest("/test/memberlist") }} 
+                                  className="textlink">DbTestList</span>&nbsp;&nbsp;
+                <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
+                <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
+                <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
+                <li><Link to="/login">로그인</Link></li>
             </div>
         </div> //headerTop
     ); //return
