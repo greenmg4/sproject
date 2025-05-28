@@ -72,7 +72,7 @@ export default function ProductDetail() {
                     fontSize: '16px'
                 }}
             >
-                🛒 장바구니로 이동
+                🛒 장바구니 담기
             </button>
         </div>
     );
