@@ -30,7 +30,7 @@ public class CartController {
 	// 장바구니 저장
 	@PostMapping("/addCart")
 	public ResponseEntity<String> addCart(@RequestBody CartDTO cart, HttpSession session) {
-	    String cust_id = (String) session.getAttribute("cust_id");
+	    String cust_id = (String) session.getAttribute("loginID");
 	    if (cust_id == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
 	    }
