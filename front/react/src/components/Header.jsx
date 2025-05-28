@@ -74,7 +74,10 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const callstatistics = (url) => {
         navigate(url);
     }
-    
+
+    const goToLogin = () => {navigate("/Login")};
+
+
     return (
         <div className="headerTop">
             <h2 style={{ color:'#444444'}}> 도서관 </h2>
@@ -93,7 +96,17 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 </>
                 )}
             </div>
-                <li><Link to="/login">로그인</Link></li>
+             <div className="headerRight">
+                {/* 로그인/로그아웃 조건부 표시 */}
+                {isLoggedIn ? (
+                    <>
+                      <span style={{ color: 'green' }}><strong>{cust_nm}</strong> 님 환영합니다!</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <span onClick={onLogout} className="textlink">로그아웃</span>
+                    </>
+                ) : (
+                    <span onClick={goToLogin} className="textlink">로그인</span>
+                )}
+                </div>  {/* headerRight */}       
         </div> //headerTop
     ); //return
 } //Header
