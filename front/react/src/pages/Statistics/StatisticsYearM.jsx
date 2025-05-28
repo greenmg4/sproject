@@ -34,10 +34,11 @@ const StatisticsYearM = () => {
     const [selectedYm, setSelectedYm] = useState(formattedDate);
 
     const [monthResult, setMonthResult] = useState({
+        sumMonthAmount: 0,
         avgTotAmount: 0,
-        maxMonth: "1",
-        maxMohthAmount: 0,
-        minMonth: "1",
+        maxMonth: "0",
+        maxMonthAmount: 0,
+        minMonth: "0",
         minMonthAmount: 0,
     });
 
@@ -75,6 +76,16 @@ const StatisticsYearM = () => {
             if( response.length === 0) {
                 const resultArray = Array(30).fill(0);  // 매출 정보가 없다면 기본적으로 30 개 배열 생성 후, 0 초기화
                 setDataValuesYm(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+                // 월별 결과데이터 설정.
+                setMonthResult({
+                    sumMonthAmount: 0,
+                    avgTotAmount: 0,
+                    maxMonth: "0",
+                    maxMonthAmount: 0, 
+                    minMonth: 0,
+                    minMonthAmount: "0",
+                });
             } else {
                 // 최대 month 값 찾기
                 const maxDay = Math.max(...response.map(item => Number(item.dd)));
@@ -88,11 +99,12 @@ const StatisticsYearM = () => {
 
                 // 월별 결과데이터 설정.
                 setMonthResult({
-                    avgTotAmount: response[0].avg_tot_amount,
+                    sumMonthAmount: response[0].sum_month_amount.toLocaleString(),
+                    avgTotAmount: response[0].avg_tot_amount.toLocaleString(),
                     maxMonth: response[0].max_dd,
-                    maxMonthAmount: response[0].max_month_amount, 
+                    maxMonthAmount: response[0].max_month_amount.toLocaleString(), 
                     minMonth: response[0].min_dd,
-                    minMonthAmount: response[0].min_month_amount,
+                    minMonthAmount: response[0].min_month_amount.toLocaleString(),
                 });
             }
 
@@ -147,27 +159,42 @@ const StatisticsYearM = () => {
                     <Bar data={dataYm} options={optionsYm} />
                 </div>
 
-                <div className="-chstatisticsild-initial">
+                <div className="statistics-table-container">
                 <table className="statistics-table">
                     <tr>
+                        <th style={{ width: '30%'}}></th>
+                        <th style={{ width: '45%'}}></th>
+                        <th style={{ width: '15%'}}></th>
+                    </tr>
+                    <tr>
+                        <th>월 총매출액</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.sumMonthAmount}`}</td>
+                        <td>원</td>
+                    </tr>
+                    <tr>
                         <th>월평균 매출</th>
-                        <td>{`${monthResult.avgTotAmount}`} 원</td>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.avgTotAmount}`}</td>
+                        <td>원</td>
                     </tr>
                     <tr>
-                        <th>최대 매출일</th>
-                        <td>{`${monthResult.maxMonth}`}일</td>
+                        <th style={{ color: 'rgb(172, 59, 59)' }}>최대 매출일</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.maxMonth}`}</td>
+                        <td>일</td>
                     </tr>
                     <tr>
-                        <th>최대 매출액</th>
-                        <td>{`${monthResult.maxMonthAmount}`} 원</td>   
+                        <th style={{ color: 'rgb(172, 59, 59)' }}>최대 월매출</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.maxMonthAmount}`}</td>   
+                        <td>원</td>
                     </tr>
                     <tr>
-                        <th>최소 매출일</th>
-                        <td>{`${monthResult.minMonth}`}일</td>
+                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 매출일</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.minMonth}`}</td>
+                        <td>일</td>
                     </tr>
                     <tr>
-                        <th>최소 매출액</th>
-                        <td>{`${monthResult.minMonthAmount}`} 원</td>
+                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 월매출</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.minMonthAmount}`}</td>
+                        <td>원</td>
                     </tr>
                     
                 </table>
