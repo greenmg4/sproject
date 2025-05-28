@@ -15,21 +15,28 @@
     border: none; /* 기본 테두리 제거 */
 }
 
-.statistics-container {
+.statistics-hr-vertical {
+    width: 2px;
+    height: 96%;
+    background-color: rgb(167, 180, 65); /* 색상 설정 */
+    border: none; /* 기본 테두리 제거 */
 
+}
+
+.statistics-container {
     display: flex;
     justify-content: center; /* 수평 중앙 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
-    border: 1px solid; 
-    gap: 50px; /* 요소 간 간격 */
+    
+    gap: 40px; /* 요소 간 간격 */
 }
 
 .statistics-float-box {
     
     float: left; /* 왼쪽 정렬 */
     width: 45%;
-    height: 600px; /* 높이 설정 */   
-    border: 1px solid; 
+    height: 700px; /* 높이 설정 */   
+    
 }
 
 .statistics-float-clear {
@@ -56,7 +63,20 @@
     background-color: #f9f9f9; /* 배경색 */
 }
 
-
-.statistics-child-initial {
-
+.statistics-table-container {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    width: 100%; /* 전체 너비 사용 */
+    height: 100%; /* 전체 높이 사용 */    
 }
+.statistics-table {
+
+    margin-top: 10px;
+    width: 50%;
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    background-color: #ecf3e3;
+    border-radius: 10px;
+    font-size: 15px; /* 폰트 크기 설정 */
+}
+
