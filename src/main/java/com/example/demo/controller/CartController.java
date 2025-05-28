@@ -30,7 +30,7 @@ public class CartController {
 	// 장바구니 저장
 	@PostMapping("/addCart")
 	public ResponseEntity<String> addCart(@RequestBody CartDTO cart, HttpSession session) {
-	    String cust_id = (String) session.getAttribute("loginID");
+	    String cust_id = (String) session.getAttribute("cust_id");
 	    if (cust_id == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
 	    }
@@ -50,8 +50,8 @@ public class CartController {
 	@PostMapping("/CartDetail")
 	public ResponseEntity<List<CartDTO>> CartDetail(@RequestBody Map<String, String> request) {
 	    String cust_id = request.get("cust_id");
-	    List<CartDTO> cartItems = cservice.CartDetail(cust_id);
-	    return ResponseEntity.ok(cartItems);
+	    List<CartDTO> CartDetail = cservice.CartDetail(cust_id);
+	    return ResponseEntity.ok(CartDetail);
 	}
 	
 	

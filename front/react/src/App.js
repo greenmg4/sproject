@@ -41,6 +41,7 @@ useEffect(() => {
         setIsLoggedIn(true);
         setLoginInfo(response);
         navigate("/");
+        window.location.reload();
     }).catch((err) => {
   setIsLoggedIn(false);
   setLoginInfo('');

@@ -8,4 +8,5 @@ public interface CustService {
 
 	String search_name(String cust_id);
 	
+	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기
 }

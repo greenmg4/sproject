@@ -46,13 +46,21 @@ const StatisticsYear = () => {
     const currentYear = new Date().getFullYear(); // 현재 연도
     const [selectedYear, setSelectedYear] = useState(currentYear); // 기본값 설정
 
+    const [yearResult, setYearResult] = useState({
+        avgTotAmount: 0,
+        maxMonth: "1",
+        maxMohthAmount: 0,
+        minMonth: "1",
+        minMonthAmount: 0,
+    });
+
     // YYYYMM
-    const today = new Date();
-    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-    const [selectedYm, setSelectedYm] = useState(formattedDate);
+    //const today = new Date();
+    //const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    //const [selectedYm, setSelectedYm] = useState(formattedDate);
 
     // YYYYMMDD
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    //const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
         const today = new Date(); // 현재 날짜 가져오기
@@ -63,8 +71,8 @@ const StatisticsYear = () => {
         setYear(y);
         setMonth(m);
         setDay(d);
-        setSelectedYm(`${y}-${m}`); // YYYY-MM 형식 설정
-        setSelectedDate(`${y}-${m}-${d}`); // YYYY-MM-DD 형식 설정
+        //setSelectedYm(`${y}-${m}`); // YYYY-MM 형식 설정
+        //setSelectedDate(`${y}-${m}-${d}`); // YYYY-MM-DD 형식 설정
 
         handleYearChange("/statistics/yearsaleslist");
     }, []);
@@ -82,11 +90,36 @@ const StatisticsYear = () => {
         apiCall(url, 'POST', requestData, null)
         .then((response) => {
             //alert(`** serverDataRequest 성공 url=${url}`);
-            sessionStorage.setItem("serverYearData", JSON.stringify(response));
-            const dataArray = response; // 응답 데이터를 배열로 저장
-            
-            setDataValuesY(dataArray.map(item => item.tot_amt)); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
-            
+            //sessionStorage.setItem("serverYearData", JSON.stringify(response));
+            //const dataArray = response; // 응답 데이터를 배열로 저장
+            //setDataValuesY(dataArray.map(item => item.tot_amt)); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+            if( response.length === 0) {
+                const resultArray = Array(12).fill(0);  // 매출 정보가 없다면 기본적으로 12 개 배열 생성 후, 0 초기화
+                setDataValuesY(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+            } else {
+                // 최대 month 값 찾기
+                const maxMonth = Math.max(...response.map(item => Number(item.mm)));
+                // maxMonth 개 배열 생성 후 초기값 0 설정
+                const resultArray = Array(maxMonth).fill(0);
+    
+                response.forEach(item => {
+                    resultArray[item.mm - 1] = item.tot_amt;
+                });
+                setDataValuesY(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+                // 결과데이터 설정.
+                setYearResult({
+                    avgTotAmount: response[0].avg_tot_amount,
+                    maxMonth: response[0].max_month,
+                    maxMonthAmount: response[0].max_month_amount, 
+                    minMonth: response[0].min_month,
+                    minMonthAmount: response[0].min_month_amount,
+                });
+
+                //alert(`yearResult 설정 완료, avgTotAmount=${response[0].avg_tot_amount}, maxMonth=${response[0].max_month}, maxMonthAmount=${response[0].max_month_amount}, minMonth=${response[0].min_month}, minMonthAmount=${response[0].min_month_amount}`);
+            }
+
         }).catch((err) => {
             if (err===502) { alert(`** 처리도중 오류 발생, err=${err}`);
             }else if (err===403) {
@@ -149,6 +182,32 @@ const StatisticsYear = () => {
             
             <div>
                 <Bar data={dataY} options={optionsY} />
+            </div>
+            <div className="-chstatisticsild-initial">
+                <table className="statistics-table">
+                    <tr>
+                        <th>년평균 매출</th>
+                        <td>{`${yearResult.avgTotAmount}`} 원</td>
+                    </tr>
+                    <tr>
+                        <th>최대 매출월</th>
+                        <td>{`${yearResult.maxMonth}`}월</td>
+                    </tr>
+                    <tr>
+                        <th>최대 매출액</th>
+                        <td>{`${yearResult.maxMonthAmount}`} 원</td>   
+                    </tr>
+                    <tr>
+                        <th>최소 매출월</th>
+                        <td>{`${yearResult.minMonth}`}월</td>
+                    </tr>
+                    <tr>
+                        <th>최소 매출액</th>
+                        <td>{`${yearResult.minMonthAmount}`} 원</td>
+                    </tr>
+                    
+                </table>
+                
             </div>
             
         </div>

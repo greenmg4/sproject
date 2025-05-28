@@ -1,8 +1,25 @@
 import '../styles/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiCall } from '../service/apiService';
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
 
 function Header({ cust_nm, token, isLoggedIn, onLogout }) {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    //페이지 실행 시 즉시 실행되는 함수
+    useEffect(() => {
+    axios.get("http://localhost:8080/cust/admincheck", {
+      withCredentials: true,
+    })
+    .then(() => {
+      // 등급이 'A' → 관리자
+      setIsAdmin(true);
+    })
+    .catch((err) => {
+      setIsAdmin(false);
+    });
+  }, []);
 
     // ** 우측메뉴 처리에 대해 수정사항
     // => 현재는 Link 로 넘기고 각 Page 에서 fetchData 를 처리하지만,
@@ -70,10 +87,14 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             <Link to="/">Home</Link>&nbsp;&nbsp;
                 <span onClick={() => { serverDataRequest("/test/memberlist") }} 
                                   className="textlink">DbTestList</span>&nbsp;&nbsp;
-                <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
-                <span onClick={goToProductPage} className="textlink">상품목록</span>&nbsp;&nbsp;
-                <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
-                <span onClick={() => { callstatistics("/statistics/data") }}  className="textlink">통계</span>&nbsp;&nbsp;
+                {isAdmin && (
+                <>
+                    <span onClick={goToChat} className="textlink">채팅상담</span>&nbsp;&nbsp;
+                    <span onClick={goToProductPage} className="textlink">상품목록(관리자전용)</span>&nbsp;&nbsp;
+                    <span onClick={goToPL} className="textlink">상품업로드</span>&nbsp;&nbsp;
+                    <span onClick={() => { callstatistics("/statistics/data") }}  className="textlink">통계</span>&nbsp;&nbsp;
+                </>
+                )}
             </div>
              <div className="headerRight">
                 {/* 로그인/로그아웃 조건부 표시 */}

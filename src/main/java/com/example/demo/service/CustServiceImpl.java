@@ -24,5 +24,10 @@ public class CustServiceImpl implements CustService {
 	public String search_name(String cust_id) {
 		return CustMapper.search_name(cust_id);
 	}
+	
+	@Override
+	public String selectGradeByCustId(String cust_id) {
+		return CustMapper.selectGradeByCustId(cust_id);
+	}
 
 }
