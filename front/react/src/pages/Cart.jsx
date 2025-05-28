@@ -25,6 +25,49 @@ export default function Cart() {
   // 총 가격 계산
   const totalPrice = cartDetail.reduce((sum, item) => sum + item.prod_price * item.cnt, 0);
 
+  const onClickPayment = () => {
+    const { IMP } = window;
+    IMP.init("imp06723305"); // 아임포트 관리자 콘솔에서 발급한 코드
+
+    IMP.request_pay(
+      {
+        pg: "kakaopay.TC0ONETIME", // PG사 설정
+        pay_method: "card",
+        merchant_uid: `mid_${new Date().getTime()}`, // 고유 주문번호
+        name: cartDetail.length === 1
+          ? cartDetail[0].prod_nm
+          : `장바구니 상품 ${cartDetail.length}건`, // 상품명 간단하게 표시
+        amount: totalPrice,
+        buyer_email: "testuser01@example.com", // 실제 사용자 정보로 변경 필요
+        buyer_name: "홍길동",
+        buyer_tel: "010-1234-5678",
+        buyer_addr: "서울특별시 강남구 테헤란로 123 301호",
+        buyer_postcode: "06134",
+      },
+      function (rsp) {
+        if (rsp.success) {
+          // 결제 성공 시 백엔드로 검증 요청
+          fetch("/api/payment/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imp_uid: rsp.imp_uid }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "paid") {
+                alert("결제 성공!");
+                // 결제 성공 후 장바구니 비우기, 페이지 이동 등 추가 처리
+              } else {
+                alert("결제 검증 실패");
+              }
+            });
+        } else {
+          alert("결제 실패: " + rsp.error_msg);
+        }
+      }
+    );
+  };
+
   return (
     <div className="contents">
       <p className="pageTitle">🛒 장바구니 페이지</p>
@@ -71,7 +114,7 @@ export default function Cart() {
         }}>
         <div>총 가격: {totalPrice.toLocaleString()}원</div>
           <button
-            onClick={() => alert('결제하기 클릭!')}
+            onClick={onClickPayment}
             style={{
             padding: '10px 20px',
             backgroundColor: '#007bff',
