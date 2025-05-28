@@ -6,7 +6,7 @@ import { apiCall } from './service/apiService';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Main from './components/Main';
-
+import { useEffect } from 'react';
 
 function App() {
   const navigate = useNavigate();
@@ -15,16 +15,15 @@ function App() {
   const [loginInfo, setLoginInfo] = useState(""); // 회원 로그인 정보
   // 1. 로그인 확인
   // => 브라우져의 sessionStorage에서 로그인정보 확인
-  if ( !isLoggedIn ) {
-    const loginCheck =JSON.parse(sessionStorage.getItem("loginInfo"));
-    
-    if (loginCheck !== null) {  // token 적용이전 확인
-    //if (loginCheck !== null && loginCheck.token !== null) {  //-> token 적용이후 확인
-      alert(`** sessionStorage 로그인 확인 cust_nm=${loginCheck.cust_nm}`);
-      setIsLoggedIn(true);
-      setLoginInfo(loginCheck);
-    } 
-  } 
+
+useEffect(() => {
+  const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
+  if (loginCheck !== null) {
+    setIsLoggedIn(true);
+    setLoginInfo(loginCheck);
+  }
+}, []);
+
   // 2. 로그인 함수
   const onLoginSubmit = (cust_Id, Password) => {
 
@@ -43,12 +42,19 @@ function App() {
         setLoginInfo(response);
         navigate("/");
     }).catch((err) => {
-        setIsLoggedIn(false);
-        setLoginInfo('');
-        if (err===502) { alert("id 또는 password 가 다릅니다, 다시하세요 ~~");
-        }else { alert(`** onLoginSubmit 시스템 오류, err=${err}`); }
-        navigate("/login");
-    }); //apiCall
+  setIsLoggedIn(false);
+  setLoginInfo('');
+  console.log("에러 전체:", err);
+        if (err?.status === 502) {
+    alert("id 또는 password 가 다릅니다, 다시하세요 ~~");
+  } else if (err?.response?.status === 403) {
+    alert(`** Server Reject : 접근권한이 없습니다. => ${err.message}`);
+  } else {
+    alert(`** onLoginSubmit 시스템 오류, err=${err.message || err}`);
+  }
+  navigate("/login");
+});
+ //apiCall
 
   }; //onLoginSubmit
 
@@ -82,7 +88,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header userName={loginInfo.username} token={loginInfo.token} isLoggedIn={isLoggedIn} onLogout={onLogout} />
+      <Header cust_nm={loginInfo.cust_nm} token={loginInfo.token} isLoggedIn={isLoggedIn} onLogout={onLogout} />
       <Main token={loginInfo.token}
             onLoginSubmit={onLoginSubmit}
             
