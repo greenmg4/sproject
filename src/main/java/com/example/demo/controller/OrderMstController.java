@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.OrderDetailDTO;
 import com.example.demo.model.OrderMstDTO;
 import com.example.demo.model.OrderRequestDTO;
+import com.example.demo.service.CartService;
 import com.example.demo.service.OrderMstService;
 
 @RestController
@@ -24,6 +25,8 @@ public class OrderMstController {
 
     @Autowired
     private OrderMstService orderService;
+    @Autowired
+    private CartService cservice;
 
     @PostMapping("/save")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequestDTO orderRequest) {
@@ -62,6 +65,8 @@ public class OrderMstController {
                 .toList();
 
             orderService.saveOrder(orderMst, details);
+            // 결제 성공 시 장바구니 비우기
+            cservice.ClearCart(orderRequest.getCust_id());
 
             return ResponseEntity.ok(Map.of("success", true));
         } catch (Exception e) {

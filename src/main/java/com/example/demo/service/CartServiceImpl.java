@@ -23,6 +23,11 @@ public class CartServiceImpl implements CartService {
 	public List<CartDTO> CartDetail(String cust_id) {
 		return CartMapper.CartDetail(cust_id);
 	}
+
+	@Override
+	public void ClearCart(String cust_id) {
+		CartMapper.ClearCart(cust_id);
+	}
 	
 	
 
