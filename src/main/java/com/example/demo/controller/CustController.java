@@ -52,6 +52,13 @@ public class CustController {
         }
     }
     
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+    
+    
     //어드민 체크
     @GetMapping("/admincheck")
     public ResponseEntity<?> admincheck(HttpSession session, CustDTO dto){

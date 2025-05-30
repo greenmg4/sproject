@@ -19,12 +19,17 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!isLoggedIn) return;
         axios.get("http://localhost:8080/cust/admincheck", {
-        withCredentials: true,
+            withCredentials: true
         })
         .then(() => setIsAdmin(true))
-        .catch(() => setIsAdmin(false));
-    }, []);
+        .catch((err) => {
+            if (err.response?.status === 403) {
+            setIsAdmin(false);
+            }
+        });
+    }, [isLoggedIn]);
 
     const serverTest = () => {
         let url = '/test/check-server';
@@ -168,9 +173,9 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 
             {/*------------- 조회 영역 ---------------*/}
             {/* <div className="headerTop"> */}
-            <div>
-
+            <div>          
                 <table style={{ width: '100%'}}>
+                    <tbody>
                     <tr>
                         <td style={{ width: '20%'}}>
                             {/* 로고 영역 */}
@@ -225,7 +230,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                             </div>
                         </td>
                     </tr>
-                </table>
+                    </tbody>
+                </table>              
             </div>
 
 
