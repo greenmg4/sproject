@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.ChatMessageDTO;
-import com.example.demo.model.CustDTO;
 
 import lombok.RequiredArgsConstructor;
 import mapperInterface.ChatMessageMapper;
@@ -15,33 +15,46 @@ import mapperInterface.ChatMessageMapper;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-    private final ChatMessageMapper chatMessageMapper;
+    private final ChatMessageMapper mapper;
 
-    @Override
-    public int selectMaxSeq(int qna_no) {
-        return chatMessageMapper.selectMaxSeq(qna_no);
+    @Override public int selectMaxSeq(int qna_no){return mapper.selectMaxSeq(qna_no);}
+
+    @Override @Transactional
+    public void insertMessage(ChatMessageDTO dto){
+        int seq = mapper.selectMaxSeq(dto.getQna_no()) + 1;
+        dto.setSeq(seq);
+        mapper.insertMessage(dto);
     }
 
-    @Override
-    @Transactional
-    public void insertMessage(ChatMessageDTO content) {
-        int maxSeq = chatMessageMapper.selectMaxSeq(content.getQna_no());
-        content.setSeq(maxSeq + 1);
-        chatMessageMapper.insertMessage(content);
+    @Override public List<ChatMessageDTO> getMessagesByRoomId(int qna_no){
+        return mapper.getMessagesByRoomId(qna_no);
     }
 
-    @Override
-    public List<ChatMessageDTO> getMessagesByRoomId(int qna_no) {
-        return chatMessageMapper.getMessagesByRoomId(qna_no);
+    @Override public List<ChatMessageDTO> getRoomSummaries(int excludeType){
+        return mapper.getRoomSummaries(excludeType);
     }
 
-    @Override
-    public List<ChatMessageDTO> getRoomSummaries() {
-        return chatMessageMapper.getRoomSummaries();
+    @Override public int generateNewQnaNo(){return mapper.selectNextQnaNo();}
+
+    @Override @Transactional
+    public int createRoomForUser(String userCustId){
+        int qnaNo = generateNewQnaNo();
+        /* 첫 시스템 메시지 */
+        ChatMessageDTO dto = new ChatMessageDTO();
+        dto.setQna_no(qnaNo);
+        dto.setSeq(1);
+        dto.setQna_class(0);
+        dto.setQna_type(0);
+        dto.setCust_id("test");
+        dto.setGrade("A");
+        dto.setContent("어떤 것을 도와드릴까요?");
+        dto.setQna_dtm(LocalDateTime.now());
+        mapper.insertMessage(dto);
+        return qnaNo;
     }
 
-    @Override
-    public CustDTO getUserInfo(String cust_Id) {
-        return chatMessageMapper.getUserInfo(cust_Id);
+    @Override @Transactional
+    public void updateRoomType(int qna_no, int qna_type){
+        mapper.updateRoomType(qna_no, qna_type);
     }
 }
