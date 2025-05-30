@@ -151,15 +151,19 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 {/* <span className='header-menu-item' onClick={goToLogin}>로그인</span>| */}
                 <span className='header-menu-item' >회원혜택</span><span>|</span>
 
-                {isAdmin && (
-                <>
-                    <span className='header-menu-item' onClick={goToChat} >채팅상담</span><span>|</span>
-                    <span className='header-menu-item' onClick={goToProductPage} >상품목록(관리자전용)</span><span>|</span>
-                    <span className='header-menu-item' onClick={goToPL}> 상품업로드</span><span>|</span>
-                    <span className='header-menu-item' onClick={() => { callstatistics("/statistics/data") }}>통계</span>
-                    
-                </>
-                )}
+        {isAdmin ? (
+          <>
+            <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span>&nbsp;&nbsp;
+            <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span>&nbsp;&nbsp;
+            <span onClick={goToPL} className="header-menu-item">상품업로드</span>&nbsp;&nbsp;
+            <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span>&nbsp;&nbsp;
+          </>
+        ) : (
+          <>
+            <span onClick={goToChatUser} className="header-menu-item">채팅상담</span>&nbsp;&nbsp;
+          </>
+        )}
+
 
             </div>
 
