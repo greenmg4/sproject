@@ -27,7 +27,7 @@ function MainDefault() {
             <hr></hr>
             {/* <h3>~~ Main 영역 ~~</h3> */}
             <div id="contents">
-                <img alt="MainImage" src="images/library01.png" width={800} height={400} /> 
+                <img alt="MainImage" src="images/homeImages/library01.png" width={800} height={400} /> 
                 <span onClick={() => { serverDataRequest("/product/proList") }} 
                                   className="textlink">상품 리스트</span>
             </div>

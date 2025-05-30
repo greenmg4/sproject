@@ -1,19 +1,25 @@
 import { addCart } from '../service/apiService'; // 추가
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { getStorageData } from '../service/apiService';
 
 export default function ProductDetail() {
-    const { prod_no } = useParams();
+    const location = useLocation();
+    const jsonData = location.state;
+
+    //console.log(jsonData); // { category: "A", prod_nm: "", author_nm: "" }
+    alert(`ProductDetail 가 전달받은 상품 조회 조건 정보: ${JSON.stringify(jsonData)}`);
+
+    //const { prod_no } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
 
-    useEffect(() => {
-        const allProducts = getStorageData();
-        const foundProduct = allProducts.find(p => String(p.prod_no) === prod_no);
-        setProduct(foundProduct);
-    }, [prod_no]);
+    // useEffect(() => {
+    //     const allProducts = getStorageData();
+    //     const foundProduct = allProducts.find(p => String(p.prod_no) === prod_no);
+    //     setProduct(foundProduct);
+    // }, [prod_no]);
 
     const handleAddCart = async () => {
     const cust_id = sessionStorage.getItem("loginID");
