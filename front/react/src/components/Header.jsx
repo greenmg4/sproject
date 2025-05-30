@@ -7,12 +7,13 @@ import axios from "axios";
 import { Icon } from "@mdi/react";
 import { mdiHome
        , mdiMagnify
-       , mdiAccountOutline
+       , mdiAccountOutline	   
        , mdiBookMultiple, mdiBookOpenBlankVariantOutline, mdiDrawPen, mdiBabyFaceOutline
        , mdiNoodles, mdiHumanHandsup, mdiDramaMasks, mdiCrossOutline, mdiFilterOutline
        , mdiHubspot, mdiDesktopClassic  } from "@mdi/js";
 import { Tooltip } from "react-tooltip";
 // import { useSelector, useDispatch } from 'react-redux';
+
 
 function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -233,6 +234,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                     </tbody>
                 </table>              
             </div>
+			
 
 
             {/*------------- 카테고리 메뉴 ---------------*/}

@@ -16,7 +16,7 @@ function App() {
   const [loginInfo, setLoginInfo] = useState(""); // 회원 로그인 정보
   // 1. 로그인 확인
   // => 브라우져의 sessionStorage에서 로그인정보 확인
-
+ 
 useEffect(() => {
   const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
   if (loginCheck !== null) {
