@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiCall } from './service/apiService';
+import axios from "axios";
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,7 +16,7 @@ function App() {
   const [loginInfo, setLoginInfo] = useState(""); // 회원 로그인 정보
   // 1. 로그인 확인
   // => 브라우져의 sessionStorage에서 로그인정보 확인
-
+ 
 useEffect(() => {
   const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
   if (loginCheck !== null) {
@@ -61,31 +62,17 @@ useEffect(() => {
 
   // 3. 로그아웃
   const onLogout = () => {
-    let url = "/auth/logout";   
-    alert(`** 로그아웃 token 확인 => ${loginInfo.token}`);
-    apiCall(url, 'GET', null, loginInfo.token)
-    .then((response) => {
-        // => 로그인아웃 성공
-        //  -> 브라우져의 sessionStorage에 로그인정보 삭제, 
-        //     로그인상태값 과 loginInfo 값 초기화  
-        //sessionStorage.removeItem("loginInfo");
-        sessionStorage.clear();
-        // => 쿠키삭제
-        //   로그인관리와 무관하기때문에 큰 의미는 없지만 Test 함 
-        //   그러나 아래코드는 String 값이 바람직하지않아 (기호 등등사용 때문인듯)  삭제안됨
-        //document.cookie = 'JSESSIONID' + '=; domain=localhost; expires=Thu, 01 Jan 1999 00:00:10 GMT; path=/'; //쿠키 만료일을 과거로 설정
-      
-        //alert('로그아웃 성공');
-        setIsLoggedIn(false);
-        setLoginInfo('');
-    }).catch((err) => {
-        if (err===502) { alert("로그 아웃 실패, 다시하세요 ~~");
-        }else if (err.response.status===403) {
-              alert(`** Server Reject : 접근권한이 없습니다. => ${err}`); 
-        }else { alert(`** onLogout 시스템 오류, err=${err}`); }
-    }); //apiCall
-    navigate("/");
-  }; //onLogout
+    axios.get("http://localhost:8080/cust/logout")
+        .then(res => {
+            alert("로그아웃 됩니다.");
+            // 로그아웃 후 리다이렉트하거나 상태 초기화도 가능
+            window.location.href = "/"; // 예: 홈으로 이동
+        })
+        .catch(err => {
+            console.error("로그아웃 오류:", err);
+            alert("로그아웃에 실패했습니다.");
+        });
+  };
 
   return (
     <div className="App">
