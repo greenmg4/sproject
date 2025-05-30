@@ -6,13 +6,12 @@ import lombok.Data;
 
 @Data
 public class ChatMessageDTO {
-	private int qna_no;
+    private int qna_no;
     private int seq;
-    private int qna_class;
-    private int qna_type;
+    private int qna_class;   // 0 시스템/기타, 1 상품, 2 배송
+    private int qna_type;    // 0 시스템, 1 진행, 2 종료
     private String cust_id;
     private String content;
     private LocalDateTime qna_dtm;
-    private String lastMessage;
-    private String grade;
+    private String grade;    // 조인용
 }

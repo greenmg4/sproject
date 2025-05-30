@@ -1,38 +1,97 @@
-.messagebox {
-  display: inline-block;
-  max-width: 80%;
-  padding: 8px 12px;
-  margin: 5px;
-  word-break: break-word;
-	max-width: 70%;
+.chat-room{
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-.messagebox.right {
-  align-self: flex-end;
-	background-color: rgb(181, 236, 244);
-	border-radius: 25px 0 25px 25px;
-	margin-left: auto;       /* ✅ 오른쪽 정렬을 margin-left로만 처리 */
-  margin-right: 0; 
+.chat-list{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  border:2px solid #ccc;
+  border-radius:20px;
+  height:500px;
+  overflow-y:auto;
+  padding:1rem;
+  margin-bottom:1rem;
+  background:#fafafa;
 }
 
-.messagebox.left {
-  align-self: flex-start;
-	 background-color: rgb(211, 243, 248);
-	 border-radius: 0 25px 25px 25px;
+.messagebox{
+  display:inline-block;
+  max-width:70%;
+  padding:8px 12px;
+  margin:4px 0;
+  word-break:break-word;
+  font-size:0.95rem;
 }
 
-.messagebox span {
-  display: inline;
+.messagebox.right{
+  align-self:flex-end;
+  background:#b5ecf4;
+  border-radius:25px 0 25px 25px;
 }
 
+.messagebox.left{
+  align-self:flex-start;
+  background:#d3f3f8;
+  border-radius:0 25px 25px 25px;
+}
 
-.chat-list {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-	border-radius: 20px;
+.messagebox.system{
+  background:#eee;
+  color:#555;
+  border-radius:10px;
+  font-style:italic;
+}
+
+.inputbox{
+  display:flex;
+  gap:0.5rem;
 }
 
 .inputbox input{
-	border-radius: 20px;
+  flex:1;
+  padding:0.6rem 0.8rem;
+  border:1px solid #ccc;
+  border-radius:20px;
+}
+
+.inputbox button{
+  padding:0 1rem;
+  border:none;
+  background:#4ea9c1;
+  color:#fff;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.inputbox button:disabled{
+  background:#888;
+  cursor:not-allowed;
+}
+
+.finish-btn{
+  background:#f05050;
+}
+
+.finish-btn:disabled{
+  background:#aaa;
+}
+
+.notification-dot{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  margin-left:6px;
+  border-radius:50%;
+  background:#ff4d4f;
+}
+
+.messagebox.system{
+  background:#eee !important;
+  color:#555 !important;
+  border-radius:10px;
+  font-style:italic;
+  align-self:center;
 }

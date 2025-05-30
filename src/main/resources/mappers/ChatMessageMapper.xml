@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapperInterface.ChatMessageMapper">
 
-	<!-- 최대 시퀀스 조회 -->
-	<select id="selectMaxSeq" resultType="int">
-	  SELECT IFNULL(MAX(seq), 0) FROM qna WHERE qna_no = #{qna_no}
-	</select>
+  <select id="selectMaxSeq" resultType="int">
+    SELECT IFNULL(MAX(seq),0) FROM qna WHERE qna_no = #{qna_no}
+  </select>
 
-	<!-- 메시지 저장 -->
-	<insert id="insertMessage">
-	  INSERT INTO qna (qna_no, seq, cust_id, content, qna_dtm, qna_class, qna_type)
-	  VALUES (#{qna_no}, #{seq}, #{cust_id}, #{content}, #{qna_dtm}, #{qna_class}, #{qna_type})
-	</insert>
+  <insert id="insertMessage">
+    INSERT INTO qna
+      (qna_no, seq, qna_class, qna_type, cust_id, content, qna_dtm)
+    VALUES
+      (#{qna_no}, #{seq}, #{qna_class}, #{qna_type}, #{cust_id}, #{content}, #{qna_dtm})
+  </insert>
 
-	<!-- 특정 방 메시지 목록 -->
-	<select id="getMessagesByRoomId" parameterType="int" resultType="com.example.demo.model.ChatMessageDTO">
-	  SELECT
-	  	q.qna_no AS qna_no,
-	  	q.seq AS seq,
-	  	q.qna_class AS qna_class,
-	  	q.qna_type AS qna_type,
-	  	q.cust_id AS cust_id,
-	  	q.content AS content,
-	  	q.qna_dtm AS qna_dtm,
-	  	c.grade AS grade
+  <select id="getMessagesByRoomId"
+          parameterType="int"
+          resultType="com.example.demo.model.ChatMessageDTO">
+    SELECT q.*, c.grade
+    FROM qna q
+    JOIN custom c ON q.cust_id = c.cust_id
+    WHERE q.qna_no = #{qna_no}
+    ORDER BY q.seq
+  </select>
+
+	<!-- 가장 최근 “고객 메시지”만 가져오기 -->
+	<select id="getRoomSummaries"
+	        resultType="com.example.demo.model.ChatMessageDTO">
+	  WITH latest_msg AS (
+	      SELECT qna_no,
+	             MAX(seq) AS seq
+	      FROM qna
+	      WHERE cust_id != 'test'     -- 시스템/관리자 제외
+	        AND qna_type = 1          -- 실제 대화 메시지
+	      GROUP BY qna_no
+	  )
+	  SELECT q.*
 	  FROM qna q
-	  JOIN custom c ON q.cust_id = c.cust_id
-	  WHERE q.qna_no = #{qna_no}
-	  ORDER BY q.qna_dtm ASC
-	</select>
-
-	<!-- 최근 메시지(요약) -->
-	<select id="getRoomSummaries" resultType="com.example.demo.model.ChatMessageDTO">
-	  SELECT 
-	    q.qna_no AS qna_no,
-	    SUBSTRING_INDEX(q.content, '\n', 1) AS lastMessage
-	  FROM qna q
-	  INNER JOIN (
-	    SELECT qna_no, MAX(qna_dtm) AS max_time
-	    FROM qna
-	    GROUP BY qna_no
-	  ) t ON q.qna_no = t.qna_no AND q.qna_dtm = t.max_time
+	  JOIN latest_msg l
+	    ON q.qna_no = l.qna_no
+	   AND q.seq    = l.seq
 	  ORDER BY q.qna_no DESC
 	</select>
 
-	<!-- 유저 정보 -->
-	<select id="getUserInfo" parameterType="string" resultType="com.example.demo.model.CustDTO">
-	    SELECT
-	      cust_id,
-	      grade 
-	    FROM custom
-	    WHERE cust_id = #{custId}
-	</select>
 
+  <select id="selectNextQnaNo" resultType="int">
+    SELECT IFNULL(MAX(qna_no),0) + 1 FROM qna
+  </select>
+
+  <update id="updateRoomType">
+    UPDATE qna SET qna_type = #{qna_type} WHERE qna_no = #{qna_no}
+  </update>
 </mapper>
