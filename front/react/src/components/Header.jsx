@@ -98,10 +98,11 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const handleSearch = () => {
         let searchData = {};
         if (searchType === "A") {
-            searchData = { category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
+            searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
         } else if (searchType === "author") {
-            searchData = { category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
+            searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
         }
+        alert   (`** 검색 요청전 url=/product/productlist, searchData=${JSON.stringify(searchData)}`);
         goProductList("/product/productlist", searchData);
     };
 
@@ -116,10 +117,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
         { id: "tooltip-religion", category: "07", category_nm: "종교", icon: mdiCrossOutline, tooltip: "종교" },
         { id: "tooltip-science", category: "08", category_nm: "과학", icon: mdiFilterOutline, tooltip: "과학" },
         { id: "tooltip-foreign", category: "09", category_nm: "외국어", icon: mdiHubspot, tooltip: "외국어" },
-        { id: "tooltip-it", category: "10", category_nm: "IT", icon: mdiDesktopClassic, tooltip: "IT" },
+        { id: "tooltip-it", category: "10", category_nm: "IT", icon: mdiDesktopClassic, tooltip: "IT"},
     ];
-
-
 
     return (
         <div>
@@ -151,18 +150,18 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 {/* <span className='header-menu-item' onClick={goToLogin}>로그인</span>| */}
                 <span className='header-menu-item' >회원혜택</span><span>|</span>
 
-        {isAdmin ? (
-          <>
-            <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span>&nbsp;&nbsp;
-            <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span>&nbsp;&nbsp;
-            <span onClick={goToPL} className="header-menu-item">상품업로드</span>&nbsp;&nbsp;
-            <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span>&nbsp;&nbsp;
-          </>
-        ) : (
-          <>
-            <span onClick={goToChatUser} className="header-menu-item">채팅상담</span>&nbsp;&nbsp;
-          </>
-        )}
+                {isAdmin ? (
+                <>
+                    <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span><span>|</span>
+                    <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span><span>|</span>
+                    <span onClick={goToPL} className="header-menu-item">상품업로드</span><span>|</span>
+                    <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span><span>|</span>
+                </>
+                ) : (
+                <>
+                    <span onClick={goToChatUser} className="header-menu-item">채팅상담</span><span>|</span>
+                </>
+                )}
 
 
             </div>
@@ -234,7 +233,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             <div className='header-category-container'>
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
-                        <span onClick={() => { goProductList("/product/productlist", { category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
+                        <span onClick={() => { goProductList("/product/productlist", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>
