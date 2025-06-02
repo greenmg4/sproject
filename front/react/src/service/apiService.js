@@ -75,10 +75,12 @@ export async function ProDetail(prod_no) {
   return await apiCall(`/product/${prod_no}`, 'GET', null, null);
 }
 
+// 장바구니 상품 추가
 export async function addCart(product) {
   return await apiCall('/cart/addCart', 'POST', product, null);
 }
 
+// 장바구니
 export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }

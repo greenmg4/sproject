@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.model.CartDTO;
 
@@ -32,5 +34,14 @@ public interface CartMapper {
 	@Delete("DELETE FROM cart WHERE cust_id = #{cust_id}")
 	void ClearCart(String cust_id);
 
+
+	@Update("UPDATE cart SET cnt = #{cnt} WHERE cust_id = #{cust_id} AND prod_no = #{prod_no}")
+	int updateCnt(@Param("cust_id") String cust_id,@Param("prod_no") String prod_no,@Param("cnt") int cnt);
+
+
+
+	int deletePro(@Param("cust_id") String cust_id, @Param("prod_no") List<Integer> prod_no);
+
+	
 
 }

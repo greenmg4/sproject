@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapperInterface.CartMapper">
+	<delete id="deletePro" parameterType="map">
+	    DELETE FROM cart WHERE cust_id = #{cust_id} AND prod_no IN
+	      <foreach collection="prod_no" item="prod_no" open="(" separator="," close=")">
+	          #{prod_no}
+	      </foreach>
+	</delete>
+	
+</mapper>
