@@ -45,7 +45,7 @@ public class CartController {
 	    }
 	}
 	
-	// 장바구니 호출
+	// 장바구니 호출 
 	@PostMapping("/CartDetail")
 	public ResponseEntity<List<CartDTO>> CartDetail(@RequestBody Map<String, String> request) {
 	    String cust_id = request.get("cust_id");
@@ -53,5 +53,33 @@ public class CartController {
 	    return ResponseEntity.ok(CartDetail);
 	}
 
+	//장바구니 상품 수량 변경 
+    @PostMapping("/updateCnt")
+    public ResponseEntity<String> updateCnt(@RequestBody CartDTO cart) {
+        try {
+            cservice.updateCnt(cart.getCust_id(), cart.getProd_no(), cart.getCnt());
+            return ResponseEntity.ok("수량이 변경되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("수량 변경에 실패했습니다.");
+        }
+    }
+
+	// 장바구니 선택 상품 삭제
+    @PostMapping("/deletePro")
+    public ResponseEntity<String> deletePro(@RequestBody Map<String, Object> request) {
+        try {
+            String cust_id = (String) request.get("cust_id");
+            @SuppressWarnings("unchecked")
+            List<Integer> prod_no = (List<Integer>) request.get("prod_no");
+            cservice.deletePro(cust_id, prod_no);
+            return ResponseEntity.ok("선택된 상품이 삭제되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("선택 상품 삭제에 실패했습니다.");
+        }
+    }
 	
 }
