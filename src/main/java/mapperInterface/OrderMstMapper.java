@@ -14,7 +14,7 @@ public interface OrderMstMapper {
 
 	@Insert("INSERT INTO order_mst (cust_id, pay_method, ord_dtm, tot_amount, prod_cnt, "
 			+ " rcv_nm, rcv_phone, address1, address2, zip, reg_dtm)"
-			+ " VALUES (#{cust_id}, #{pay_method}, #{ord_dtm}, #{tot_amount}, #{prod_cnt},"
+			+ " VALUES (#{cust_id}, #{pay_method}, NOW(), #{tot_amount}, #{prod_cnt},"
 			+ " #{rcv_nm}, #{rcv_phone}, #{address1}, #{address2}, #{zip}, NOW())")
 	@Options(useGeneratedKeys = true, keyProperty = "ord_no")
 	int insertOrderMst(OrderMstDTO orderMst);
