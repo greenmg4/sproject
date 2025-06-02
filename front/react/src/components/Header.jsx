@@ -1,6 +1,7 @@
 import '../styles/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiCall } from '../service/apiService';
+import { getUserInfo } from '../service/apiService';
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
@@ -74,8 +75,27 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const callstatistics = (url) => {
         navigate(url);
     }
-
+    //로그인
     const goToLogin = () => {navigate("/Login")};
+
+    // 내 정보 보기
+    const goToUserInfo = () => {
+    const cust_id = sessionStorage.getItem("loginID");
+    if (!cust_id) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    getUserInfo({ cust_id })
+        .then((response) => {
+            sessionStorage.setItem("userInfo", JSON.stringify(response));
+            navigate("/userinfo");
+        })
+        .catch((error) => {
+            console.error("사용자 정보 불러오기 실패:", error);
+            alert("사용자 정보를 불러오지 못했습니다.");
+        });
+};
 
 
     return (
@@ -101,6 +121,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 {isLoggedIn ? (
                     <>
                       <span style={{ color: 'green' }}><strong>{cust_nm}</strong> 님 환영합니다!</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span onClick={goToUserInfo} className="textlink">내 정보</span> &nbsp;&nbsp;
                       <span onClick={onLogout} className="textlink">로그아웃</span>
                     </>
                 ) : (
