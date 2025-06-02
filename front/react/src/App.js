@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiCall } from './service/apiService';
+import axios from "axios";
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -10,11 +11,19 @@ import Main from './components/Main';
 function App() {
   const navigate = useNavigate();
 
-  // 로그인 상태 저장 (true: 로그인 된 상태, false: 로그아웃 상태)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // 로그인 상태 저장 변수
+  const [loginInfo, setLoginInfo] = useState(""); // 회원 로그인 정보
+  // 1. 로그인 확인
+  // => 브라우져의 sessionStorage에서 로그인정보 확인
+ 
+useEffect(() => {
+  const loginCheck = JSON.parse(sessionStorage.getItem("loginInfo"));
+  if (loginCheck !== null) {
+    setIsLoggedIn(true);
+    setLoginInfo(loginCheck);
+  }
+}, []);
 
-  // 로그인한 사용자 정보 저장 (cust_id, cust_nm 등 서버에서 받은 정보)
-  const [loginInfo, setLoginInfo] = useState(null);
 
   // 컴포넌트가 마운트 될 때 (앱 실행 시 최초 1회)
   // sessionStorage에 저장된 로그인 정보를 가져와서 로그인 상태를 복원함
@@ -55,6 +64,7 @@ function App() {
         alert('로그인 성공');
         setIsLoggedIn(true);
         setLoginInfo(response);
+
         navigate("/"); // 로그인 후 메인 페이지로 이동
       })
       .catch((err) => {
@@ -114,6 +124,7 @@ function App() {
         setLoginInfo(null);
         navigate("/");
       });
+
   };
 
   return (

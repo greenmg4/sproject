@@ -12,16 +12,23 @@ const Statistics = () => {
                     매출 정보
             </div>
             <hr className="statistics-hr"></hr>
-
+            
             <div className="statistics-container" >
                 <div className="statistics-float-box">
                     <StaticsticsYear />
+                </div>
+
+                <div> 
+                    <span  >
+                       <hr className="statistics-hr-vertical"></hr>
+                    </span>
                 </div>
 
                 <div className="statistics-float-box">
                     <StaticsticsYearM />
                 </div>
             </div>
+
             <div className="statistics-float-clear"></div>
         </div>
     );

@@ -47,10 +47,11 @@ const StatisticsYear = () => {
     const [selectedYear, setSelectedYear] = useState(currentYear); // 기본값 설정
 
     const [yearResult, setYearResult] = useState({
+        sumYearAmount : 0,
         avgTotAmount: 0,
-        maxMonth: "1",
-        maxMohthAmount: 0,
-        minMonth: "1",
+        maxMonth: "0",
+        maxMonthAmount: 0,
+        minMonth: "0",
         minMonthAmount: 0,
     });
 
@@ -97,6 +98,17 @@ const StatisticsYear = () => {
             if( response.length === 0) {
                 const resultArray = Array(12).fill(0);  // 매출 정보가 없다면 기본적으로 12 개 배열 생성 후, 0 초기화
                 setDataValuesY(resultArray); // total_amt 값을 추출하여 dataValuesY 상태 업데이트
+
+                // 결과데이터 설정.
+                setYearResult({
+                    sumYearAmount: 0,
+                    avgTotAmount: 0,
+                    maxMonth: "0",
+                    maxMonthAmount: 0, 
+                    minMonth: "0",
+                    minMonthAmount: 0,
+                });
+
             } else {
                 // 최대 month 값 찾기
                 const maxMonth = Math.max(...response.map(item => Number(item.mm)));
@@ -110,11 +122,12 @@ const StatisticsYear = () => {
 
                 // 결과데이터 설정.
                 setYearResult({
-                    avgTotAmount: response[0].avg_tot_amount,
+                    sumYearAmount: response[0].sum_year_amount.toLocaleString(),
+                    avgTotAmount: response[0].avg_tot_amount.toLocaleString(),
                     maxMonth: response[0].max_month,
-                    maxMonthAmount: response[0].max_month_amount, 
+                    maxMonthAmount: response[0].max_month_amount.toLocaleString(), 
                     minMonth: response[0].min_month,
-                    minMonthAmount: response[0].min_month_amount,
+                    minMonthAmount: response[0].min_month_amount.toLocaleString(),
                 });
 
                 //alert(`yearResult 설정 완료, avgTotAmount=${response[0].avg_tot_amount}, maxMonth=${response[0].max_month}, maxMonthAmount=${response[0].max_month_amount}, minMonth=${response[0].min_month}, minMonthAmount=${response[0].min_month_amount}`);
@@ -183,27 +196,42 @@ const StatisticsYear = () => {
             <div>
                 <Bar data={dataY} options={optionsY} />
             </div>
-            <div className="-chstatisticsild-initial">
+            <div className="statistics-table-container">
                 <table className="statistics-table">
                     <tr>
+                        <th style={{ width: '30%'}}></th>
+                        <th style={{ width: '45%'}}></th>
+                        <th style={{ width: '15%'}}></th>
+                    </tr>
+                    <tr>
+                        <th>년 총매출액</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${yearResult.sumYearAmount}`}</td>
+                        <td>원</td>
+                    </tr>
+                    <tr>
                         <th>년평균 매출</th>
-                        <td>{`${yearResult.avgTotAmount}`} 원</td>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.avgTotAmount}`}</td>
+                        <td>원</td>
                     </tr>
                     <tr>
-                        <th>최대 매출월</th>
-                        <td>{`${yearResult.maxMonth}`}월</td>
+                        <th style={{ color: 'rgb(172, 59, 59)' }}>최고 매출월</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonth}`}</td>
+                        <td>월</td>
                     </tr>
                     <tr>
-                        <th>최대 매출액</th>
-                        <td>{`${yearResult.maxMonthAmount}`} 원</td>   
+                        <th style={{ color: 'rgb(172, 59, 59)' }}>최고 월매출</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonthAmount}`}</td>   
+                        <td >원</td>
                     </tr>
                     <tr>
-                        <th>최소 매출월</th>
-                        <td>{`${yearResult.minMonth}`}월</td>
+                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 매출월</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonth}`}</td>
+                        <td>월</td>
                     </tr>
                     <tr>
-                        <th>최소 매출액</th>
-                        <td>{`${yearResult.minMonthAmount}`} 원</td>
+                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 월매출</th>
+                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonthAmount}`}</td>
+                        <td>원</td>
                     </tr>
                     
                 </table>

@@ -2,6 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { apiCall } from '../service/apiService';
 import '../styles/Main.css';
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 function MainDefault() {
     const navigate = useNavigate();
         const serverDataRequest = (url) => {
@@ -22,14 +26,58 @@ function MainDefault() {
                 }else alert(`** serverDataRequest 시스템 오류, err=${err}`);
             }); //apiCall
         } //serverDataRequest
+
+        const settings = {
+            dots: true,  // 네비게이션 점 표시
+            infinite: true,  // 무한 루프 설정
+            speed: 1200,  // 애니메이션 속도
+            slidesToShow: 2,  // 한 번에 보여줄 슬라이드 개수
+            slidesToScroll: 1,  // 한 번에 스크롤될 개수
+            autoplay: true,  // 자동 슬라이드
+            autoplaySpeed: 7000, // 자동 슬라이드 속도 (2초)
+        };
+
+        const products = [
+            { prod_no: 1, prod_nm: "불편한편의점", image: "/images/recommendation/00001.png" },
+            { prod_no: 2, prod_nm: "최소한의한국사", image: "/images/recommendation/00002.png" },
+            { prod_no: 3, prod_nm: "비스킷", image: "/images/recommendation/00003.png" },
+            
+            //{ prod_no: 1, category:"", category_nm :"", prod_nm:"", author_nm:""}
+            //{ prod_no: 2, category:"", category_nm :"", prod_nm:"", author_nm:""}
+            //{ prod_no: 3, category:"", category_nm :"", prod_nm:"", author_nm:""}
+        ];
+
+        const handleDoublClick = (product) => {
+            
+            let jsonData = { prod_no: `${product.prod_no}`, category: "A", category_nm: "", prod_nm: `${product.prod_nm}`, author_nm: "" };
+
+            navigate("/product/productlist", { state: jsonData });
+        };
+
     return (
         <div className='body_container'>
             <hr></hr>
             {/* <h3>~~ Main 영역 ~~</h3> */}
             <div id="contents">
-                <img alt="MainImage" src="images/library01.png" width={800} height={400} /> 
-                <span onClick={() => { serverDataRequest("/product/proList") }} 
-                                  className="textlink">상품 리스트</span>
+
+            { ( products.length === 0) ? 
+                (
+                <img alt="MainImage" src="images/homeImages/library01.png" width={800} height={400} /> 
+
+                 ) :
+                 (
+                    <div style={  { width: "80%", margin: "0 auto", paddingTop: "20px" }}>
+                        <Slider {...settings}>
+                        {products.map((product) => (
+                            <div key={product.prod_no} onDoubleClick={() => handleDoublClick(product)} style={{ cursor: "pointer" }} >
+                            <img src={product.image} alt={product.name} style={{height: "500px", objectFit: "cover" }} />
+                            <h3>{product.name}</h3>
+                            </div>
+                        ))}
+                        </Slider>
+                    </div>
+                    )
+            }   
             </div>
         </div>
     );  

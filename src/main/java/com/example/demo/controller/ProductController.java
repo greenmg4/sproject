@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,17 +37,16 @@ public class ProductController {
     
     //회원 상품 리스트 출력
     @GetMapping("/proList")
-    public List<ProductDTO> proList(){
-    	return productService.ProList();
-    	
+    public List<ProductDTO> proList(@RequestParam String category){
+    	return productService.ProList(category);	
     }
     
     //회원 상품 디테일 출력
-    @GetMapping("/proDetail")
-    public ProductDTO ProDetail(int prod_no) {
+    @GetMapping("/{prod_no}")
+    public ProductDTO ProDetail(@PathVariable int prod_no) {
         return productService.ProDetail(prod_no);
     }
-    
+
     
 
     @GetMapping("/page")

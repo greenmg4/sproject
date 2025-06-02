@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class CartController {
 	// 장바구니 저장
 	@PostMapping("/addCart")
 	public ResponseEntity<String> addCart(@RequestBody CartDTO cart, HttpSession session) {
-	    String cust_id = (String) session.getAttribute("cust_id");
+	    String cust_id = (String) session.getAttribute("loginID");
 	    if (cust_id == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
 	    }
@@ -53,6 +52,6 @@ public class CartController {
 	    List<CartDTO> CartDetail = cservice.CartDetail(cust_id);
 	    return ResponseEntity.ok(CartDetail);
 	}
-	
+
 	
 }

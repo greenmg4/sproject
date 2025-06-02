@@ -2,6 +2,7 @@ package mapperInterface;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,6 +27,10 @@ public interface CartMapper {
 			+ "    LEFT JOIN product_img pi ON p.prod_no = pi.prod_no AND pi.img_class = '01'"
 			+ "    WHERE c.cust_id = #{custId}")
 	List<CartDTO> CartDetail(String cust_id);
+
+
+	@Delete("DELETE FROM cart WHERE cust_id = #{cust_id}")
+	void ClearCart(String cust_id);
 
 
 }

@@ -10,5 +10,7 @@ public interface CartService {
 
 	public List<CartDTO> CartDetail(String cust_id);
 
+	public void ClearCart(String cust_id);
+
 	
 }

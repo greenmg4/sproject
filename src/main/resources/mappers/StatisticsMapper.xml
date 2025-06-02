@@ -9,6 +9,7 @@
 		     , A.month 
 		     , A.mm 
 		     , A.tot_amt
+		     , SUM(A.tot_amt) OVER(PARTITION BY A.year) AS sum_year_amount
 		     , FLOOR(AVG(A.tot_amt) OVER(PARTITION BY A.year)) AS avg_tot_amount
 		     , MAX(A.tot_amt) OVER(PARTITION BY A.year) AS max_month_amount
 		     , MIN(A.tot_amt) OVER(PARTITION BY A.year) AS min_month_amount
@@ -33,6 +34,7 @@
 		     , A.dt
 		     , A.dd
 		     , A.tot_amt
+		     , SUM(A.tot_amt) OVER(PARTITION BY A.yearmonth) AS sum_month_amount
 		     , FLOOR(AVG(A.tot_amt) OVER(PARTITION BY A.yearmonth)) AS avg_tot_amount
 		     , MAX(A.tot_amt) OVER(PARTITION BY A.yearmonth) AS max_month_amount
 		     , MIN(A.tot_amt) OVER(PARTITION BY A.yearmonth) AS min_month_amount

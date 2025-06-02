@@ -44,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
     
     // 회원 상품 리스트 출력
 	@Override
-	public List<ProductDTO> ProList() {
-		return productMapper.ProList();
+	public List<ProductDTO> ProList(String category) {
+		return productMapper.ProList(category);
 	}
 
 	//회원 상품 디테일 출력

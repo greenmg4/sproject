@@ -1,16 +1,14 @@
 package com.example.demo.service;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.example.demo.model.ChatMessageDTO;
-import com.example.demo.model.CustDTO;
 
 public interface ChatService {
-    int selectMaxSeq(@Param("qna_no") int qna_no);
-    void insertMessage(ChatMessageDTO content);
+    int selectMaxSeq(int qna_no);
+    void insertMessage(ChatMessageDTO dto);
     List<ChatMessageDTO> getMessagesByRoomId(int qna_no);
-    List<ChatMessageDTO> getRoomSummaries();
-    CustDTO getUserInfo(String cust_Id);
+    List<ChatMessageDTO> getRoomSummaries(int excludeType);
+    int generateNewQnaNo();
+    int createRoomForUser(String userCustId);
+    void updateRoomType(int qna_no, int qna_type);
 }
