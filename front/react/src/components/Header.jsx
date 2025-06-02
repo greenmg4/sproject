@@ -261,7 +261,6 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             </div>
 			
 
-
             {/*------------- 카테고리 메뉴 ---------------*/}
             <div className='header-category-container'>
                 {categories.map((item) => (
