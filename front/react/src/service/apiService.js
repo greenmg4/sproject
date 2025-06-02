@@ -13,16 +13,15 @@ export async function apiCall(url, method, requestData, token) {
   //  - 존재하면 찾는문자열이 첫번째 나타나는 위치(index) 를 return,
   //    없으면 -1 을 return
   let headers = ''; 
-  if (url.indexOf('join') >= 0 && !token) {
-    headers = { 'Content-Type': 'multipart/form-data' };  
-} else if (token) {
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-    };  
-} else {
-    headers = { 'Content-Type': 'application/json' };  
-}
+  if (url.indexOf('join') >= 0  && token == null) {
+      headers = { 'Content-Type': 'multipart/form-data' };  
+  }else if (token !== null) {
+      headers = { 'Content-Type': 'application/json',
+                  'Authorization': 'Bearer '+token  };  
+  }else {
+      headers = { 'Content-Type': 'application/json' };  
+  }
+
   // 1.2) axios 전송 options
   let options = {
       url: API_BASE_URL + url, 
@@ -83,3 +82,7 @@ export async function addCart(product) {
 export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }
+
+export const getUserInfo = (cust_id) => {
+  return  apiCall("/api/user/info", "POST", {cust_id}, null);
+};
