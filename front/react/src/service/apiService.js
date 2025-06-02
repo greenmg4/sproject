@@ -84,5 +84,5 @@ export async function CartDetail(cust_id) {
 }
 
 export const getUserInfo = (cust_id) => {
-  return  apiCall("/api/user/info", "POST", {cust_id}, null);
+  return apiCall("/api/user/info", "POST", cust_id);
 };

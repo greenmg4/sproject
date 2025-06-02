@@ -112,7 +112,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             alert("사용자 정보를 불러오지 못했습니다.");
         });
 };
-
+console.log(sessionStorage.getItem("loginID"))
 
     const goProductList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
@@ -168,7 +168,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                              <strong>{cust_nm}</strong> 님 환영합니다!</span>
                               &nbsp;&nbsp;&nbsp;&nbsp; */}
                         <span onClick={onLogout} className="header-menu-item">로그아웃</span><span>|</span>
-                        <span className='header-menu-item' >내정보</span><span>|</span>
+                        <span onClick={goToUserInfo} className='header-menu-item'>내정보</span><span>|</span>
                         </>
                     ) : (
                         <>
