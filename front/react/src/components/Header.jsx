@@ -170,7 +170,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 )}
 
 
-            </div>
+            </div> 
 
             {/*------------- 조회 영역 ---------------*/}
             {/* <div className="headerTop"> */}
