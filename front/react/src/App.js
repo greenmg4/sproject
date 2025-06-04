@@ -62,16 +62,17 @@ useEffect(() => {
 
   // 3. 로그아웃
   const onLogout = () => {
-    axios.get("http://localhost:8080/cust/logout")
-        .then(res => {
-            alert("로그아웃 됩니다.");
-            // 로그아웃 후 리다이렉트하거나 상태 초기화도 가능
-            window.location.href = "/"; // 예: 홈으로 이동
-        })
-        .catch(err => {
-            console.error("로그아웃 오류:", err);
-            alert("로그아웃에 실패했습니다.");
-        });
+    axios.get("http://localhost:8080/cust/logout", { withCredentials: true })
+      .then(() => {
+          // 상태 초기화
+          sessionStorage.clear(); // 혹시 저장한 사용자 정보 있다면 클리어
+          alert("로그아웃되었습니다.");
+          setIsLoggedIn(false);
+          navigate("/");
+      })
+      .catch(err => {
+          console.error("로그아웃 오류:", err);
+      });
   };
 
   return (
