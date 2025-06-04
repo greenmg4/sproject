@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserInfoPage = () => {
+  const navigate = useNavigate();
+  const goToEditPage = () => {
+    navigate("/useredit");
+  };
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ const UserInfoPage = () => {
         <strong>총 구매 금액:</strong> {userInfo.tot_buy_amt}원
       </ul>
 
-       <span  className='header-menu-item'>내정보 수정</span>
+        <button onClick={goToEditPage} style={{ marginTop: '20px' }}>내 정보 수정</button>
     </div>
   );
 };
