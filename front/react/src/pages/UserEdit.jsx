@@ -96,7 +96,7 @@ const UserEdit = () => {
         <br />
         <label>
           생년월일:
-          <input type="date" name="birth_dt" value={form.birth_dt} onChange={handleChange} />
+          <input type="date" name="birthday" value={form.birthday} onChange={handleChange} />
         </label>
         <br />
         <label>
@@ -110,18 +110,18 @@ const UserEdit = () => {
         </label>
         <br />
         <label>
-          주소:
-          <input type="text" name="addr1" value={form.addr1} onChange={handleChange} />
+          주소1:
+          <input type="text" name="address1" value={form.address1} onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          주소2:
+          <input type="text" name="address2" value={form.address2} onChange={handleChange} />
         </label>
         <br />
         <label>
           우편번호:
-          <input type="text" name="zipcode" value={form.zip} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          상세주소:
-          <input type="text" name="addr2" value={form.addr2} onChange={handleChange} />
+          <input type="text" name="zip" value={form.zip} onChange={handleChange} />
         </label>
         <br />
         <button type="submit">수정하기</button>

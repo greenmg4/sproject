@@ -9,6 +9,7 @@
   SELECT cust_id,
          cust_nm,
          phone,
+         email,
          address1,
          address2,
          zip,
@@ -26,6 +27,7 @@
     SET 
       cust_nm = #{cust_nm},
       phone = #{phone},
+      email = #{email},
       address1 = #{address1},
       address2 = #{address2},
       zip = #{zip},

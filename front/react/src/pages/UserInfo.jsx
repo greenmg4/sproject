@@ -38,6 +38,7 @@ const UserInfoPage = () => {
       <ul>
         <strong>아이디:</strong> {userInfo.cust_id} <br></br>
         <strong>이름:</strong> {userInfo.cust_nm}<br></br>
+        <strong>이메일:</strong> {userInfo.email}<br></br>
         <strong>전화번호:</strong> {userInfo.phone}<br></br>
         <strong>주소1:</strong> {userInfo.address1}<br></br>
        <strong>주소2:</strong> {userInfo.address2}<br></br>
