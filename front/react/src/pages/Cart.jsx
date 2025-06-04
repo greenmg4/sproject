@@ -135,7 +135,7 @@ export default function Cart() {
                     alert("주문이 정상적으로 저장되었습니다.");
                     setSelectedItems([]);
                     fetchCartDetail();
-                    navigate("/order/complete");
+                    navigate("/");
                   } else {
                     alert("주문 저장 실패: " + orderSaveResult.message);
                   }
