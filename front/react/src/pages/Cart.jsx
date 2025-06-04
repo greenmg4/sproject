@@ -155,7 +155,32 @@ export default function Cart() {
       <p className="pageTitle">장바구니 페이지</p>
 
       {cartDetail.length === 0 ? (
-        <p>장바구니가 비어있습니다.</p>
+        <div style={{
+          borderTop: '1px solid #ddd',
+          paddingTop: '10px',
+          fontWeight: 'bold',
+          fontSize: '1.2rem',
+          minHeight: '150px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '20px'
+        }}>
+          <div>장바구니가 비어있습니다.</div>
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#6c757d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}>
+            둘러보기
+          </button>
+        </div>
       ) : (
         <>
           {/* 전체 선택 */}
@@ -169,6 +194,7 @@ export default function Cart() {
             </label>
           </div>
 
+          {/* 장바구니 상품 목록 */}
           {cartDetail.map(item => (
             <div
               key={item.prod_no}
@@ -205,7 +231,7 @@ export default function Cart() {
             </div>
           ))}
 
-          {/* 총액 및 선택 수량, 버튼 영역 */}
+          {/* 총액 및 버튼 영역 */}
           <div style={{
             marginTop: '20px',
             display: 'flex',
@@ -249,7 +275,6 @@ export default function Cart() {
                 }}>
                 선택 삭제
               </button>
-
               <button
                 onClick={() => navigate('/')}
                 style={{
