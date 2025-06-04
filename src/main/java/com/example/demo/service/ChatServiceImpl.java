@@ -45,8 +45,8 @@ public class ChatServiceImpl implements ChatService {
         dto.setSeq(1);
         dto.setQna_class(0);
         dto.setQna_type(0);
-        dto.setCust_id("test");
-        dto.setGrade("A");
+        dto.setCust_id("system");
+        dto.setGrade("C");
         dto.setContent("어떤 것을 도와드릴까요?");
         dto.setQna_dtm(LocalDateTime.now());
         mapper.insertMessage(dto);

@@ -38,7 +38,9 @@
   border-radius:0 25px 25px 25px;
 }
 
+/* 시스템 말풍선 – 한 번만 정의 */
 .messagebox.system{
+  align-self:center;
   background:#eee;
   color:#555;
   border-radius:10px;
@@ -86,12 +88,4 @@
   margin-left:6px;
   border-radius:50%;
   background:#ff4d4f;
-}
-
-.messagebox.system{
-  background:#eee !important;
-  color:#555 !important;
-  border-radius:10px;
-  font-style:italic;
-  align-self:center;
 }
