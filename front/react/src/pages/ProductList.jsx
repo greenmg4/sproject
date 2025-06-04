@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ProList } from '../service/apiService';
+import './ProductList.css';
 
 export default function ProductList() {
   const location = useLocation();
-  const { category = 'A' } = location.state || {};  // 기본값 'A'는 모든 상품
-
+  const { category = 'A' } = location.state || {};
   const [list, setList] = useState(null);
 
   useEffect(() => {
-    // category를 인자로 API 호출
     ProList(category)
       .then(data => {
         if (data.length > 0) setList(data);
@@ -25,50 +24,32 @@ export default function ProductList() {
   }, [category]);
 
   if (list === null) {
-    return (
-      <div style={{ fontWeight: 'bold', fontSize: 30, height: 600 }}>
-        Loading...
-      </div>
-    );
+    return <div className="loading">Loading...</div>;
   }
 
   return (
-    <div>
-      <div className="contents">
-        <p className="pageTitle">** ProductList **</p>
-        <table className="listTable">
-          <thead>
-            <tr style={{ backgroundColor: 'AliceBlue', height: '20px' }}>
-              <th>상품번호</th>
-              <th>상품명</th>
-              <th>상품가격</th>
-              <th>상품 카테고리</th>
-              <th>재고수</th>
-              <th>출판사</th>
-              <th>저자</th>
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((item, i) => (
-              <tr key={'productItem' + i}>
-                <td>{item.prod_no}</td>
-                <td>
-                  <Link 
-                    to={{
-                      pathname: `/product/${item.prod_no}`,
-                      state: item,  // 서버에서 받아온 상품 정보를 그대로 넘김
-                    }}>{item.prod_nm}
-                  </Link>
-                </td>
-                <td>{item.prod_price}</td>
-                <td>{item.category}</td>
-                <td>{item.prod_cnt}</td>
-                <td>{item.publisher}</td>
-                <td>{item.author_nm}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="product-container">
+      <h2 className="product-title">상품 목록</h2>
+      <div className="product-grid">
+        {list.map((item, i) => (
+          <div className="product-card" key={i}>
+            <Link to={{
+              pathname: `/product/${item.prod_no}`,
+              state: item,
+            }}>
+              <img
+                src={item.img_path || '/images/recommendation/default-product.png'}
+                alt={item.prod_nm}
+                className="product-image"
+              />
+              <div className="product-info">
+                <h3 className="product-name">{item.prod_nm}</h3>
+                <p className="product-price">{item.prod_price.toLocaleString()}원</p>
+                <p className="product-meta">{item.publisher} | {item.author_nm}</p>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );

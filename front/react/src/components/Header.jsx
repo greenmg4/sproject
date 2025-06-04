@@ -199,7 +199,7 @@ console.log(sessionStorage.getItem("loginID"))
                 )}
 
 
-            </div>
+            </div> 
 
             {/*------------- 조회 영역 ---------------*/}
             {/* <div className="headerTop"> */}

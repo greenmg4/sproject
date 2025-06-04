@@ -21,7 +21,6 @@ public class UserInfoController {
     @PostMapping("/info")
     public UserInfoDTO getUserInfo(@RequestBody Map<String, String> map) {
         String cust_Id = map.get("cust_id");
-        System.out.println("받은 cust_id: " + map.get("cust_id"));
         return userInfoService.getUserInfoById(cust_Id);
     }
 }

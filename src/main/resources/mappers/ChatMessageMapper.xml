@@ -28,11 +28,10 @@
 	<select id="getRoomSummaries"
 	        resultType="com.example.demo.model.ChatMessageDTO">
 	  WITH latest_msg AS (
-	      SELECT qna_no,
-	             MAX(seq) AS seq
+	      SELECT qna_no, MAX(seq) AS seq
 	      FROM qna
-	      WHERE cust_id != 'test'     -- 시스템/관리자 제외
-	        AND qna_type = 1          -- 실제 대화 메시지
+	      WHERE cust_id != 'test'    <!-- test 제외 -->
+	        AND qna_type != 2        <!-- 종료 제외 -->
 	      GROUP BY qna_no
 	  )
 	  SELECT q.*
