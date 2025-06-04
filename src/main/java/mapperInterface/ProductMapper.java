@@ -24,7 +24,9 @@ public interface ProductMapper {
 
     
     // 회원 상품 리스트 출력
-    @Select("SELECT * FROM product WHERE #{category} = 'A' OR category = #{category}")
+    @Select("SELECT p.*, pi.img_path FROM product p LEFT JOIN product_img pi"
+    	    +"  ON p.prod_no = pi.prod_no AND pi.img_class = '01'"
+    	    +" WHERE #{category} = 'A' OR p.category = #{category}")
 	List<ProductDTO> ProList(String category);
 	
 	

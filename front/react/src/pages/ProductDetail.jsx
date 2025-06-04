@@ -3,27 +3,56 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ProDetail, addCart } from '../service/apiService';
 
 export default function ProductDetail() {
+
+  // 스타일 정의
+  const selectStyle = {
+    width: '100%',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '5px',
+    border: '1px solid #ccc'
+  };
+
+  const cartButtonStyle = {
+    flex: 1,
+    padding: '15px',
+    fontSize: '16px',
+    backgroundColor: '#ff4757',
+    color: 'white',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer'
+  };
+
+  const buyButtonStyle = {
+    flex: 1,
+    padding: '15px',
+    fontSize: '16px',
+    backgroundColor: '#2ed573',
+    color: 'white',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer'
+  };
+
   const location = useLocation();
   const { prod_no } = useParams();
   const navigate = useNavigate();
 
-  // location.state에 상품 데이터가 있으면 바로 세팅, 없으면 null
   const [product, setProduct] = useState(location.state || null);
+  const [packageDesign, setPackageDesign] = useState('');
+  const [scentOption, setScentOption] = useState('');
 
-    useEffect(() => {
+  useEffect(() => {
     if (!product && prod_no) {
-        console.log('ProDetail 호출, prod_no:', prod_no);
-        ProDetail(prod_no)
-        .then(data => {
-            console.log('ProDetail 데이터:', data);
-            setProduct(data);
-        })
+      ProDetail(prod_no)
+        .then(data => setProduct(data))
         .catch(err => {
-            console.error('ProDetail 호출 실패:', err);
-            alert('상품 정보를 불러오는데 실패했습니다.');
+          console.error('상품 로딩 실패:', err);
+          alert('상품 정보를 불러오는데 실패했습니다.');
         });
     }
-    }, [prod_no, product]);
+  }, [prod_no, product]);
 
   const handleAddCart = async () => {
     const cust_id = sessionStorage.getItem("loginID");
@@ -41,43 +70,41 @@ export default function ProductDetail() {
       alert('장바구니에 상품이 추가되었습니다.');
       navigate('/cart/addCart');
     } catch (error) {
-      alert('장바구니 추가에 실패했습니다.');
       console.error(error);
+      alert('장바구니 추가에 실패했습니다.');
     }
   };
 
   if (!product) return <div>상품 정보를 불러오는 중입니다...</div>;
 
   return (
-    <div className="contents">
-      <p className="pageTitle">** 상품 상세 정보 **</p>
-      <table className="listTable">
-        <tbody>
-          <tr><th>상품번호</th><td>{product.prod_no}</td></tr>
-          <tr><th>상품명</th><td>{product.prod_nm}</td></tr>
-          <tr><th>가격</th><td>{product.prod_price}</td></tr>
-          <tr><th>상품 카테고리</th><td>{product.category}</td></tr>
-          <tr><th>재고수</th><td>{product.prod_cnt}</td></tr>
-          <tr><th>출판사</th><td>{product.publisher}</td></tr>
-          <tr><th>저자</th><td>{product.author_nm}</td></tr>
-        </tbody>
-      </table>
+    <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
+      {/* 이미지 영역 */}
+      <div style={{ flex: '1' }}>
+        <img
+          src={product.img_path || '/images/recommendation/default-product.png'}
+          alt={product.prod_nm}
+          style={{ width: '100%', borderRadius: '8px' }}
+        />
+      </div>
 
-      <button
-        onClick={handleAddCart}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '16px'
-        }}
-      >
-        🛒 장바구니 담기
-      </button>
+      {/* 상품 정보 영역 */}
+      <div style={{ flex: '1.2' }}>
+        <h2 style={{ fontSize: '20px', fontWeight: 'bold' }}>{product.prod_nm}</h2>
+        <div style={{ margin: '10px 0', fontSize: '18px' }}>
+          <span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+            {product.prod_price?.toLocaleString()}원
+          </span>
+        </div>
+        <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', fontSize: '16px', color: '#444' }}>
+          <h4 style={{ marginBottom: '10px', fontWeight: 'bold' }}>책 소개</h4>
+          {product.book_desc || '책 소개 정보가 없습니다.'}
+        </div>
+        <div style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
+          <button onClick={handleAddCart} style={cartButtonStyle}>장바구니</button>
+          <button onClick={() => navigate('/order')} style={buyButtonStyle}>바로구매</button>
+        </div>
+      </div>
     </div>
   );
 }
