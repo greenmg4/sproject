@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.CustDTO;
 import com.example.demo.service.CustService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -62,5 +64,20 @@ public class CustController {
         }
         return ResponseEntity.ok("관리자 페이지입니다");
     }
+    
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false); // 기존 세션 가져옴
+		System.out.printf("로그아웃 되나");
+		
+		 if (session != null) {
+		        System.out.println("세션 존재: " + session.getId());  // 로그 추가
+		        session.invalidate(); // 세션 무효화
+		        System.out.println("세션 무효화 완료");
+		    } else {
+		        System.out.println("세션 없음");
+		    }
+		    return ResponseEntity.ok("Logout successful");
+		}
     
 }

@@ -90,8 +90,12 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const callstatistics = (url) => {
         navigate(url);
     }
-    //로그인
+    // 로그인
     const goToLogin = () => {navigate("/Login")};
+
+
+    // 회원가입
+    const goToJoin = () => {navigate("/join")};
 
 
     // 내 정보 보기
@@ -167,12 +171,12 @@ console.log(sessionStorage.getItem("loginID"))
                         {/* <span style={{ color: 'green' }}>
                              <strong>{cust_nm}</strong> 님 환영합니다!</span>
                               &nbsp;&nbsp;&nbsp;&nbsp; */}
-                        <span onClick={onLogout} className="header-menu-item">로그아웃</span><span>|</span>
+                        <span onClick={() => {setIsAdmin(false);onLogout()}} className="header-menu-item">로그아웃</span><span>|</span>
                         <span onClick={goToUserInfo} className='header-menu-item'>내정보</span><span>|</span>
                         </>
                     ) : (
                         <>
-                        <span className='header-menu-item' >회원가입</span><span>|</span>
+                        <span onClick={goToJoin} className='header-menu-item' >회원가입</span><span>|</span>
                         <span onClick={goToLogin} className="header-menu-item">로그인</span><span>|</span>
                         </>
                     )

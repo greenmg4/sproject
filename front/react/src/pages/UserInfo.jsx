@@ -34,7 +34,7 @@ const UserInfoPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>내 정보</h2>
+      <h2>내정보</h2>
       <ul>
         <strong>아이디:</strong> {userInfo.cust_id} <br></br>
         <strong>이름:</strong> {userInfo.cust_nm}<br></br>

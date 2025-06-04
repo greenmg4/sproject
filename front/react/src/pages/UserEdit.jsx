@@ -9,10 +9,10 @@ const UserEdit = () => {
     cust_id: '',
     cust_pw: '',
     cust_nm: '',
-    birth_dt: '',
+    birthday: '',
     phone: '',
     email: '',
-    zipcode: '',
+    zip: '',
     addr1: '',
     addr2: ''
   });

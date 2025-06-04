@@ -28,5 +28,6 @@ public class WebMvcConfig implements WebMvcConfigurer  {
                 .addResourceLocations("file:///C:/Users/USER/git/sproject/uploadimages/");
         // ↑ 실제 파일 시스템 경로를 매핑
     }
+	
 
 }
