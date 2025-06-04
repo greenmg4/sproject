@@ -12,8 +12,10 @@ const ProductUpload = () => {
     prod_cnt: 0,
     publisher: "",
     author_nm: "",
-    book_desc: ""
+    book_desc: "",
+    suggest_yn: "N" // 기본값 N
   });
+
 
   const [imageFile, setImageFile] = useState(null);
   const [img_class, setImgClass] = useState("01");
@@ -76,6 +78,12 @@ const ProductUpload = () => {
         <input type="number" name="prod_cnt" placeholder="재고수" onChange={handleChange} required /><br />
         <input type="text" name="publisher" placeholder="출판사" onChange={handleChange} /><br />
         <input type="text" name="author_nm" placeholder="저자" onChange={handleChange} /><br />
+
+        <select name="suggest_yn" value={product.suggest_yn} onChange={handleChange}>
+          <option value="N">일반도서</option>
+          <option value="Y">추천도서</option>
+        </select><br />
+
         <textarea name="book_desc" placeholder="책 설명" rows="5" onChange={handleChange} /><br />
 
         <input type="file" onChange={handleFileChange} accept="image/*" /><br />

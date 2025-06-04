@@ -90,8 +90,12 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const callstatistics = (url) => {
         navigate(url);
     }
-    //로그인
+    // 로그인
     const goToLogin = () => {navigate("/Login")};
+
+
+    // 회원가입
+    const goToJoin = () => {navigate("/join")};
 
 
     // 내 정보 보기
@@ -112,7 +116,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             alert("사용자 정보를 불러오지 못했습니다.");
         });
 };
-
+console.log(sessionStorage.getItem("loginID"))
 
     const goProductList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
@@ -167,12 +171,12 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                         {/* <span style={{ color: 'green' }}>
                              <strong>{cust_nm}</strong> 님 환영합니다!</span>
                               &nbsp;&nbsp;&nbsp;&nbsp; */}
-                        <span onClick={onLogout} className="header-menu-item">로그아웃</span><span>|</span>
-                        <span className='header-menu-item' >내정보</span><span>|</span>
+                        <span onClick={() => {setIsAdmin(false);onLogout()}} className="header-menu-item">로그아웃</span><span>|</span>
+                        <span onClick={goToUserInfo} className='header-menu-item'>내정보</span><span>|</span>
                         </>
                     ) : (
                         <>
-                        <span className='header-menu-item' >회원가입</span><span>|</span>
+                        <span onClick={goToJoin} className='header-menu-item' >회원가입</span><span>|</span>
                         <span onClick={goToLogin} className="header-menu-item">로그인</span><span>|</span>
                         </>
                     )
@@ -195,7 +199,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
                 )}
 
 
-            </div>
+            </div> 
 
             {/*------------- 조회 영역 ---------------*/}
             {/* <div className="headerTop"> */}

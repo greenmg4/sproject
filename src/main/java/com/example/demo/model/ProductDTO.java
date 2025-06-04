@@ -11,7 +11,9 @@ import lombok.ToString;
 @ToString
 public class ProductDTO {
 	private int prod_no, prod_price, prod_cnt;
-	private String prod_nm, category, status, publisher, author_nm, book_desc; 
+
+	private String prod_nm, category, status, publisher, author_nm, book_desc, suggest_yn; 
+
 	private LocalDateTime reg_dtm, upd_dtm;
 	
     private String img_path; // 추가: 메인 이미지 경로

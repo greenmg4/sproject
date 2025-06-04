@@ -20,12 +20,12 @@
     FROM product
   </select>
   
-  <insert id="insertProduct" useGeneratedKeys="true" keyProperty="prod_no">
-    INSERT INTO product
-    (prod_nm, prod_price, category, status, prod_cnt, publisher, author_nm, reg_dtm, book_desc)
-    VALUES
-    (#{prod_nm}, #{prod_price}, #{category}, #{status}, #{prod_cnt}, #{publisher}, #{author_nm}, NOW(), #{book_desc})
-  </insert>
+	<insert id="insertProduct" useGeneratedKeys="true" keyProperty="prod_no">
+	  INSERT INTO product
+	    (prod_nm, prod_price, category, status, prod_cnt, publisher, author_nm, reg_dtm, book_desc, suggest_yn)
+	  VALUES
+	    (#{prod_nm}, #{prod_price}, #{category}, #{status}, #{prod_cnt}, #{publisher}, #{author_nm}, NOW(), #{book_desc}, #{suggest_yn})
+	</insert>
   
 	<select id="getProductById" parameterType="int" resultType="com.example.demo.model.ProductDTO">
 	  SELECT 
@@ -55,9 +55,11 @@
 	    publisher = #{publisher},
 	    author_nm = #{author_nm},
 	    upd_dtm = NOW(),
-	    book_desc = #{book_desc}
+	    book_desc = #{book_desc},
+	    suggest_yn = #{suggest_yn}
 	  WHERE prod_no = #{prod_no}
 	</update>
+
 	
 	<delete id="deleteProduct">
 		DELETE FROM product where prod_no = #{prod_no}

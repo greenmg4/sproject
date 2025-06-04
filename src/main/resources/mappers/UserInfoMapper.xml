@@ -3,14 +3,42 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.mapperInterface.UserInfoMapper">
+<mapper namespace="mapperInterface.UserInfoMapper">
 
   <select id="getUserInfoById" parameterType="String" resultType="com.example.demo.model.UserInfoDTO">
-    SELECT cust_id,
-           cust_nm,
-           email
-    FROM custom
-    WHERE cust_id = #{cust_id}
+  SELECT cust_id,
+         cust_nm,
+         phone,
+         email,
+         address1,
+         address2,
+         zip,
+         gender,
+         birthday,
+         grade,
+         tot_buy_amt
+  FROM custom
+  WHERE cust_id = #{cust_id}
   </select>
+  
+  
+  <update id="updateUserInfo" parameterType="com.example.demo.model.UserInfoDTO">
+    UPDATE custom
+    SET 
+      cust_nm = #{cust_nm},
+      phone = #{phone},
+      email = #{email},
+      address1 = #{address1},
+      address2 = #{address2},
+      zip = #{zip},
+      gender = #{gender},
+      birthday = #{birthday}
+    WHERE cust_id = #{cust_id}
+  </update>
+  
+  
+  
+  
+  
 
 </mapper>

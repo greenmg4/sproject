@@ -7,4 +7,6 @@ import com.example.demo.model.UserInfoDTO;
 @Mapper
 public interface UserInfoMapper {
     UserInfoDTO getUserInfoById(String cust_id);
+    
+    int updateUserInfo(UserInfoDTO dto); // 수정용
 }
