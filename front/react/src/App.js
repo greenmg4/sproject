@@ -13,6 +13,7 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // 로그인 상태 저장 변수
   const [loginInfo, setLoginInfo] = useState(""); // 회원 로그인 정보
+  const [isAdmin, setIsAdmin] = useState(false);
   // 1. 로그인 확인
   // => 브라우져의 sessionStorage에서 로그인정보 확인
  
@@ -86,46 +87,50 @@ useEffect(() => {
 
   // 로그아웃 함수
   // 서버에 로그아웃 요청을 보내고 클라이언트 세션 초기화
-  const onLogout = () => {
-    // 토큰이 없으면 서버 로그아웃 API 호출 생략하고 클라이언트만 초기화
-    if (!loginInfo || !loginInfo.token) {
-      sessionStorage.clear(); // sessionStorage 완전 초기화
+const onLogout = () => {
+  console.log("로그아웃 함수 실행");
+  // 클라이언트에 로그인 정보 없을 경우 처리
+  if (!loginInfo) {
+     console.log("loginInfo 없음, 바로 로그아웃 처리");
+    sessionStorage.clear(); // 클라이언트 세션 초기화
+    setIsLoggedIn(false);
+    setLoginInfo(null);
+    setIsAdmin(false); // 👈 여기에도 추가
+    alert('로그아웃 성공');
+    navigate("/");
+    return;
+  }
+
+  const url = "/cust/logout";
+
+  // axios를 이용해서 서버 로그아웃 처리 요청
+  axios.get(url, { withCredentials: true }) // withCredentials: true => 세션 쿠키 전달
+    .then(() => {
+         console.log("서버 로그아웃 요청 성공");
+      // 로그아웃 성공 시 클라이언트 세션도 초기화
+      sessionStorage.clear();      
       setIsLoggedIn(false);
       setLoginInfo(null);
       alert('로그아웃 성공');
       navigate("/");
-      return;
-    }
-
-    const url = "/auth/logout";
-
-    // apiCall로 로그아웃 요청 보내는데 토큰을 헤더에 넣어 인증 처리함
-    apiCall(url, 'GET', null, loginInfo.token)
-      .then(() => {
-        // 로그아웃 성공 시 세션 초기화
-        sessionStorage.clear();
-        setIsLoggedIn(false);
-        setLoginInfo(null);
-        alert('로그아웃 성공');
-        navigate("/");
-      })
-      .catch((err) => {
-        // 로그아웃 실패 시 에러 처리
-        if (err?.status === 502) {
-          alert("로그아웃 실패, 다시 시도하세요 ~~");
-        } else if (err?.response?.status === 403) {
-          alert(`** Server Reject : 접근권한이 없습니다. => ${err.message || err}`);
-        } else {
-          alert(`** onLogout 시스템 오류, err=${err.message || err}`);
-        }
-        // 로그아웃 실패해도 클라이언트 상태는 로그아웃 상태로 초기화해서 꼬임 방지
-        sessionStorage.clear();
-        setIsLoggedIn(false);
-        setLoginInfo(null);
-        navigate("/");
-      });
-
-  };
+    })
+    .catch((err) => {
+      // 로그아웃 실패 시에도 클라이언트 세션은 초기화
+      if (err?.status === 502) {
+        alert("로그아웃 실패, 다시 시도하세요 ~~");
+      } else if (err?.response?.status === 403) {
+        alert(`** Server Reject : 접근권한이 없습니다. => ${err.message || err}`);
+      } else {
+        alert(`** onLogout 시스템 오류, err=${err.message || err}`);
+      }
+      // 실패하더라도 클라이언트 세션 정리
+      console.error("로그아웃 실패 에러:", err);
+      sessionStorage.clear();
+      setIsLoggedIn(false);
+      setLoginInfo(null);
+      navigate("/");
+    });
+};
 
   return (
     <div className="App">
@@ -133,6 +138,7 @@ useEffect(() => {
       <Header
         cust_nm={loginInfo?.cust_nm}
         isLoggedIn={isLoggedIn}
+        isAdmin={isAdmin}
         onLogout={onLogout}
       />
 
@@ -141,6 +147,7 @@ useEffect(() => {
         onLoginSubmit={onLoginSubmit}
         isLoggedIn={isLoggedIn}
         loginInfo={loginInfo}
+        
       />
 
       <Footer />

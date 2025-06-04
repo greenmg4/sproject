@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +11,14 @@ import com.example.demo.service.UserInfoService;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserInfoController {
+public class UserEditController {
 
     @Autowired
     private UserInfoService userInfoService;
 
-    @PostMapping("/info")
-    public UserInfoDTO getUserInfo(@RequestBody Map<String, String> map) {
-        String cust_Id = map.get("cust_id");
-        return userInfoService.getUserInfoById(cust_Id);
+    @PostMapping("/update")
+    public String updateUserInfo(@RequestBody UserInfoDTO dto) {
+        int result = userInfoService.updateUserInfo(dto);
+        return result > 0 ? "success" : "fail";
     }
 }

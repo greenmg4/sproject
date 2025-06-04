@@ -11,6 +11,7 @@ public class UserInfoDTO {
     private String cust_id;
     private String cust_nm;
     private String phone;
+    private String email;
     private String address1;
     private String address2;
     private String zip;
