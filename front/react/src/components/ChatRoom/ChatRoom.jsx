@@ -21,18 +21,18 @@ function ChatRoom() {
   const stomp = useRef(null);
   const isCounselor = grade === 'A';
 
-  /* ---------- 사용자 정보 ---------- */
+  /* 사용자 정보 ---------------------------------------------------- */
   useEffect(() => {
     axios.get(`${BASE_URL}/chat/userinfo`)
       .then(r => {
         setCustId(r.data.cust_id);
         setGrade(r.data.grade);
-        if (r.data.grade === 'A') setInput(true);   // 상담사는 바로 입력 가능
+        if (r.data.grade === 'A') setInput(true);   // 상담사는 곧바로 입력 가능
       })
       .catch(() => alert('로그인이 필요합니다.'));
   }, []);
 
-  /* ---------- WebSocket + 히스토리 ---------- */
+  /* WebSocket + 히스토리 ------------------------------------------ */
   useEffect(() => {
     const client = new Client({
       webSocketFactory: () => new SockJS(`${BASE_URL}/ws`),
@@ -47,7 +47,6 @@ function ChatRoom() {
           if (!isCounselor && m.grade === 'A' && m.qna_type === 1)
             setInput(true);
 
-          /* 종료 */
           if (m.qna_type === 2) { setEnded(true); setInput(false); }
         });
       },
@@ -61,11 +60,9 @@ function ChatRoom() {
         const cls = res.data.find(r => r.qna_class);
         if (cls) setQnaClass(cls.qna_class);
 
-        /* 고객 새로고침: 이미 상담사 답변이 있다면 입력 활성 */
         if (!isCounselor && res.data.some(r => r.grade === 'A' && r.qna_type === 1))
           setInput(true);
 
-        /* 종료 상태 복구 */
         if (res.data.some(r => r.qna_type === 2))
           { setEnded(true); setInput(false); }
       });
@@ -76,7 +73,7 @@ function ChatRoom() {
   const publish = p =>
     stomp.current?.publish({ destination:'/pub/chat/message', body:JSON.stringify(p) });
 
-  /* ---------- 전송 ---------- */
+  /* 전송 ----------------------------------------------------------- */
   const send = () => {
     if (!inputEnabled || !content.trim() || chatEnded) return;
     publish({ qna_no:+qna_no, cust_id:custId, grade,
@@ -84,20 +81,33 @@ function ChatRoom() {
     setContent('');
   };
 
-  /* ---------- 고객: 문의 유형 선택 ---------- */
+  /* 고객: 문의 유형 선택 ------------------------------------------ */
   const chooseType = cls => {
     setQnaClass(cls);
+
+    /* ① 시스템 안내(test) */
     publish({
       qna_no:+qna_no,
       cust_id:'test',
       grade:'A',
       content:'상담사와 연결됩니다',
       qna_class:cls,
-      qna_type:0
+      qna_type:0                // 시스템
+    });
+
+    /* ② 고객 ID로 시스템 행 => 리스트용 */
+    publish({
+      qna_no:+qna_no,
+      cust_id:custId,
+      grade,
+      content: cls === 1 ? '상품 문의를 시작했습니다'
+                         : '배송 문의를 시작했습니다',
+      qna_class:cls,
+      qna_type:0                // 시스템 (회색)
     });
   };
 
-  /* ---------- 상담사: 종료 ---------- */
+  /* 상담사: 종료 --------------------------------------------------- */
   const finish = () => {
     if (chatEnded) return;
     publish({ qna_no:+qna_no, cust_id:custId, grade,
@@ -105,7 +115,7 @@ function ChatRoom() {
               qna_class:qnaClass ?? 0, qna_type:2 });
   };
 
-  /* ---------- 렌더링 ---------- */
+  /* 렌더링 --------------------------------------------------------- */
   return (
     <div className="chat-room">
       <h2>채팅 상담 #{qna_no}</h2>
@@ -118,9 +128,8 @@ function ChatRoom() {
 
       <div className="chat-list">
         {chatList.map(m => {
-          /* 숫자 0, 문자열 "0" 모두 시스템으로 인식 */
           const bubbleClass =
-            m.qna_type == 0
+            m.qna_type == 0              /* ← 숫자 0 or 문자열 "0" */
               ? 'system'
               : m.grade === 'A'
                 ? 'left'

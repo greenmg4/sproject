@@ -119,6 +119,12 @@ const ProductUpdate = () => {
       <span>저자: </span>
       <input name="author_nm" value={product.author_nm} onChange={handleChange} /><br />
 
+      <span>추천 여부: </span>
+      <select name="suggest_yn" value={product.suggest_yn} onChange={handleChange}>
+        <option value="N">일반도서</option>
+        <option value="Y">추천도서</option>
+      </select><br />
+
       <span>상품 설명: </span>
       <textarea name="book_desc" value={product.book_desc} onChange={handleChange} /><br />
 

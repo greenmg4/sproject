@@ -11,12 +11,15 @@ function ChatRoomList() {
   const [rooms, setRooms] = useState([]);
   const stomp = useRef(null);
 
-  /* 초기 로딩 + WebSocket ------------------------------------------------ */
+  /* 초기 로딩 + WebSocket ----------------------------------------- */
   useEffect(() => {
+    /* 최초 목록 (test 메시지 제거) */
     axios.get(`${BASE_URL}/chat/rooms`)
       .then(res =>
         setRooms(
-          res.data.map(r => ({ ...r, lastMessage: r.content, unread: false }))
+          res.data
+            .filter(r => r.cust_id !== 'test')
+            .map(r => ({ ...r, lastMessage: r.content, unread: false }))
         )
       )
       .catch(console.error);
@@ -27,9 +30,11 @@ function ChatRoomList() {
         client.subscribe("/sub/chat/summary", msg => {
           const m = JSON.parse(msg.body);
 
-          /* 리스트 업데이트 */
+          /* test 행 무시 */
+          if (m.cust_id === 'test') return;
+
           setRooms(prev => {
-            /* 종료(qna_type 2)면 삭제 */
+            /* 종료(qna_type 2) ⇒ 삭제 */
             if (m.qna_type === 2)
               return prev.filter(r => r.qna_no !== m.qna_no);
 
@@ -53,7 +58,7 @@ function ChatRoomList() {
     return () => client.deactivate();
   }, []);
 
-  /* 렌더링 --------------------------------------------------------------- */
+  /* 렌더링 --------------------------------------------------------- */
   return (
     <div className="chat-room-list">
       <h2>상담 목록</h2>
