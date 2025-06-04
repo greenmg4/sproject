@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class ProductDTO {
 	private int prod_no, prod_price;
-	private String prod_nm, category, status, publisher, author_nm, prod_cnt, book_desc; 
+	private String prod_nm, category, status, publisher, author_nm, prod_cnt, book_desc, suggest_yn; 
 	private LocalDateTime reg_dtm, upd_dtm;
 	
 	
