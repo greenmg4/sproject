@@ -56,7 +56,7 @@ public class CustController {
     public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
         return ResponseEntity.ok("로그아웃 성공");
-    } 
+    }
     
     
     //어드민 체크

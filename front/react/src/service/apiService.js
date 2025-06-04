@@ -13,16 +13,15 @@ export async function apiCall(url, method, requestData, token) {
   //  - 존재하면 찾는문자열이 첫번째 나타나는 위치(index) 를 return,
   //    없으면 -1 을 return
   let headers = ''; 
-  if (url.indexOf('join') >= 0 && !token) {
-    headers = { 'Content-Type': 'multipart/form-data' };  
-} else if (token) {
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-    };  
-} else {
-    headers = { 'Content-Type': 'application/json' };  
-}
+  if (url.indexOf('join') >= 0  && token == null) {
+      headers = { 'Content-Type': 'multipart/form-data' };  
+  }else if (token !== null) {
+      headers = { 'Content-Type': 'application/json',
+                  'Authorization': 'Bearer '+token  };  
+  }else {
+      headers = { 'Content-Type': 'application/json' };  
+  }
+
   // 1.2) axios 전송 options
   let options = {
       url: API_BASE_URL + url, 
@@ -33,8 +32,12 @@ export async function apiCall(url, method, requestData, token) {
   
   // 1.3) 전송 Data(requestData) 있는 경우 data 속성 추가
   if (requestData) {
-    options.data = requestData;
+  if (method.toUpperCase() === 'GET') {
+    options.params = requestData;  // GET 요청일 땐 params에 담기
+  } else {
+    options.data = requestData;    // POST, PUT 등은 data에 담기
   }
+}
 
   console.log(`** apiCall options.method=${options.method}`);
   console.log(`** apiCall options.url=${options.url}`);
@@ -62,11 +65,26 @@ export function getStorageData() {
         else return null;
 }  
 
+// 상품 리스트 출력
+export async function ProList(category) {
+   return await apiCall(`/product/proList?category=${category}`, 'GET', null, null);
+}
 
+// 상품 디테일
+export async function ProDetail(prod_no) {
+  return await apiCall(`/product/${prod_no}`, 'GET', null, null);
+}
+
+// 장바구니 상품 추가
 export async function addCart(product) {
   return await apiCall('/cart/addCart', 'POST', product, null);
 }
 
+// 장바구니
 export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }
+
+export const getUserInfo = (cust_id) => {
+  return  apiCall("/api/user/info", "POST", {cust_id}, null);
+};

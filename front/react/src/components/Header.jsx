@@ -1,7 +1,10 @@
 import '../styles/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiCall } from '../service/apiService';
-import React, { useEffect, useState } from "react";
+import { getUserInfo } from '../service/apiService';
+import React, { useEffect, useState, useRef } from "react";
+
+
 import axios from "axios";
 
 import { Icon } from "@mdi/react";
@@ -87,8 +90,29 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const callstatistics = (url) => {
         navigate(url);
     }
-
+    //로그인
     const goToLogin = () => {navigate("/Login")};
+
+
+    // 내 정보 보기
+    const goToUserInfo = () => {
+    const cust_id = sessionStorage.getItem("loginID");
+    if (!cust_id) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    getUserInfo({ cust_id })
+        .then((response) => {
+            sessionStorage.setItem("userInfo", JSON.stringify(response));
+            navigate("/userinfo");
+        })
+        .catch((error) => {
+            console.error("사용자 정보 불러오기 실패:", error);
+            alert("사용자 정보를 불러오지 못했습니다.");
+        });
+};
+
 
     const goProductList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
@@ -138,6 +162,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 
                 {/* 로그인/로그아웃 조건부 표시 */}
                 {isLoggedIn ? (
+
                         <>
                         {/* <span style={{ color: 'green' }}>
                              <strong>{cust_nm}</strong> 님 환영합니다!</span>
@@ -236,12 +261,11 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             </div>
 			
 
-
             {/*------------- 카테고리 메뉴 ---------------*/}
             <div className='header-category-container'>
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
-                        <span onClick={() => { goProductList("/product/productlist", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
+                        <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>
@@ -254,4 +278,6 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 } //Header
 
 
+
 export default Header;
+
