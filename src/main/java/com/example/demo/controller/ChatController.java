@@ -68,7 +68,9 @@ public class ChatController {
         int qnaNo = service.createRoomForUser(user);
         ChatMessageDTO dto = new ChatMessageDTO();
         dto.setQna_no(qnaNo);
-        dto.setCust_id("test");
+        dto.setCust_id("system");
+        dto.setRoom_create_id(user);
+        dto.setGrade("C");
         dto.setContent("어떤 것을 도와드릴까요?");
         dto.setQna_type(0);
         template.convertAndSend("/sub/chat/summary", dto);
