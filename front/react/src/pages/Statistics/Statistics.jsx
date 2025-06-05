@@ -4,10 +4,13 @@ import React, { useState, useEffect } from "react";
 import StaticsticsYear from "./StatisticsYear"
 import StaticsticsYearM from "./StatisticsYearM"
 
+import StaticsticsProd from "./StatisticsProd"
+
 const Statistics = () => {
 
     return (
         <div>
+
             <div className="statistics-title">
                     매출 정보
             </div>
@@ -30,6 +33,7 @@ const Statistics = () => {
             </div>
 
             <div className="statistics-float-clear"></div>
+
         </div>
     );
 };
