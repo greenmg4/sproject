@@ -68,6 +68,7 @@ public class CustController {
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false); // 기존 세션 가져옴
+		System.out.printf("로그아웃 되나");
 		
 		 if (session != null) {
 		        System.out.println("세션 존재: " + session.getId());  // 로그 추가
