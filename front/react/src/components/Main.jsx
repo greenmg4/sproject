@@ -15,6 +15,8 @@ import ProductUpdate from './Product/ProductUpdate';
 import Statistics from '../pages/Statistics/Statistics';
 import UserInfo from '../pages/UserInfo';
 import UserEdit from '../pages/UserEdit';
+import UserJoin from '../pages/UserJoin/UserJoin';
+import UserJoinP from '../pages/UserJoin/UserJoinP';
 
 function Main({onLoginSubmit }) {
     return (
@@ -28,8 +30,10 @@ function Main({onLoginSubmit }) {
             <Route path="/product/update/:prodNo" element={<ProductUpdate />} />
             <Route path='/' element={<MainDefault />} />
             <Route path="/test/memberlist" element={<DbTestList />} />
+            <Route path="/userjoinp" element={<UserJoinP />} />
             <Route path="/login" 
-                   element={<Login onLoginSubmit={onLoginSubmit}/>}/>
+                   element={<Login onLoginSubmit={onLoginSubmit}/>}/>            
+            <Route path="/userjoin" element={<UserJoin />} />
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/useredit" element={<UserEdit />} />
             <Route path="/product/proList" element={<ProductList />} />
