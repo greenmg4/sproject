@@ -69,13 +69,16 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     };
 
     const goToChatUser = async () => {
+        const confirmed = window.confirm("채팅문의를 시작하시겠습니까?");
+        if (!confirmed) return;
+
         try {
-        const res = await axios.post("http://localhost:8080/chat/create", {}, { withCredentials: true });
-        const { qna_no } = res.data;
-        navigate(`/chat/${qna_no}`);
+            const res = await axios.post("http://localhost:8080/chat/create", {}, { withCredentials: true });
+            const { qna_no } = res.data;
+            navigate(`/chat/${qna_no}`);
         } catch (err) {
-        console.error("채팅방 생성 실패:", err);
-        alert("채팅방 생성 중 오류가 발생했습니다.");
+            console.error("채팅방 생성 실패:", err);
+            alert("채팅방 생성 중 오류가 발생했습니다.");
         }
     };
 

@@ -21,18 +21,18 @@ function ChatRoom() {
   const stomp = useRef(null);
   const isCounselor = grade === 'A';
 
-  /* ① 로그인 사용자 --------------------------------------------- */
+  // ① 로그인 사용자 정보
   useEffect(() => {
     axios.get(`${BASE_URL}/chat/userinfo`)
       .then(r => {
         setCustId(r.data.cust_id);
         setGrade(r.data.grade);
-        if (r.data.grade === 'A') setInput(true);       // 상담사는 바로 enable
+        if (r.data.grade === 'A') setInput(true);  // 상담사는 바로 enable
       })
       .catch(() => alert('로그인이 필요합니다.'));
   }, []);
 
-  /* ② WebSocket + 히스토리 -------------------------------------- */
+  // ② WebSocket 연결 및 히스토리 불러오기
   useEffect(() => {
     const client = new Client({
       webSocketFactory: () => new SockJS(`${BASE_URL}/ws`),
@@ -43,18 +43,21 @@ function ChatRoom() {
 
           if (m.qna_class && !qnaClass) setQnaClass(m.qna_class);
 
-          /* 상담사가 첫 답변을 주면 고객 input 활성 */
+          // 상담사 메시지 도착 시 고객 입력 활성화
           if (!isCounselor && m.grade === 'A' && m.qna_type === 1)
             setInput(true);
 
-          if (m.qna_type === 2) { setEnded(true); setInput(false); }
+          if (m.qna_type === 2) {
+            setEnded(true);
+            setInput(false);
+          }
         });
       }
     });
+
     client.activate();
     stomp.current = client;
 
-    /* 히스토리 */
     axios.get(`${BASE_URL}/chat/history/${qna_no}`)
       .then(res => {
         setChatList(res.data);
@@ -62,26 +65,27 @@ function ChatRoom() {
         const clsRow = res.data.find(r => r.qna_class);
         if (clsRow) setQnaClass(clsRow.qna_class);
 
-        /* 상담사 답변 여부 */
         if (!isCounselor &&
             res.data.some(r => r.grade === 'A' && r.qna_type === 1))
           setInput(true);
 
-        /* 종료 여부 */
-        if (res.data.some(r => r.qna_type === 2))
-          { setEnded(true); setInput(false); }
+        if (res.data.some(r => r.qna_type === 2)) {
+          setEnded(true);
+          setInput(false);
+        }
       });
 
     return () => client.deactivate();
   }, [qna_no, isCounselor]);
 
+  // 메시지 발행
   const publish = body =>
     stomp.current?.publish({
       destination: '/pub/chat/message',
       body: JSON.stringify(body)
     });
 
-  /* ③ 메시지 전송 ---------------------------------------------- */
+  // ③ 메시지 전송
   const send = () => {
     if (!inputEnabled || !content.trim() || chatEnded) return;
     publish({
@@ -90,28 +94,26 @@ function ChatRoom() {
       grade,
       content,
       qna_class: qnaClass ?? 0,
-      qna_type: 1                 // 일반 메시지
+      qna_type: 1
     });
     setContent('');
   };
 
-  /* ④ 고객: 상품/배송 버튼 클릭 --------------------------------- */
+  // ④ 고객 유형 선택
   const chooseType = cls => {
     setQnaClass(cls);
-
-    /* 시스템 계정으로 단 한 번만 안내 */
     publish({
-      qna_no:  +qna_no,
+      qna_no: +qna_no,
       cust_id: 'system',
       room_create_id: custId,
-      grade:   'C',
+      grade: 'C',
       content: '상담사와 연결중입니다... 잠시 기다려주세요.',
-      qna_class: cls,             // 1=상품 2=배송
-      qna_type: 0                 // 시스템
+      qna_class: cls,
+      qna_type: 0
     });
   };
 
-  /* ⑤ 상담사: 종료 --------------------------------------------- */
+  // ⑤ 상담사: 종료 처리
   const finish = () => {
     if (chatEnded) return;
     publish({
@@ -120,16 +122,15 @@ function ChatRoom() {
       grade,
       content: '문의가 종료되었습니다.',
       qna_class: qnaClass ?? 0,
-      qna_type: 2                 // 종료
+      qna_type: 2
     });
   };
 
-  /* ⑥ 렌더링 ---------------------------------------------------- */
+  // ⑥ 렌더링
   return (
     <div className="chat-room">
       <h2>채팅 상담 #{qna_no}</h2>
 
-      {/* 문의 유형 미선택 & 고객일 때만 노출 */}
       {!qnaClass && !isCounselor &&
         <div className="qna-type-select">
           <button onClick={() => chooseType(1)}>상품 문의</button>
@@ -140,9 +141,14 @@ function ChatRoom() {
         {chatList.map(m => {
           const isSystem =
             m.qna_type === 0 || m.cust_id === 'system' || m.grade === 'C';
+
+          const isWaitingMessage =
+            m.content.includes('상담사와 연결중입니다') && !inputEnabled;
+
           const bubbleClass = isSystem
-            ? 'system'
+            ? `system${isWaitingMessage ? ' wave' : ''}`
             : m.grade === 'A' ? 'left' : 'right';
+
           return (
             <div
               key={`${m.qna_no}-${m.seq ?? Math.random()}`}
