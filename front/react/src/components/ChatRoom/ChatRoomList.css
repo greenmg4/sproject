@@ -54,3 +54,13 @@
   position: relative;
 }
 
+@keyframes wave {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+.messagebox.system.wave {
+  animation: wave 1.2s ease-in-out infinite;
+}
+

@@ -76,4 +76,10 @@ public class ChatController {
         template.convertAndSend("/sub/chat/summary", dto);
         return Map.of("qna_no", qnaNo);
     }
+    
+    @GetMapping("/mychats")
+    public List<ChatMessageDTO> getMyChatList(HttpSession session) {
+        String session_id = (String) session.getAttribute("loginID");
+        return service.getUserChatList(session_id);
+    }
 }
