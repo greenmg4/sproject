@@ -40,8 +40,6 @@ export default function ProductDetail() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(location.state || null);
-  const [packageDesign, setPackageDesign] = useState('');
-  const [scentOption, setScentOption] = useState('');
 
   useEffect(() => {
     if (!product && prod_no) {
@@ -77,6 +75,21 @@ export default function ProductDetail() {
 
   if (!product) return <div>상품 정보를 불러오는 중입니다...</div>;
 
+  const handleBuyNow = () => {
+  const cust_id = sessionStorage.getItem("loginID");
+    if (!cust_id) {
+      alert("로그인 후 이용해 주세요.");
+      return;
+    }
+    if (!product) {
+      alert("상품 정보가 없습니다.");
+      return;
+    }
+
+    // 결제 페이지로 상품 정보와 함께 이동
+    navigate('/order/payment', { state: { product, cust_id, cnt: 1 } });
+  };
+
   return (
     <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
       {/* 이미지 영역 */}
@@ -102,7 +115,7 @@ export default function ProductDetail() {
         </div>
         <div style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
           <button onClick={handleAddCart} style={cartButtonStyle}>장바구니</button>
-          <button onClick={() => navigate('/order')} style={buyButtonStyle}>바로구매</button>
+          <button onClick={handleBuyNow} style={buyButtonStyle}>바로구매</button>
         </div>
       </div>
     </div>

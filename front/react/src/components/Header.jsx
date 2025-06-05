@@ -5,6 +5,7 @@ import { getUserInfo } from '../service/apiService';
 import React, { useEffect, useState, useRef } from "react";
 
 
+
 import axios from "axios";
 
 import { Icon } from "@mdi/react";
@@ -95,7 +96,10 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 
 
     // 회원가입
-    const goToJoin = () => {navigate("/join")};
+    const goTouserJoin = () => {
+        console.log("회원가입 버튼 클릭됨");
+        navigate("/userjoinp")};
+
 
 
     // 내 정보 보기
@@ -176,7 +180,7 @@ console.log(sessionStorage.getItem("loginID"))
                         </>
                     ) : (
                         <>
-                        <span onClick={goToJoin} className='header-menu-item' >회원가입</span><span>|</span>
+                        <span onClick={goTouserJoin} className='header-menu-item' >회원가입</span><span>|</span>
                         <span onClick={goToLogin} className="header-menu-item">로그인</span><span>|</span>
                         </>
                     )
