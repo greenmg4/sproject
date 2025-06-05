@@ -7,6 +7,10 @@ const UserInfoPage = () => {
   const goToEditPage = () => {
     navigate("/useredit");
   };
+ const goToAddressPage = () => {
+  navigate("/useraddress", { state: { loginInfo: userInfo } });
+};
+
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -48,8 +52,8 @@ const UserInfoPage = () => {
         <strong>등급:</strong> {userInfo.grade}<br></br>
         <strong>총 구매 금액:</strong> {userInfo.tot_buy_amt}원
       </ul>
-
-        <button onClick={goToEditPage} style={{ marginTop: '20px' }}>내 정보 수정</button>
+        <button onClick={goToAddressPage} style={{ marginTop: '20px' }}>배송지 관리</button>
+        <button onClick={goToEditPage} style={{ marginTop: '20px' }}>내정보 수정</button>
     </div>
   );
 };
