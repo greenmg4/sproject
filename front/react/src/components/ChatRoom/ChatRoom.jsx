@@ -129,7 +129,7 @@ function ChatRoom() {
   // ⑥ 렌더링
   return (
     <div className="chat-room">
-      <h2>채팅 상담 #{qna_no}</h2>
+      <h2>채팅 상담</h2>
 
       {!qnaClass && !isCounselor &&
         <div className="qna-type-select">

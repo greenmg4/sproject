@@ -49,4 +49,26 @@
   <update id="updateRoomType">
     UPDATE qna SET qna_type = #{qna_type} WHERE qna_no = #{qna_no}
   </update>
+  
+  <select id="getUserChatList" resultType="com.example.demo.model.ChatMessageDTO">
+	SELECT *
+	FROM qna
+	WHERE qna_no IN (
+	    SELECT DISTINCT qna_no
+	    FROM qna
+	    WHERE cust_id = #{session_id}
+	)
+	ORDER BY 
+	    (
+	        SELECT CASE
+	            WHEN COUNT(DISTINCT qna_type) = 1 AND MAX(qna_type) = 2 THEN 1
+	            ELSE 0
+	        END
+	        FROM qna q2
+	        WHERE q2.qna_no = qna.qna_no
+	    ) ASC,
+	    qna.qna_no,
+	    qna.seq;
+  </select>
+  
 </mapper>

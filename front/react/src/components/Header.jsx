@@ -83,6 +83,10 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
         }
     };
 
+    const goToUserChatList = () => {
+        navigate("userchatroomlist");
+    }
+
     const goToProductPage = () => {
         navigate("product");
     };
@@ -202,6 +206,7 @@ console.log(sessionStorage.getItem("loginID"))
                 ) : (
                 <>
                     <span onClick={goToChatUser} className="header-menu-item">채팅상담</span><span>|</span>
+                    <span onClick={goToUserChatList} className="header-menu-item">고객센터</span><span>|</span>
                 </>
                 )}
 
