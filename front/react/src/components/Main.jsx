@@ -15,6 +15,7 @@ import ProductUpdate from './Product/ProductUpdate';
 import StatisticsTab from '../pages/Statistics/StatisticsTab';
 import UserInfo from '../pages/UserInfo';
 import UserEdit from '../pages/UserEdit';
+import OrderPayment from '../pages/OrderPayment';
 
 function Main({onLoginSubmit }) {
     return (
@@ -36,6 +37,7 @@ function Main({onLoginSubmit }) {
             <Route path="/product/:prod_no" element={<ProductDetail />} />
             <Route path="/cart/addCart" element={<Cart />} />
             <Route path="/statistics/data" element={<StatisticsTab />} />
+            <Route path="/order/payment" element={<OrderPayment />} />
         </Routes>
         </div>
     );

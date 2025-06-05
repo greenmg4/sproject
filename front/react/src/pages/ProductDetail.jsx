@@ -40,8 +40,6 @@ export default function ProductDetail() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(location.state || null);
-  const [packageDesign, setPackageDesign] = useState('');
-  const [scentOption, setScentOption] = useState('');
 
   useEffect(() => {
     if (!product && prod_no) {
@@ -77,84 +75,20 @@ export default function ProductDetail() {
 
   if (!product) return <div>상품 정보를 불러오는 중입니다...</div>;
 
-  const handleDirectBuy = () => {
+  const handleBuyNow = () => {
   const cust_id = sessionStorage.getItem("loginID");
-  if (!cust_id) {
-    alert("로그인 후 이용해 주세요.");
-    return;
-  }
-  const { IMP } = window;
-    IMP.init("imp06723305");
-
-    const amount = product.prod_price;  
-
-    IMP.request_pay({
-      pg: "kakaopay.TC0ONETIME",
-    pay_method: "card",
-    merchant_uid: `mid_${new Date().getTime()}`,
-    name: product.prod_nm,
-    amount: amount,
-    buyer_email: "testuser@example.com",
-    buyer_name: "홍길동",
-    buyer_tel: "010-1234-5678",
-    buyer_addr: "서울 강남구 테헤란로 123",
-    buyer_postcode: "06134"
-  }, async function (rsp) {
-    if (rsp.success) {
-      try {
-        // 결제 검증 (서버로 imp_uid 전송하여 결제 검증)
-        const verifyRes = await fetch("/api/payment/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imp_uid: rsp.imp_uid })
-        });
-        const verifyData = await verifyRes.json();
-
-        if (verifyData.status === "paid") {
-          alert("결제 성공!");
-
-          // 주문 저장
-          const saveRes = await fetch("/api/order/save", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              cust_id,
-              pay_method: rsp.pay_method,
-              ord_dtm: new Date().toISOString(),
-              amount,
-              buyer_name: rsp.buyer_name,
-              buyer_tel: rsp.buyer_tel,
-              buyer_addr: rsp.buyer_addr,
-              buyer_postcode: rsp.buyer_postcode,
-              order_items: [{
-                prod_no: product.prod_no,
-                prod_price: product.prod_price,
-                cnt: 1
-              }]
-            })
-          });
-
-          const saveResult = await saveRes.json();
-          if (saveResult.success) {
-            alert("주문이 완료되었습니다.");
-            navigate("/"); // 메인 페이지로 이동
-          } else {
-            alert("주문 저장 실패: " + saveResult.message);
-          }
-        } else {
-          alert("결제 검증 실패");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("서버 오류 발생");
-      }
-    } else {
-      alert("결제 실패: " + rsp.error_msg);
+    if (!cust_id) {
+      alert("로그인 후 이용해 주세요.");
+      return;
     }
-  });
-};
+    if (!product) {
+      alert("상품 정보가 없습니다.");
+      return;
+    }
 
-  
+    // 결제 페이지로 상품 정보와 함께 이동
+    navigate('/order/payment', { state: { product, cust_id, cnt: 1 } });
+  };
 
   return (
     <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
@@ -181,7 +115,7 @@ export default function ProductDetail() {
         </div>
         <div style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
           <button onClick={handleAddCart} style={cartButtonStyle}>장바구니</button>
-          <button onClick={handleDirectBuy} style={buyButtonStyle}>바로구매</button>
+          <button onClick={handleBuyNow} style={buyButtonStyle}>바로구매</button>
         </div>
       </div>
     </div>
