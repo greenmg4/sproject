@@ -14,4 +14,5 @@ public class ChatMessageDTO {
     private String content;
     private LocalDateTime qna_dtm;
     private String grade;    // 조인용
+    private String room_create_id;
 }

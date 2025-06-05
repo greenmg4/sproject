@@ -7,12 +7,14 @@
     SELECT IFNULL(MAX(seq),0) FROM qna WHERE qna_no = #{qna_no}
   </select>
 
-  <insert id="insertMessage">
-    INSERT INTO qna
-      (qna_no, seq, qna_class, qna_type, cust_id, content, qna_dtm)
-    VALUES
-      (#{qna_no}, #{seq}, #{qna_class}, #{qna_type}, #{cust_id}, #{content}, #{qna_dtm})
-  </insert>
+	<insert id="insertMessage">
+	  INSERT INTO qna
+	    (qna_no, seq, qna_class, qna_type, cust_id, content, qna_dtm)
+	  SELECT
+	    #{qna_no},
+	    IFNULL((SELECT MAX(seq)+1 FROM qna WHERE qna_no=#{qna_no}), 1),
+	    #{qna_class}, #{qna_type}, #{cust_id}, #{content}, #{qna_dtm}
+	</insert>
 
   <select id="getMessagesByRoomId"
           parameterType="int"
@@ -24,24 +26,21 @@
     ORDER BY q.seq
   </select>
 
-	<!-- 가장 최근 “고객 메시지”만 가져오기 -->
-	<select id="getRoomSummaries"
-	        resultType="com.example.demo.model.ChatMessageDTO">
-	  WITH latest_msg AS (
-	      SELECT qna_no, MAX(seq) AS seq
-	      FROM qna
-	      WHERE cust_id != 'test'    <!-- test 제외 -->
-	        AND qna_type != 2        <!-- 종료 제외 -->
-	      GROUP BY qna_no
-	  )
-	  SELECT q.*
-	  FROM qna q
-	  JOIN latest_msg l
-	    ON q.qna_no = l.qna_no
-	   AND q.seq    = l.seq
-	  ORDER BY q.qna_no DESC
-	</select>
-
+  <!-- 가장 최근 “고객 메시지”만 가져오기 (시스템 계정 제외) -->
+<select id="getRoomSummaries" resultType="com.example.demo.model.ChatMessageDTO">
+  WITH latest AS (
+    SELECT qna_no, MAX(seq) seq
+    FROM qna
+    WHERE qna_type != 2                      <!-- 종료 제외 -->
+      AND NOT (cust_id='system' AND qna_class=0)
+    GROUP BY qna_no
+  )
+  SELECT q.*, c.grade
+  FROM qna q
+  JOIN custom c ON q.cust_id = c.cust_id
+  JOIN latest l ON q.qna_no = l.qna_no AND q.seq = l.seq
+  ORDER BY q.qna_no DESC
+</select>
 
   <select id="selectNextQnaNo" resultType="int">
     SELECT IFNULL(MAX(qna_no),0) + 1 FROM qna

@@ -12,11 +12,13 @@ import ChatRoom from './ChatRoom/ChatRoom';
 import ProductPage from './Product/ProductPage';
 import ProductUpload from './Product/ProductUpload';
 import ProductUpdate from './Product/ProductUpdate';
-import Statistics from '../pages/Statistics/Statistics';
+import StatisticsTab from '../pages/Statistics/StatisticsTab';
 import UserInfo from '../pages/UserInfo';
 import UserEdit from '../pages/UserEdit';
 import UserJoin from '../pages/UserJoin/UserJoin';
 import UserJoinP from '../pages/UserJoin/UserJoinP';
+import OrderPayment from '../pages/OrderPayment';
+
 
 function Main({onLoginSubmit }) {
     return (
@@ -39,7 +41,8 @@ function Main({onLoginSubmit }) {
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
             <Route path="/cart/addCart" element={<Cart />} />
-            <Route path="/statistics/data" element={<Statistics />} />
+            <Route path="/statistics/data" element={<StatisticsTab />} />
+            <Route path="/order/payment" element={<OrderPayment />} />
         </Routes>
         </div>
     );

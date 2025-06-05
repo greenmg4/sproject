@@ -34,7 +34,7 @@ function MainDefault() {
             slidesToShow: 2,  // 한 번에 보여줄 슬라이드 개수
             slidesToScroll: 1,  // 한 번에 스크롤될 개수
             autoplay: true,  // 자동 슬라이드
-            autoplaySpeed: 7000, // 자동 슬라이드 속도 (2초)
+            autoplaySpeed: 5000, // 자동 슬라이드 속도 (5초)
         };
 
         const products = [

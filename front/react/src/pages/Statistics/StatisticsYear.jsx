@@ -193,16 +193,19 @@ const StatisticsYear = () => {
                 </div>
             </div>
             
-            <div>
+            <div style={{height: '450px'}}>
                 <Bar data={dataY} options={optionsY} />
             </div>
             <div className="statistics-table-container">
                 <table className="statistics-table">
+                    <thead>
                     <tr>
                         <th style={{ width: '30%'}}></th>
                         <th style={{ width: '45%'}}></th>
                         <th style={{ width: '15%'}}></th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <th>년 총매출액</th>
                         <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${yearResult.sumYearAmount}`}</td>
@@ -233,7 +236,7 @@ const StatisticsYear = () => {
                         <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonthAmount}`}</td>
                         <td>원</td>
                     </tr>
-                    
+                    </tbody>
                 </table>
                 
             </div>
