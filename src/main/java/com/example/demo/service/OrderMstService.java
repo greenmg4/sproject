@@ -1,18 +1,12 @@
 package com.example.demo.service;
 
-import java.util.List;
 
 import org.springframework.stereotype.Service;
-
-import com.example.demo.model.OrderDetailDTO;
-import com.example.demo.model.OrderMstDTO;
+import com.example.demo.model.OrderRequestDTO;
 
 @Service
 public interface OrderMstService {
-
-	void saveOrder(OrderMstDTO orderMst, List<OrderDetailDTO> details);
-
-
-
 	
+	int saveOrder(OrderRequestDTO dto) throws Exception;
 }
+

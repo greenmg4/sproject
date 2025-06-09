@@ -8,6 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderItemDTO {
-	private int prod_no, prod_price, cnt;
-    private String prod_nm;
+	private String prod_no;
+    private int buy_price, cnt;
 }
