@@ -5,6 +5,15 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './ChatRoom.css';
 
+const formatTime = ts => {
+  const d = new Date(ts);
+  const h24 = d.getHours();
+  const mm  = d.getMinutes().toString().padStart(2, '0');
+  const ap  = h24 < 12 ? '오전' : '오후';
+  const h12 = (h24 % 12) || 12;
+  return `${ap} ${h12}:${mm}`;
+};
+
 const BASE_URL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 
@@ -27,7 +36,7 @@ function ChatRoom() {
       .then(r => {
         setCustId(r.data.cust_id);
         setGrade(r.data.grade);
-        if (r.data.grade === 'A') setInput(true);  // 상담사는 바로 enable
+        if (r.data.grade === 'A') setInput(true);
       })
       .catch(() => alert('로그인이 필요합니다.'));
   }, []);
@@ -41,9 +50,22 @@ function ChatRoom() {
           const m = JSON.parse(msg.body);
           setChatList(prev => [...prev, m]);
 
+          // 상담사 응답 시 wave 제거
+          if (m.grade === 'A' && m.qna_type === 1) {
+            setChatList(prev =>
+              prev.map(msg =>
+                msg.grade === 'C' &&
+                msg.qna_type === 0 &&
+                msg.content.includes('연결중') &&
+                msg.wave !== false
+                  ? { ...msg, wave: false }
+                  : msg
+              )
+            );
+          }
+
           if (m.qna_class && !qnaClass) setQnaClass(m.qna_class);
 
-          // 상담사 메시지 도착 시 고객 입력 활성화
           if (!isCounselor && m.grade === 'A' && m.qna_type === 1)
             setInput(true);
 
@@ -102,18 +124,35 @@ function ChatRoom() {
   // ④ 고객 유형 선택
   const chooseType = cls => {
     setQnaClass(cls);
+
+    // 1) 고객 메시지
     publish({
       qna_no: +qna_no,
-      cust_id: 'system',
-      room_create_id: custId,
-      grade: 'C',
-      content: '상담사와 연결중입니다... 잠시 기다려주세요.',
+      cust_id: custId,
+      grade,
+      content:
+        cls === 1
+          ? '상품에 대해 문의하고 싶어요!'
+          : '배송에 대해 문의하고 싶어요!',
       qna_class: cls,
-      qna_type: 0
+      qna_type: 1
     });
+
+    // 2) 시스템 안내 메시지
+    setTimeout(() => {
+      publish({
+        qna_no: +qna_no,
+        cust_id: 'system',
+        room_create_id: custId,
+        grade: 'C',
+        content: '상담사와 연결중입니다... 잠시 기다려주세요.',
+        qna_class: cls,
+        qna_type: 0
+      });
+    }, 80);
   };
 
-  // ⑤ 상담사: 종료 처리
+  // ⑤ 상담사 종료 버튼
   const finish = () => {
     if (chatEnded) return;
     publish({
@@ -139,21 +178,38 @@ function ChatRoom() {
 
       <div className="chat-list">
         {chatList.map(m => {
-          const isSystem =
-            m.qna_type === 0 || m.cust_id === 'system' || m.grade === 'C';
-
-          const isWaitingMessage =
-            m.content.includes('상담사와 연결중입니다') && !inputEnabled;
-
-          const bubbleClass = isSystem
-            ? `system${isWaitingMessage ? ' wave' : ''}`
-            : m.grade === 'A' ? 'left' : 'right';
+          const isSystem = m.grade === 'C' || m.cust_id === 'system' || m.qna_type === 0;
+          const isCounselor = m.grade === 'A';
+          const align = isSystem ? 'center'
+                        : isCounselor ? 'left'
+                        : 'right';
 
           return (
             <div
               key={`${m.qna_no}-${m.seq ?? Math.random()}`}
-              className={`messagebox ${bubbleClass}`}>
-              {m.content}
+              className={`msg-row ${align}`}
+            >
+              {/* 메타 정보 */}
+              {!isSystem && isCounselor &&
+                <div className="meta left-meta">
+                  상담사&nbsp;{m.cust_nm}&nbsp;{formatTime(m.qna_dtm)}
+                </div>}
+              {!isSystem && !isCounselor &&
+                <div className="meta right-meta">
+                  {formatTime(m.qna_dtm)}
+                </div>}
+
+              {/* 말풍선 */}
+              <div
+                className={[
+                  'messagebox',
+                  align,
+                  isSystem && 'system',
+                  m.wave !== false && m.qna_type === 0 && m.content.includes('연결중') && 'wave'
+                ].filter(Boolean).join(' ')}
+              >
+                {m.content}
+              </div>
             </div>
           );
         })}

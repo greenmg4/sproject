@@ -26,15 +26,24 @@ public class ChatServiceImpl implements ChatService {
         mapper.insertMessage(dto);
     }
 
-    @Override public List<ChatMessageDTO> getMessagesByRoomId(int qna_no){
+    @Override 
+    public List<ChatMessageDTO> getMessagesByRoomId(int qna_no){
         return mapper.getMessagesByRoomId(qna_no);
     }
 
-    @Override public List<ChatMessageDTO> getRoomSummaries(int excludeType){
-        return mapper.getRoomSummaries(excludeType);
+    @Override
+    public List<ChatMessageDTO> getRoomSummaries(int excludeType){
+        List<ChatMessageDTO> list = mapper.getRoomSummaries(excludeType);  // 📝 기존 코드
+
+        /* ➕ 방마다 생성자를 조회해 세팅 */
+        for (ChatMessageDTO row : list) {
+            row.setRoom_create_id(findRoomCreator(row.getQna_no()));
+        }
+        return list;
     }
 
-    @Override public int generateNewQnaNo(){return mapper.selectNextQnaNo();}
+    @Override 
+    public int generateNewQnaNo(){return mapper.selectNextQnaNo();}
 
     @Override @Transactional
     public int createRoomForUser(String userCustId){
@@ -62,4 +71,15 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatMessageDTO> getUserChatList(String session_id) {
         return mapper.getUserChatList(session_id);
     }
+    
+    @Override
+    public String findRoomCreator(int qnaNo) {
+        return mapper.selectRoomCreator(qnaNo);   
+    }
+    
+    @Override
+    public String findCustName(String custId) {
+        return mapper.selectCustName(custId);
+    }
+
 }

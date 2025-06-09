@@ -28,15 +28,27 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void handle(ChatMessageDTO dto){
-        dto.setQna_dtm(LocalDateTime.now());
-        service.insertMessage(dto);
 
+        dto.setQna_dtm(LocalDateTime.now());
+
+        /* ① room_create_id가 비어있으면 서비스에서 찾아서 채워줌 */
+        if (dto.getRoom_create_id() == null) {
+            String creator = service.findRoomCreator(dto.getQna_no());
+            dto.setRoom_create_id(creator);
+        }
+
+        service.insertMessage(dto);
+        
+        dto.setCust_nm( service.findCustName(dto.getCust_id()) );
+
+        /* ② 진행·종료 상태값 유지 */
         if(dto.getQna_type() == 1){
             service.updateRoomType(dto.getQna_no(), 1);
         }else if(dto.getQna_type() == 2){
             service.updateRoomType(dto.getQna_no(), 2);
         }
 
+        /* ③ 실시간 브로드캐스트 */
         template.convertAndSend("/sub/chat/room/"+dto.getQna_no(), dto);
         template.convertAndSend("/sub/chat/summary", dto);
     }
