@@ -101,3 +101,15 @@
   border-radius: 50%;
   background: #ff4d4f;
 }
+
+.room-title .ended-tag {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.chat-room.closed {        /* 종료된 문의 흐리게 */
+  opacity: 0.55 !important;   /* ← 우선순위 보강 */
+}
+
+

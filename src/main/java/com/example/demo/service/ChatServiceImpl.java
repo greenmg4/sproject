@@ -57,4 +57,9 @@ public class ChatServiceImpl implements ChatService {
     public void updateRoomType(int qna_no, int qna_type){
         mapper.updateRoomType(qna_no, qna_type);
     }
+    
+    @Override
+    public List<ChatMessageDTO> getUserChatList(String session_id) {
+        return mapper.getUserChatList(session_id);
+    }
 }
