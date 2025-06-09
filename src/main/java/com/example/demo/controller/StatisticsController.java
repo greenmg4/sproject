@@ -65,4 +65,23 @@ public class StatisticsController {
 					.body("selectMonthSaleList NotFound");
 		}
  	} //monthsaleslist
+ 	
+ 	
+ 	@PostMapping(value="/salesbyproductlist", consumes=MediaType.APPLICATION_JSON_VALUE)
+ 	public ResponseEntity<?> salesbyproductlist(@RequestBody Map<String, Object> requestData) {
+
+ 		String searchDate =String.valueOf(requestData.get("searchDate").toString());
+ 		int limit = Integer.parseInt(String.valueOf(requestData.get("limit")));
+ 		int offset = Integer.parseInt(String.valueOf(requestData.get("offset")));
+ 		List<Map<String,Object>> list = service.selectSalesByProductList(searchDate, limit, offset);
+ 		//if ( list !=null && list.size() > 0 ) {
+    	if ( list !=null && list.size() >= 0 ) {  // 매출이 없을 수도 있으므로 0도 포함.	
+			return ResponseEntity.ok().body(list);
+		} else {
+			log.info("** selectMonthSaleList NotFound **");
+			return ResponseEntity
+					.status(HttpStatus.BAD_GATEWAY) 
+					.body("selectMonthSaleList NotFound");
+		}
+ 	} //monthsaleslist
 }

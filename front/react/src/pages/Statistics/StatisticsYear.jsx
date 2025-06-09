@@ -86,8 +86,6 @@ const StatisticsYear = () => {
 
         //alert(`** 선택한 연도: ${event.target.value}`);
         const requestData = { year: yearRef.current.value }; // JSON 객체 변환
-
-        console.log(`---------1${requestData.year}`);
         apiCall(url, 'POST', requestData, null)
         .then((response) => {
             //alert(`** serverDataRequest 성공 url=${url}`);
@@ -199,43 +197,43 @@ const StatisticsYear = () => {
             <div className="statistics-table-container">
                 <table className="statistics-table">
                     <thead>
-                    <tr>
-                        <th style={{ width: '30%'}}></th>
-                        <th style={{ width: '45%'}}></th>
-                        <th style={{ width: '15%'}}></th>
-                    </tr>
+                        <tr>
+                            <th style={{ width: '30%'}}></th>
+                            <th style={{ width: '45%'}}></th>
+                            <th style={{ width: '15%'}}></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th>년 총매출액</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${yearResult.sumYearAmount}`}</td>
-                        <td>원</td>
-                    </tr>
-                    <tr>
-                        <th>년평균 매출</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.avgTotAmount}`}</td>
-                        <td>원</td>
-                    </tr>
-                    <tr>
-                        <th style={{ color: 'rgb(172, 59, 59)' }}>최고 매출월</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonth}`}</td>
-                        <td>월</td>
-                    </tr>
-                    <tr>
-                        <th style={{ color: 'rgb(172, 59, 59)' }}>최고 월매출</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonthAmount}`}</td>   
-                        <td >원</td>
-                    </tr>
-                    <tr>
-                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 매출월</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonth}`}</td>
-                        <td>월</td>
-                    </tr>
-                    <tr>
-                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 월매출</th>
-                        <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonthAmount}`}</td>
-                        <td>원</td>
-                    </tr>
+                        <tr>
+                            <th>년 총매출액</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${yearResult.sumYearAmount}`}</td>
+                            <td>원</td>
+                        </tr>
+                        <tr>
+                            <th>년평균 매출</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.avgTotAmount}`}</td>
+                            <td>원</td>
+                        </tr>
+                        <tr>
+                            <th style={{ color: 'rgb(172, 59, 59)' }}>최고 매출월</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonth}`}</td>
+                            <td>월</td>
+                        </tr>
+                        <tr>
+                            <th style={{ color: 'rgb(172, 59, 59)' }}>최고 월매출</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.maxMonthAmount}`}</td>   
+                            <td >원</td>
+                        </tr>
+                        <tr>
+                            <th style={{ color: 'rgb(7, 70, 5)' }}>최소 매출월</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonth}`}</td>
+                            <td>월</td>
+                        </tr>
+                        <tr>
+                            <th style={{ color: 'rgb(7, 70, 5)' }}>최소 월매출</th>
+                            <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.minMonthAmount}`}</td>
+                            <td>원</td>
+                        </tr>
                     </tbody>
                 </table>
                 

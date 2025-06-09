@@ -80,6 +80,31 @@
     font-size: 15px; /* 폰트 크기 설정 */
 }
 
+.statistics-table-border {
+
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+
+    border-radius: 10px;
+    font-size: 17px; /* 폰트 크기 설정 */
+
+    border: 1px solid #ccc; /* 테두리 */
+}
+
+.statistics-table-border th{
+    background-color: rgb(224, 222, 210);
+    border-bottom:1px solid rgb(188, 190, 171)  ;
+}
+
+.statistics-table-border tr:nth-child(2n){
+    /* background-color: rgb(250, 248, 248); */
+    background-color: rgb(221, 221, 218);
+}
+.statistics-table-border tr:nth-child(2n+1){
+    background-color: rgb(235, 232, 232);
+}
+
 .statistics-tab {
     display: flex;
     cursor: pointer;

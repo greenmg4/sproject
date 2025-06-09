@@ -32,7 +32,7 @@ const TabComponent = () => {
                     </div>
                 ))}
             </div>
-            <div   style={{ width:'98%', padding: '20px', border: '1px solid #ddd' }}>
+            <div style={{ width:'98%', padding: '20px', border: '1px solid #ddd' }}>
                 {tabs[activeTab].content}
             </div>
         </div>
