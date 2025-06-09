@@ -13,6 +13,8 @@ public class ChatMessageDTO {
     private String cust_id;
     private String content;
     private LocalDateTime qna_dtm;
+    
     private String grade;    // 조인용
+    private String cust_nm;  // 조인용
     private String room_create_id;
 }

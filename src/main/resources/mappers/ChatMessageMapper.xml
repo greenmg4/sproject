@@ -19,7 +19,7 @@
   <select id="getMessagesByRoomId"
           parameterType="int"
           resultType="com.example.demo.model.ChatMessageDTO">
-    SELECT q.*, c.grade
+    SELECT q.*, c.grade, c.cust_nm 
     FROM qna q
     JOIN custom c ON q.cust_id = c.cust_id
     WHERE q.qna_no = #{qna_no}
@@ -70,5 +70,23 @@
 	    qna.qna_no,
 	    qna.seq;
   </select>
+  
+  
+	<select id="selectRoomCreator" resultType="string">
+	  SELECT q.cust_id
+	  FROM qna     q
+	  JOIN custom  c ON q.cust_id = c.cust_id
+	  WHERE q.qna_no = #{qna_no}
+	    AND c.grade NOT IN ('A', 'C')
+	  ORDER BY q.seq
+	  LIMIT 1
+	</select>
+	
+	<select id="selectCustName" parameterType="string" resultType="string">
+	    SELECT cust_nm
+	    FROM   custom
+	    WHERE  cust_id = #{custId}
+	</select>
+	
   
 </mapper>

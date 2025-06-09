@@ -3,7 +3,7 @@ import axios from 'axios';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { Link } from 'react-router-dom';
-import './ChatRoomList.css';
+import './UserChatRoomList.css';
 
 const BASE_URL = 'http://localhost:8080';
 
