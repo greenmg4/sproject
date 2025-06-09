@@ -10,8 +10,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrderRequestDTO {
-	private String cust_id, merchant_uid, imp_uid, pay_method, buyer_name, buyer_tel, buyer_addr, buyer_postcode, ord_dtm;
-    private int amount;
+	private String cust_id, pay_method, ord_dtm, rcv_nm, rcv_phone, address1, address2, zip;
+    private int tot_amount, prod_cnt;
     private List<OrderItemDTO> order_items;
 
 }
