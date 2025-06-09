@@ -113,15 +113,21 @@ export default function Cart() {
       ) : (
         <>
           {/* 전체 선택 */}
-          <div style={{ marginBottom: '10px' }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={isAllSelected}
-                onChange={toggleSelectAll}
-              /> 전체 선택
-            </label>
-          </div>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'flex-start', 
+          marginBottom: '10px' 
+        }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={isAllSelected}
+              onChange={toggleSelectAll}
+              style={{ marginRight: '5px' }}
+            />
+            전체 선택
+          </label>
+        </div>
 
           {/* 장바구니 상품 목록 */}
           {cartDetail.map(item => (
