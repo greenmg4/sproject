@@ -26,4 +26,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 //		return list;
 		return mapper.selectMonthSaleList(year);
 	}
+	
+	@Override
+	public List<Map<String, Object>> selectSalesByProductList(String searchDate, int limit, int offset) {
+//		List<Map<String, Object>> list = mapper.selectSalesByProductList(year);
+//		return list;
+		return mapper.selectSalesByProductList(searchDate, limit, offset);
+	}
+	
+	
+	
 }

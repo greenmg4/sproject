@@ -5,13 +5,25 @@ export default function OrderPayment() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { product, cust_id, cnt, selectedCartItems, totalPrice, cust_nm, email, phone } =
-    location.state || {};
+  const {
+    product,
+    cust_id,
+    cnt,
+    selectedCartItems,
+    totalPrice,
+    cust_nm: initialCustNm,
+    email,
+    phone: initialPhone,
+  } = location.state || {};
 
   // 배송지 정보
   const [postcode, setPostcode] = useState("");
   const [address1, setAddress] = useState("");
   const [address2, setDetailAddress] = useState("");
+
+  // 수령인 정보
+  const [cust_nm, setCustNm] = useState(initialCustNm || "");
+  const [phone, setPhone] = useState(initialPhone || "");
 
   // 약관 동의 체크박스
   const [agreeAll, setAgreeAll] = useState(false);
@@ -19,11 +31,17 @@ export default function OrderPayment() {
   const [agreeProduct, setAgreeProduct] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
 
-  // 다 채워야 결제 버튼 활성화
+  const [discRate, setDiscRate] = useState(0); // 할인율 (%)
+  const [discMaxAmt, setDiscMaxAmt] = useState(0); // 최대 할인액
+
+
+
   const isFormValid =
     postcode &&
     address1 &&
     address2 &&
+    cust_nm &&
+    phone &&
     agreeAll &&
     agreeAge &&
     agreeProduct &&
@@ -36,23 +54,18 @@ export default function OrderPayment() {
     : product
     ? product.prod_price * cnt
     : 0;
-  const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
-  const productDiscount = Math.floor(itemTotalPrice * 0.1);
-  const finalAmount = itemTotalPrice + shippingFee - productDiscount;
+  
 
   useEffect(() => {
     const impScript = document.createElement("script");
     impScript.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
     impScript.onload = () => {
-      if (window.IMP) {
-        window.IMP.init("imp06723305");
-      }
+      if (window.IMP) window.IMP.init("imp06723305");
     };
     document.body.appendChild(impScript);
 
     const daumScript = document.createElement("script");
-    daumScript.src =
-      "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    daumScript.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     document.body.appendChild(daumScript);
   }, []);
 
@@ -105,30 +118,30 @@ export default function OrderPayment() {
       },
       async (rsp) => {
         if (rsp.success) {
-          // 결제 성공 후 서버에 주문 저장 요청
           try {
-            const response = await fetch("/api/orders", {
+            const response = await fetch("/api/order/save", {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                merchant_uid,
-                paymentInfo: rsp,
-                items,
                 cust_id,
-                shippingAddr: {
-                  postcode,
-                  address1,
-                  address2,
-                },
-                totalAmount: finalAmount,
+                pay_method: rsp.pay_method === "card" ? "2" : "1",
+                ord_dtm: new Date().toISOString(),
+                tot_amount: finalAmount,
+                prod_cnt: items.reduce((sum, item) => sum + item.cnt, 0),
+                rcv_nm: cust_nm,
+                rcv_phone: phone,
+                address1,
+                address2,
+                zip: postcode,
+                order_items: items.map((item) => ({
+                  prod_no: item.prod_no,
+                  buy_price: item.prod_price,
+                  cnt: item.cnt,
+                })),
               }),
             });
 
-            if (!response.ok) {
-              throw new Error("주문 저장에 실패했습니다.");
-            }
+            if (!response.ok) throw new Error("주문 저장에 실패했습니다.");
 
             const data = await response.json();
 
@@ -139,7 +152,7 @@ export default function OrderPayment() {
                 items,
                 totalAmount: finalAmount,
                 shippingAddr: `${address1} ${address2}`,
-                orderId: data.orderId, // 서버에서 반환한 주문 ID
+                orderId: data.orderId,
               },
             });
           } catch (error) {
@@ -159,41 +172,74 @@ export default function OrderPayment() {
     }
   }, [cust_id, items, navigate]);
 
+  const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
+
+  useEffect(() => {
+  if (!cust_id) return;
+
+  const fetchDiscountInfo = async () => {
+    try {
+      const res = await fetch(`/api/order/discount/${cust_id}`);
+      if (!res.ok) throw new Error("할인 정보를 불러올 수 없습니다.");
+      const data = await res.json();
+      setDiscRate(data.disc_rate);
+      setDiscMaxAmt(data.disc_max_amt);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchDiscountInfo();
+}, [cust_id]);
+
+const productDiscount = Math.min(
+  Math.floor(itemTotalPrice * (discRate / 100)),
+  discMaxAmt
+);
+const finalAmount = itemTotalPrice + shippingFee - productDiscount;
+
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "40px 20px",
-        display: "flex",
-        gap: "20px",
-        boxSizing: "border-box",
-      }}
-    >
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px", display: "flex", gap: "20px" }}>
       <div style={{ flex: 2 }}>
-        {/* 1. 배송지 정보 입력 */}
-        <section
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "20px",
-          }}
-        >
+        {/* 배송지 정보 */}
+        <section style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
           <h3 style={{ fontSize: "18px", marginBottom: "15px" }}>배송지 정보</h3>
+
+          <input
+            type="text"
+            placeholder="수령인 이름"
+            value={cust_nm}
+            onChange={(e) => setCustNm(e.target.value)}
+            style={{
+              marginBottom: "12px",
+              padding: "10px",
+              fontSize: "14px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              width: "100%",
+            }}
+          />
+          <input
+            type="text"
+            placeholder="전화번호"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            style={{
+              marginBottom: "12px",
+              padding: "10px",
+              fontSize: "14px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              width: "100%",
+            }}
+          />
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <input
               type="text"
               placeholder="우편번호"
               value={postcode}
               readOnly
-              style={{
-                padding: "10px",
-                fontSize: "14px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                flex: "1",
-              }}
+              style={{ padding: "10px", fontSize: "14px", borderRadius: "4px", border: "1px solid #ccc", flex: "1" }}
             />
             <button
               onClick={openPostcodePopup}
@@ -240,15 +286,8 @@ export default function OrderPayment() {
           />
         </section>
 
-        {/* 2. 주문 상품 목록 */}
-        <section
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "20px",
-          }}
-        >
+        {/* 주문 상품 목록 */}
+        <section style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
           <h3 style={{ fontSize: "18px", marginBottom: "15px" }}>주문 상품</h3>
           {items.map((item) => (
             <div
@@ -264,17 +303,10 @@ export default function OrderPayment() {
               <img
                 src={item.img_path || "/images/recommendation/default-product.png"}
                 alt={item.prod_nm}
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  objectFit: "cover",
-                  borderRadius: "6px",
-                }}
+                style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "6px" }}
               />
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: "16px", marginBottom: "6px" }}>
-                  {item.prod_nm}
-                </p>
+                <p style={{ fontSize: "16px", marginBottom: "6px" }}>{item.prod_nm}</p>
                 <p style={{ fontSize: "14px", color: "#555" }}>
                   가격: {item.prod_price.toLocaleString()}원 x {item.cnt}개
                 </p>
@@ -287,60 +319,26 @@ export default function OrderPayment() {
         </section>
       </div>
 
-      {/* 우측: 주문 요약 + 약관 동의 + 결제 버튼 */}
+      {/* 우측 영역 */}
       <div style={{ flex: 1 }}>
-        <div
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "20px",
-            backgroundColor: "#fafafa",
-          }}
-        >
+        {/* 주문 요약 */}
+        <div style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px", backgroundColor: "#fafafa" }}>
           <h3 style={{ fontSize: "18px", marginBottom: "15px" }}>주문 요약</h3>
           <div style={{ fontSize: "14px", color: "#333" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "8px",
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
               <span>상품 금액</span>
               <span>{itemTotalPrice.toLocaleString()}원</span>
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "8px",
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
               <span>배송비</span>
               <span>{shippingFee === 0 ? "무료" : `${shippingFee.toLocaleString()}원`}</span>
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "8px",
-              }}
-            >
-              <span>상품 할인</span>
-              <span style={{ color: "#e74c3c" }}>
-                -{productDiscount.toLocaleString()}원
-              </span>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+              <span>할인 ({discRate}% {discMaxAmt ? `(최대 ${discMaxAmt.toLocaleString()}원)` : ""})</span>
+              <span style={{ color: "#e74c3c" }}>-{productDiscount.toLocaleString()}원</span>
             </div>
             <hr style={{ margin: "10px 0" }} />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "16px", fontWeight: "bold" }}>
               <span>최종 결제 금액</span>
               <span>{finalAmount.toLocaleString()}원</span>
             </div>
@@ -348,14 +346,7 @@ export default function OrderPayment() {
         </div>
 
         {/* 약관 동의 */}
-        <div
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "20px",
-          }}
-        >
+        <div style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
           <h3 style={{ fontSize: "18px", marginBottom: "12px" }}>약관 동의</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -363,32 +354,21 @@ export default function OrderPayment() {
               <span style={{ fontSize: "14px" }}>전체 동의</span>
             </label>
             <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <input
-                type="checkbox"
-                checked={agreeAge}
-                onChange={(e) => setAgreeAge(e.target.checked)}
-              />
+              <input type="checkbox" checked={agreeAge} onChange={(e) => setAgreeAge(e.target.checked)} />
               <span style={{ fontSize: "14px" }}>만 14세 이상입니다. (필수)</span>
             </label>
             <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <input
-                type="checkbox"
-                checked={agreeProduct}
-                onChange={(e) => setAgreeProduct(e.target.checked)}
-              />
+              <input type="checkbox" checked={agreeProduct} onChange={(e) => setAgreeProduct(e.target.checked)} />
               <span style={{ fontSize: "14px" }}>주문 상품 정보 동의 (필수)</span>
             </label>
             <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <input
-                type="checkbox"
-                checked={agreePrivacy}
-                onChange={(e) => setAgreePrivacy(e.target.checked)}
-              />
+              <input type="checkbox" checked={agreePrivacy} onChange={(e) => setAgreePrivacy(e.target.checked)} />
               <span style={{ fontSize: "14px" }}>개인 정보 수집 및 이용 동의 (필수)</span>
             </label>
           </div>
         </div>
 
+        {/* 결제 버튼 */}
         <button
           onClick={handlePayment}
           disabled={!isFormValid}

@@ -21,6 +21,7 @@ import UserAddress from '../pages/UserJoin/UserAddress';
 import UserAddressF from '../pages/UserJoin/UserAddressF';
 import UserAddressU from '../pages/UserJoin/UserAddressU';
 import OrderPayment from '../pages/OrderPayment';
+import UserChatRoomList from './ChatRoom/UserChatRoomList';
 
 
 function Main({onLoginSubmit }) {
@@ -30,6 +31,7 @@ function Main({onLoginSubmit }) {
           {/* <Route path="/" element={<Main />} /> */}
           <Route path="/chat/rooms" element={<ChatRoomList />} /> 
           <Route path="/chat/:qna_no" element={<ChatRoom />} />
+          <Route path="/userchatroomlist" element={<UserChatRoomList />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/productupload" element={<ProductUpload />} />
             <Route path="/product/update/:prodNo" element={<ProductUpdate />} />

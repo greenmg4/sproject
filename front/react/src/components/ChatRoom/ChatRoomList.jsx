@@ -69,10 +69,10 @@ function ChatRoomList() {
             <Link to={`/chat/${r.qna_no}`} className="chat-room">
               <div className="room-title">
                 {r.room_create_id
-                  ? `${r.room_create_id}님의 문의`          // ① owner_id가 있으면 바로 사용
-                  : r.cust_id === 'system'
-                      ? '고객 문의'                   // ② system 메시지면 기본 문구
-                      : `${r.cust_id}님의 문의`      // ③ 그 외엔 cust_id 사용
+                ? `${r.room_create_id}님의 문의`
+                : r.cust_id === 'system'
+                ? '고객 문의'
+                : `${r.cust_id}님의 문의`
                 }
                 {r.unread && <span className="notification-dot" />}
               </div>

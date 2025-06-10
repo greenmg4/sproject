@@ -1,19 +1,13 @@
-/****************************
- * ChatRoom.css (수정본 전체)
- ****************************/
-
-/* 최상위 컨테이너 */
 .chat-room {
   max-width: 760px;
   margin: 0 auto;
   padding: 1rem;
 }
 
-/* ───── 채팅 리스트 영역 ───── */
 .chat-list {
   display: flex;
   flex-direction: column;
-  /* ★ 행(row) 단위 기준으로 정렬을 바꾸기 위해 align-items 제거 */
+  align-items: flex-start;
   border: 2px solid #ccc;
   border-radius: 20px;
   height: 500px;
@@ -23,29 +17,6 @@
   background: #fafafa;
 }
 
-/* ▼ 새로 추가: 각 메시지 행(말풍선 + 메타) 래퍼 */
-.msg-row {
-  display: flex;
-  flex-direction: column;   /* 메타 → 말풍선 세로 배치 */
-  width: 100%;
-  gap: 2px;
-}
-
-.msg-row.left   { align-items: flex-start; }
-.msg-row.right  { align-items: flex-end;   }
-.msg-row.center { align-items: center;     }
-
-/* ▼ 새로 추가: 메타 정보(이름·시간) */
-.meta {
-  font-size: 0.75rem;
-  color: #666;
-  line-height: 1.2;
-}
-
-.left-meta  { text-align: left;  }
-.right-meta { text-align: right; }
-
-/* ───── 말풍선 공통 ───── */
 .messagebox {
   display: inline-block;
   max-width: 70%;
@@ -55,21 +26,18 @@
   font-size: 0.95rem;
 }
 
-/* 상담사(왼쪽) */
-.messagebox.left {
-  align-self: flex-start;
-  background: #d3f3f8;                 /* 기존 색 유지 */
-  border-radius: 0 25px 25px 25px;     /* 꼬리 왼쪽 */
-}
-
-/* 고객(오른쪽) */
 .messagebox.right {
   align-self: flex-end;
-  background: #b5ecf4;                 /* 기존 색 유지 */
-  border-radius: 25px 0 25px 25px;     /* 꼬리 오른쪽 */
+  background: #b5ecf4;
+  border-radius: 25px 0 25px 25px;
 }
 
-/* 시스템(가운데) */
+.messagebox.left {
+  align-self: flex-start;
+  background: #d3f3f8;
+  border-radius: 0 25px 25px 25px;
+}
+
 .messagebox.system {
   align-self: center;
   background: #eee;
@@ -84,21 +52,25 @@
   50%  { transform: translateY(-4px); }
   100% { transform: translateY(0); }
 }
+
 .messagebox.system.wave {
   animation: wave 1.2s ease-in-out infinite;
 }
 
-/* ───── 입력창 ───── */
+
+/* 입력창 */
 .inputbox {
   display: flex;
   gap: 0.5rem;
 }
+
 .inputbox input {
   flex: 1;
   padding: 0.6rem 0.8rem;
   border: 1px solid #ccc;
   border-radius: 20px;
 }
+
 .inputbox button {
   padding: 0 1rem;
   border: none;
@@ -107,18 +79,20 @@
   border-radius: 20px;
   cursor: pointer;
 }
+
 .inputbox button:disabled {
   background: #888;
   cursor: not-allowed;
 }
+
 .finish-btn {
   background: #f05050;
 }
+
 .finish-btn:disabled {
   background: #aaa;
 }
 
-/* 알림 뱃지 */
 .notification-dot {
   display: inline-block;
   width: 8px;
@@ -127,3 +101,15 @@
   border-radius: 50%;
   background: #ff4d4f;
 }
+
+.room-title .ended-tag {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.chat-room.closed {        /* 종료된 문의 흐리게 */
+  opacity: 0.55 !important;   /* ← 우선순위 보강 */
+}
+
+

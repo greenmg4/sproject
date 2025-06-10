@@ -4,7 +4,7 @@ import { apiCall } from '../service/apiService';
 import { getUserInfo } from '../service/apiService';
 import React, { useEffect, useState, useRef } from "react";
 
-
+import Modal from 'react-modal';
 
 import axios from "axios";
 
@@ -20,6 +20,16 @@ import { Tooltip } from "react-tooltip";
 
 
 function Header({ cust_nm, token, isLoggedIn, onLogout }) {
+
+    // 회원혜택 Modal Open 조건
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    // 회원혜택 Modal 닫기 함수
+    const closeModal = () => setModalIsOpen(false);
+    // 회원혜택 Modal 열기 함수
+    const openModal = () => setModalIsOpen(true);
+    // 회원혜택 정보
+    const [MemberShipData, setMemberShipData] = useState([]); // 초기 상태를 빈 배열로 설정
+
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
@@ -70,15 +80,22 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     };
 
     const goToChatUser = async () => {
+        const confirmed = window.confirm("채팅문의를 시작하시겠습니까?");
+        if (!confirmed) return;
+
         try {
-        const res = await axios.post("http://localhost:8080/chat/create", {}, { withCredentials: true });
-        const { qna_no } = res.data;
-        navigate(`/chat/${qna_no}`);
+            const res = await axios.post("http://localhost:8080/chat/create", {}, { withCredentials: true });
+            const { qna_no } = res.data;
+            navigate(`/chat/${qna_no}`);
         } catch (err) {
-        console.error("채팅방 생성 실패:", err);
-        alert("채팅방 생성 중 오류가 발생했습니다.");
+            console.error("채팅방 생성 실패:", err);
+            alert("채팅방 생성 중 오류가 발생했습니다.");
         }
     };
+
+    const goToUserChatList = () => {
+        navigate("userchatroomlist");
+    }
 
     const goToProductPage = () => {
         navigate("product");
@@ -128,6 +145,41 @@ console.log(sessionStorage.getItem("loginID"))
         
         navigate(url, { state: jsonData });
     };
+
+
+    // 회원혜택
+    const goMemberBenefit = (url) => {
+
+        apiCall(url, 'GET', null, null)
+        .then((response) => {
+            if( response.length === 0) {
+                setMemberShipData([]);
+            } else {
+    
+                // API 응답 데이터를 productData 형식으로 변환
+                const formattedData = response.map(item => ({
+                    grade: item.grade,
+                    disc_rate: item.disc_rate,
+                    disc_max_amt: item.disc_max_amt.toLocaleString(),
+                    std_amt: item.std_amt.toLocaleString(),
+                }));
+    
+                setMemberShipData(formattedData);
+            }
+        })
+        .catch((err) => {
+            if (err === 502) {
+            alert(`** 처리도중 오류 발생, err=${err}`);
+            } else if (err === 403) {
+            alert(`** Server Reject : 접근권한이 없습니다. => ${err}`);
+            } else {
+            alert(`** serverDataRequest 시스템 오류, err=${err}`);
+            }
+        });
+
+        openModal();
+    }
+
 
 
     const [searchType, setSearchType] = useState("A"); // Default search type
@@ -187,7 +239,8 @@ console.log(sessionStorage.getItem("loginID"))
                 }
 
                 {/* <span className='header-menu-item' onClick={goToLogin}>로그인</span>| */}
-                <span className='header-menu-item' >회원혜택</span><span>|</span>
+                <span onClick={() => navigate("cart/addCart")} className="header-menu-item">장바구니</span><span>|</span>
+                <span onClick={() => goMemberBenefit("/membership/gradelist")} className='header-menu-item' >회원혜택</span><span>|</span>
 
                 {isAdmin ? (
                 <>
@@ -199,6 +252,7 @@ console.log(sessionStorage.getItem("loginID"))
                 ) : (
                 <>
                     <span onClick={goToChatUser} className="header-menu-item">채팅상담</span><span>|</span>
+                    <span onClick={goToUserChatList} className="header-menu-item">고객센터</span><span>|</span>
                 </>
                 )}
 
@@ -280,6 +334,67 @@ console.log(sessionStorage.getItem("loginID"))
                     </span>
                 ))}
             </div>
+
+
+
+            <Modal isOpen={modalIsOpen}
+                onRequestClose={closeModal} // 모달 외부 클릭 시 닫힘
+                style={{
+                overlay: {
+                    overflow: "hidden", // 오버레이 스크롤 방지
+                    backgroundColor: "rgba(0, 0, 0, 0.7)", // 반투명 배경
+                },      
+                content: {
+                    width: "800px", // 모달의 너비
+                    height: "430px", // 모달의 높이
+                    margin: "auto", // 화면 중앙 정렬
+                    padding: "20px", // 내부 여백
+                    borderRadius: "10px", // 둥근 모서리
+                },
+                }}
+            >
+                <div>
+                    <h2 style={{textAlign: 'center', color: 'rgb(11, 119, 161)'}}> 멤버십 안내 </h2>
+                    <hr style={{height:'5px', backgroundColor: 'rgb(220, 221, 213)', border: 'none' }}></hr>
+                    <div >
+                        <div style={{ fontSize:'16px',  color: 'rgb(97, 104, 163)', fontWeight: 'bold'}}>
+                        도서 구매 금액에 따라, 등급이 부여가 됩니다.<br/>
+                        각 등급 에 따른 혜택이 적용되어 구매시, 아래의 할인혜택을 적용받습니다.
+                        </div>
+                    </div>
+                    
+                    <br/>
+                    <div style={{ height: "200px", textAlign: "center", padding: "10px", backgroundColor: 'rgb(236, 236, 230)', color: 'rgb(74, 59, 112)', fontWeight: 'bold' }}>
+                        <table style={{ width: "775px", borderCollapse: "collapse", border:'1px solid #ccc' }}>
+                            <thead>
+                                <tr style={{ borderBottom:'1px solid rgb(188, 190, 171)', backgroundColor:'rgb(223, 233, 223)' }}>
+                                    <th style={{ width: '20%', height:'50px'}}>등급</th>
+                                    <th style={{ width: '20%', height:'50px'}}>할인율</th>
+                                    <th style={{ width: '30%', height:'50px'}}>최대할인금액</th>
+                                    <th style={{ width: '30%', height:'50px'}}>등급 업 구매금액</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {MemberShipData.map((item, index) => (
+                                    <tr style={{ height: "35px"}} key={index}>
+                                        <td>{item.grade}</td>
+                                        <td>{item.disc_rate} %</td>
+                                        <td>{item.disc_max_amt} 원</td>
+                                        <td>{item.std_amt} 원</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                    </div>
+                    
+                    <br/>
+                    <div style={{textAlign: 'center'}}>
+                        <button style={{fontSize:'13px',  width:'90px', height:'30px', borderRadius: '5px', backgroundColor:'rgb(223, 233, 223)'}} onClick={closeModal}>닫기</button>
+                    </div>
+                </div>
+            </Modal>
 
         </div> //headerTop
     ); //return

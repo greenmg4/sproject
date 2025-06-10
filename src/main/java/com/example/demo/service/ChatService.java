@@ -11,4 +11,9 @@ public interface ChatService {
     int generateNewQnaNo();
     int createRoomForUser(String userCustId);
     void updateRoomType(int qna_no, int qna_type);
+    List<ChatMessageDTO> getUserChatList(String session_id);
+    
+    String findRoomCreator(int qnaNo); 
+    String findCustName(String custId);
+
 }

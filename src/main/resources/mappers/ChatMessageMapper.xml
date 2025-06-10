@@ -19,7 +19,7 @@
   <select id="getMessagesByRoomId"
           parameterType="int"
           resultType="com.example.demo.model.ChatMessageDTO">
-    SELECT q.*, c.grade
+    SELECT q.*, c.grade, c.cust_nm 
     FROM qna q
     JOIN custom c ON q.cust_id = c.cust_id
     WHERE q.qna_no = #{qna_no}
@@ -49,4 +49,44 @@
   <update id="updateRoomType">
     UPDATE qna SET qna_type = #{qna_type} WHERE qna_no = #{qna_no}
   </update>
+  
+  <select id="getUserChatList" resultType="com.example.demo.model.ChatMessageDTO">
+	SELECT *
+	FROM qna
+	WHERE qna_no IN (
+	    SELECT DISTINCT qna_no
+	    FROM qna
+	    WHERE cust_id = #{session_id}
+	)
+	ORDER BY 
+	    (
+	        SELECT CASE
+	            WHEN COUNT(DISTINCT qna_type) = 1 AND MAX(qna_type) = 2 THEN 1
+	            ELSE 0
+	        END
+	        FROM qna q2
+	        WHERE q2.qna_no = qna.qna_no
+	    ) ASC,
+	    qna.qna_no,
+	    qna.seq;
+  </select>
+  
+  
+	<select id="selectRoomCreator" resultType="string">
+	  SELECT q.cust_id
+	  FROM qna     q
+	  JOIN custom  c ON q.cust_id = c.cust_id
+	  WHERE q.qna_no = #{qna_no}
+	    AND c.grade NOT IN ('A', 'C')
+	  ORDER BY q.seq
+	  LIMIT 1
+	</select>
+	
+	<select id="selectCustName" parameterType="string" resultType="string">
+	    SELECT cust_nm
+	    FROM   custom
+	    WHERE  cust_id = #{custId}
+	</select>
+	
+  
 </mapper>

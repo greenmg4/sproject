@@ -13,4 +13,8 @@ public interface ChatMessageMapper {
     List<ChatMessageDTO> getRoomSummaries(@Param("excludeType") int excludeType);
     int selectNextQnaNo();
     void updateRoomType(@Param("qna_no") int qna_no, @Param("qna_type") int qna_type);
+    List<ChatMessageDTO> getUserChatList(String session_id);
+    
+    String selectRoomCreator(@Param("qna_no") int qnaNo);
+    String selectCustName(String custId);
 }
