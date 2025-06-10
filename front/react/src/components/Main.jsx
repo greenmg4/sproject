@@ -18,6 +18,8 @@ import UserEdit from '../pages/UserEdit';
 import UserJoin from '../pages/UserJoin/UserJoin';
 import UserJoinP from '../pages/UserJoin/UserJoinP';
 import UserAddress from '../pages/UserJoin/UserAddress';
+import UserAddressF from '../pages/UserJoin/UserAddressF';
+import UserAddressU from '../pages/UserJoin/UserAddressU';
 import OrderPayment from '../pages/OrderPayment';
 
 
@@ -40,6 +42,8 @@ function Main({onLoginSubmit }) {
             <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/useredit" element={<UserEdit />} />
             <Route path="/useraddress" element={<UserAddress />} />
+             <Route path="/useraddressf" element={<UserAddressF />} />
+            <Route path="/useraddressu" element={<UserAddressU/>} />
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
             <Route path="/cart/addCart" element={<Cart />} />

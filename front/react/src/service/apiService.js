@@ -90,7 +90,7 @@ export const getUserInfo = (cust_id) => {
   return apiCall("/api/user/info", "POST", cust_id);
 };
 
-// 배송지 관련=====
+// 배송지 관련
 
 // 배송지 리스트 조회 (custId를 path param으로 GET 요청)
 export async function getAddresses(custId) {
@@ -110,5 +110,10 @@ export async function deleteAddress(seq) {
 // 기본 배송지 설정 (POST 요청, data는 { cust_id, seq })
 export async function setDefaultAddress({ custId, seq }) {
   return await apiCall('/api/address/default', 'POST', { custId, seq }, null);
+}
+
+// 배송지 수정
+export async function updateAddress(addressData) {
+  return await apiCall('/api/address/update', 'PUT', addressData);
 }
 

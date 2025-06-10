@@ -6,25 +6,37 @@
 <mapper namespace="mapperInterface.AddressMapper">
 
   <select id="findByCustId" parameterType="String" resultType="com.example.demo.model.AddressDTO">
-    SELECT * FROM delivery_addr WHERE cust_id = #{custId}
+    SELECT * FROM delivery_addr WHERE cust_id = #{cust_id}
   </select>
 
   <insert id="insertAddress" parameterType="com.example.demo.model.AddressDTO" useGeneratedKeys="true" keyProperty="seq">
     INSERT INTO delivery_addr
     (cust_id, addr_class, address1, address2, zip, rcv_nm, rcv_phone)
-    VALUES (#{custId}, #{addrClass}, #{address1}, #{address2}, #{zip}, #{rcvNm}, #{rcvPhone})
+    VALUES (#{cust_id}, #{addr_class}, #{address1}, #{address2}, #{zip}, #{rcv_nm}, #{rcv_phone})
   </insert>
 
-  <delete id="deleteAddress" parameterType="int">
+  <delete id="deleteAddress" parameterType="long">
     DELETE FROM delivery_addr WHERE seq = #{seq}
   </delete>
 
   <update id="resetDefaultAddress" parameterType="String">
-    UPDATE delivery_addr SET default_yn = 'N' WHERE cust_id = #{custId}
+    UPDATE delivery_addr SET default_yn = 'N' WHERE cust_id = #{cust_id}
   </update>
 
   <update id="setDefaultAddress" parameterType="map">
-    UPDATE delivery_addr SET default_yn = 'Y' WHERE cust_id = #{custId} AND seq = #{seq}
+    UPDATE delivery_addr SET default_yn = 'Y' WHERE cust_id = #{cust_id} AND seq = #{seq}
   </update>
+  
+  <update id="updateAddress" parameterType="com.example.demo.model.AddressDTO">
+  UPDATE delivery_addr
+    SET addr_class = #{addr_class},
+        address1  = #{address1},
+        address2  = #{address2},
+        zip       = #{zip},
+        rcv_nm    = #{rcv_nm},
+        rcv_phone = #{rcv_phone}
+  WHERE seq = #{seq}
+</update>
+  
 
 </mapper>

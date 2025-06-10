@@ -16,8 +16,8 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    public List<AddressDTO> getAddresses(String custId) {
-        return addressMapper.findByCustId(custId);
+    public List<AddressDTO> getAddresses(String cust_id) {
+        return addressMapper.findByCustId(cust_id);
     }
 
     @Override
@@ -31,8 +31,14 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void setDefaultAddress(String custId, Long seq) {
-        addressMapper.resetDefaultAddress(custId);
-        addressMapper.setDefaultAddress(custId, seq);
+    public void setDefaultAddress(String cust_id, Long seq) {
+        addressMapper.resetDefaultAddress(cust_id);
+        addressMapper.setDefaultAddress(cust_id, seq);
     }
+    
+    @Override
+    public void updateAddress(AddressDTO dto) {
+    	addressMapper.updateAddress(dto);    	
+    }    
+
 }

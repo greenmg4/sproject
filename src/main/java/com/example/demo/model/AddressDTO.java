@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class AddressDTO {
-    private int seq;
-    private String custId;         // ★ 수정된 부분
-    private String addrClass;      // ★ 수정된 부분
+    private Long seq;
+    private String cust_id;        
+    private String addr_class;     
     private String address1;
     private String address2;
     private String zip;
-    private String rcvNm;          // ★ 수정된 부분
-    private String rcvPhone;       // ★ 수정된 부분
+    private String rcv_nm;          
+    private String rcv_phone;      
 }
