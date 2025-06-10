@@ -71,17 +71,28 @@ public class ProductController {
         int prodNo = productService.insertProduct(product);
 
         String fileName = image.getOriginalFilename();
-        String savePath = System.getProperty("user.dir") + "/uploadimages/" + fileName;
+
+        // ✅ 저장 경로 구성
+        String uploadDir = System.getProperty("user.dir") + "/front/react/public/images/uploadimages/";
+        System.out.println("실제 업로드 경로: " + uploadDir);
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();  // ✅ 경로가 없으면 생성
+        }
+
+        // ✅ 파일 저장
+        String savePath = uploadDir + fileName;
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
         img.setProd_no(prodNo);
-        img.setImg_path("/uploadimages/" + fileName);
+        img.setImg_path("images/uploadimages/" + fileName); // ✅ DB에는 상대 경로만 저장
         img.setImg_class(imgClass);
 
         productImageService.insertImage(img);
         return ResponseEntity.ok("등록 완료");
     }
+
     
     @GetMapping("/detail")
     public ProductDTO getProductById(@RequestParam("prodNo") int prodNo) {
@@ -100,17 +111,25 @@ public class ProductController {
         @RequestParam("imgClass") String imgClass
     ) throws IOException {
         String fileName = image.getOriginalFilename();
-        String savePath = System.getProperty("user.dir") + "/uploadimages/" + fileName;
+
+        String uploadDir = System.getProperty("user.dir") + "/front/react/public/images/uploadimages/";
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        String savePath = uploadDir + fileName;
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
         img.setProd_no(prodNo);
-        img.setImg_path("/uploadimages/" + fileName);
+        img.setImg_path("images/uploadimages/" + fileName);
         img.setImg_class(imgClass);
 
         productImageService.updateImage(img);
         return ResponseEntity.ok("이미지 수정 완료");
     }
+
     
     @PutMapping("/update")
     public ResponseEntity<String> updateProduct(@RequestBody ProductDTO product) {
