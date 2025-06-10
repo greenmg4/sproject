@@ -194,6 +194,7 @@ console.log(sessionStorage.getItem("loginID"))
                 }
 
                 {/* <span className='header-menu-item' onClick={goToLogin}>로그인</span>| */}
+                <span onClick={() => navigate("cart/addCart")} className="header-menu-item">장바구니</span><span>|</span>
                 <span className='header-menu-item' >회원혜택</span><span>|</span>
 
                 {isAdmin ? (
