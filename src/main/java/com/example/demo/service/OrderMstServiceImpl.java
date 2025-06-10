@@ -24,7 +24,7 @@ public class OrderMstServiceImpl implements OrderMstService {
     private OrderMstMapper OMMapper;
 
     @Autowired
-    private CustMapper custMapper; // 👈 추가
+    private CustMapper custMapper;
 
     @Transactional
     @Override
@@ -67,6 +67,15 @@ public class OrderMstServiceImpl implements OrderMstService {
 
         // 총 구매 금액 누적 업데이트
         custMapper.updateTotBuyAmt(orderMst.getCust_id(), orderMst.getTot_amount());
+        
+        int newTotBuyAmt = custMapper.getTotBuyAmt(orderMst.getCust_id());
+        String newGrade = custMapper.findGradeTotBuyAmt(newTotBuyAmt);
+        String currentGrade = custMapper.selectGradeByCustId(orderMst.getCust_id());
+
+        // 현재 등급보다 높은 등급으로만 업데이트
+        if (!newGrade.equals(currentGrade)) {
+            custMapper.updateGrade(orderMst.getCust_id(), newGrade);
+        }
 
         return ord_no;
     }
