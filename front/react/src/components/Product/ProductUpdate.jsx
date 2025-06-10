@@ -12,7 +12,16 @@ const ProductUpdate = () => {
 
   useEffect(() => {
     axios.get(`http://localhost:8080/product/detail?prodNo=${prodNo}`)
-      .then((res) => setProduct(res.data))
+    .then((res) => {
+    const data = res.data;
+
+    // ✅ suggest_yn이 null 또는 undefined면 기본값 "N"으로 세팅
+    if (data.suggest_yn === null || data.suggest_yn === undefined) {
+      data.suggest_yn = "N";
+    }
+
+    setProduct(data);
+  })
       .catch((err) => console.error("상품 상세 조회 실패", err));
 
     axios.get(`http://localhost:8080/product/productimage/one?prodNo=${prodNo}`)
