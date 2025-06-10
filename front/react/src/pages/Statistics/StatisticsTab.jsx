@@ -14,7 +14,7 @@ const TabComponent = () => {
     ];
 
     return (
-        <div className='' style={{ width: '100%', height: '100%'}}>            
+        <div className="statistics-background" style={{ width: '100%', height: '100%'}}>            
             <div className='statistics-tab'>
                 {tabs.map((tab, index) => (
                     <div

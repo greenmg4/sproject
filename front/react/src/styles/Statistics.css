@@ -112,4 +112,8 @@
     color: rgb(22, 99, 51);
 }
 
+.statistics-background {
+    background: linear-gradient(to top, rgb(221, 243, 232) 0%, rgba(197, 240, 206, 0) 40%, rgba(231, 245, 228, 0) 70%);
+}
+  
 

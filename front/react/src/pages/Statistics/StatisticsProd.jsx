@@ -33,7 +33,7 @@ function StatisticsProd() {
     const [productData, setProductData] = useState([]); // 초기 상태를 빈 배열로 설정
 
     //const itemsPerPage = 3; // 한 페이지에 표시할 최대 개수
-    const [itemsPerPage, setItemsPerPage] = useState(5); // 기본값 설정
+    const [itemsPerPage, setItemsPerPage] = useState(15); // 기본값 설정
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
 
@@ -224,7 +224,7 @@ function StatisticsProd() {
 
     
     return (
-        <div style={{  height: "690px", overflow: "hidden" }} >
+        <div className="statistics-background"  style={{  height: "700px", overflow: "hidden" }} >
             <div className="statistics-title">
                     상품판매 정보
             </div>
@@ -262,14 +262,14 @@ function StatisticsProd() {
                     <div style={{ marginBottom: "10px", textAlign: "center" }}>
                         <label>페이지당 항목 수:</label>
                         <select className="search-condition" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
-                            <option value={13}>13개</option>
+                            <option value={15}>15개</option>
                             <option value={10}>10개</option>
                             <option value={5}>5개</option>
                             <option value={3}>3개</option>
                         </select>
                     </div>
 
-                    <div style={{ height: "500px", alignSelf: "stretch", textAlign: "center", padding: "10px", backgroundColor: "#f5f5f5" }}>
+                    <div style={{ height: "520px", alignSelf: "stretch", textAlign: "center", padding: "10px", backgroundColor: "#f5f5f5" }}>
                         <table className="statistics-table-border" style={{ width: "1000px", borderCollapse: "collapse" }}>
                             <thead>
                                 <tr>
@@ -300,7 +300,7 @@ function StatisticsProd() {
                         page
                     </div> */}
 
-                    <div style={{ width: "1000px", alignSelf: "stretch", textAlign: "center", padding: "10px", backgroundColor: "#f5f5f5" }}>
+                    <div style={{ width: "1000px", alignSelf: "stretch", textAlign: "center", padding: "10px" }}>
                         {/* 페이지네이션 버튼 추가 */}
                         <button disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)}>이전</button>
                         <span> 페이지 {currentPage} / {totalPages} </span>
