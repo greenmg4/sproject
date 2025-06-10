@@ -28,14 +28,33 @@ public interface CustMapper {
 	
 	// 누적 금액 기준 등급 조회
 	@Select("SELECT grade FROM grade_disc WHERE std_amt <= #{totBuyAmt} ORDER BY std_amt DESC LIMIT 1")
-	String findGradeTotBuyAmt(@Param("totBuyAmt") int totBuyAmt);
+	String GradeTotBuyAmt(@Param("totBuyAmt") int totBuyAmt);
 	
 	// 누적 총 구매 금액 조회
     @Select("SELECT tot_buy_amt FROM custom WHERE cust_id = #{cust_id}")
-	int getTotBuyAmt(String cust_id);
+	int TotBuyAmt(String cust_id);
 	
-	
+    // 할인율 조회
+    @Select("SELECT disc_rate FROM grade_disc WHERE grade = #{grade}")
+    double DiscRate(@Param("grade") String grade);
+
+    // 할인 최대 금액 조회
+    @Select("SELECT disc_max_amt FROM grade_disc WHERE grade = #{grade}")
+    int DiscMaxAmt(@Param("grade") String grade);
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기
+
 
 	
 	

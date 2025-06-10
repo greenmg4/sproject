@@ -19,6 +19,9 @@ public class OrderMstController {
     @Autowired
     private OrderMstService OMService;
     
+    @Autowired
+    private CustMapper custMapper;
+    
     @PostMapping("/save")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequestDTO dto) {
         try {
@@ -29,5 +32,24 @@ public class OrderMstController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("주문 저장 실패: " + e.getMessage());
         }
+    }
+    
+    @GetMapping("/discount/{cust_id}")
+    public ResponseEntity<?> getDiscountInfo(@PathVariable("cust_id") String custId) {
+        String grade = custMapper.selectGradeByCustId(custId);
+        if (grade == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("고객 등급을 찾을 수 없습니다.");
+        }
+
+        Double rate = custMapper.DiscRate(grade);
+        Integer maxAmt = custMapper.DiscMaxAmt(grade);
+        if (rate == null || maxAmt == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("할인 정보를 불러올 수 없습니다.");
+        }
+
+        return ResponseEntity.ok(Map.of(
+            "disc_rate", rate,
+            "disc_max_amt", maxAmt
+        ));
     }
 }
