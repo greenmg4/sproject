@@ -56,5 +56,38 @@
 		order by year, month, dt, dd
 	</select>
 	
-
+	
+	<select id="selectSalesByProductList" resultType="map">
+		select 
+			   PROD_NO, PROD_NM, PROD_PRICE, SUM_CNT, SUM_BUY_PRICE, PROD_CNT, ROWNUM
+			 , count(*) over() tot_count
+		from 
+		(
+				SELECT PROD_NO, PROD_NM
+					 , PROD_PRICE
+					 , SUM(A.CNT) as SUM_CNT
+					 , SUM(BUY_PRICE) as SUM_BUY_PRICE
+					 , MAX(PROD_CNT) as PROD_CNT
+					 , ROW_NUMBER() OVER (ORDER by SUM(A.CNT) desc) AS ROWNUM
+				FROM (
+					  SELECT B.PROD_NO
+						   , C.PROD_NM
+						   , C.PROD_PRICE
+						   , B.BUY_PRICE
+						   , B.CNT
+						   , C.PROD_CNT
+						FROM ORDER_MST A
+						   , ORDER_DETAIL B
+						   , PRODUCT C
+					   WHERE 1=1
+						 AND A.ORD_NO = B.ORD_NO 
+						 AND B.PROD_NO = C.PROD_NO
+						 AND A.ORD_DTM LIKE CONCAT(#{searchDate}, '%')
+					 ) A
+				GROUP BY PROD_NO, PROD_NM, PROD_PRICE
+		) R
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	
 </mapper>

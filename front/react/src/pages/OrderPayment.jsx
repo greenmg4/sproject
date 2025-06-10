@@ -31,6 +31,11 @@ export default function OrderPayment() {
   const [agreeProduct, setAgreeProduct] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
 
+  const [discRate, setDiscRate] = useState(0); // 할인율 (%)
+  const [discMaxAmt, setDiscMaxAmt] = useState(0); // 최대 할인액
+
+
+
   const isFormValid =
     postcode &&
     address1 &&
@@ -49,9 +54,7 @@ export default function OrderPayment() {
     : product
     ? product.prod_price * cnt
     : 0;
-  const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
-  const productDiscount = Math.floor(itemTotalPrice * 0.1);
-  const finalAmount = itemTotalPrice + shippingFee - productDiscount;
+  
 
   useEffect(() => {
     const impScript = document.createElement("script");
@@ -168,6 +171,32 @@ export default function OrderPayment() {
       navigate("/");
     }
   }, [cust_id, items, navigate]);
+
+  const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
+
+  useEffect(() => {
+  if (!cust_id) return;
+
+  const fetchDiscountInfo = async () => {
+    try {
+      const res = await fetch(`/api/order/discount/${cust_id}`);
+      if (!res.ok) throw new Error("할인 정보를 불러올 수 없습니다.");
+      const data = await res.json();
+      setDiscRate(data.disc_rate);
+      setDiscMaxAmt(data.disc_max_amt);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchDiscountInfo();
+}, [cust_id]);
+
+const productDiscount = Math.min(
+  Math.floor(itemTotalPrice * (discRate / 100)),
+  discMaxAmt
+);
+const finalAmount = itemTotalPrice + shippingFee - productDiscount;
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px", display: "flex", gap: "20px" }}>
@@ -305,7 +334,7 @@ export default function OrderPayment() {
               <span>{shippingFee === 0 ? "무료" : `${shippingFee.toLocaleString()}원`}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span>상품 할인</span>
+              <span>할인 ({discRate}% {discMaxAmt ? `(최대 ${discMaxAmt.toLocaleString()}원)` : ""})</span>
               <span style={{ color: "#e74c3c" }}>-{productDiscount.toLocaleString()}원</span>
             </div>
             <hr style={{ margin: "10px 0" }} />

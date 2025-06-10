@@ -14,6 +14,7 @@ import com.example.demo.model.OrderDetailDTO;
 import com.example.demo.model.OrderMstDTO;
 import com.example.demo.model.OrderRequestDTO;
 
+import mapperInterface.CartMapper;
 import mapperInterface.CustMapper;
 import mapperInterface.OrderMstMapper;
 
@@ -24,21 +25,39 @@ public class OrderMstServiceImpl implements OrderMstService {
     private OrderMstMapper OMMapper;
 
     @Autowired
-    private CustMapper custMapper; // 👈 추가
-
+    private CustMapper custMapper;
+    
+    @Autowired
+    private CartMapper cartMapper;
+    
     @Transactional
     @Override
     public int saveOrder(OrderRequestDTO dto) throws Exception {
-        OrderMstDTO orderMst = new OrderMstDTO();
+        String cust_id = dto.getCust_id();
 
-        orderMst.setCust_id(dto.getCust_id());
+        // 고객 현재 등급 조회
+        String currentGrade = custMapper.selectGradeByCustId(cust_id);
+
+        // 해당 등급의 할인율과 최대 할인 금액 조회
+        double discRate = custMapper.DiscRate(currentGrade);// 할인율 조회
+        int maxDiscAmt = custMapper.DiscMaxAmt(currentGrade);// 할인 최대 금액 조회
+
+        // 원래 결제금액과 할인 적용
+        int originalTotal = dto.getTot_amount(); // 원래 결제 금액
+        int discountAmt = (int) Math.floor(originalTotal * (discRate / 100.0));
+        if (discountAmt > maxDiscAmt) discountAmt = maxDiscAmt;
+        int discountedTotal = originalTotal - discountAmt;
+
+        // 주문 마스터 구성
+        OrderMstDTO orderMst = new OrderMstDTO();
+        orderMst.setCust_id(cust_id);
         orderMst.setPay_method(dto.getPay_method());
 
         OffsetDateTime odt = OffsetDateTime.parse(dto.getOrd_dtm());
         LocalDateTime localOrdDtm = odt.atZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         orderMst.setOrd_dtm(localOrdDtm);
 
-        orderMst.setTot_amount(dto.getTot_amount());
+        orderMst.setTot_amount(discountedTotal); // 할인 적용된 금액
         orderMst.setProd_cnt(dto.getProd_cnt());
         orderMst.setRcv_nm(dto.getRcv_nm());
         orderMst.setRcv_phone(dto.getRcv_phone());
@@ -48,7 +67,7 @@ public class OrderMstServiceImpl implements OrderMstService {
         orderMst.setReg_dtm(LocalDateTime.now());
         orderMst.setUpd_dtm(LocalDateTime.now());
 
-        // 주문 저장 (ord_no 생성)
+        // 주문 저장
         OMMapper.insertOrderMst(orderMst);
         int ord_no = orderMst.getOrd_no();
 
@@ -62,11 +81,25 @@ public class OrderMstServiceImpl implements OrderMstService {
                 detail.setCnt(item.getCnt());
                 return detail;
             }).collect(Collectors.toList());
-
         OMMapper.insertOrderDetails(details);
+        
+        // 장바구니에서 주문한 상품 삭제
+        List<Integer> prod_no = dto.getOrder_items().stream()
+					        	    .map(item -> Integer.parseInt(item.getProd_no()))
+					        	    .collect(Collectors.toList());
 
-        // 총 구매 금액 누적 업데이트
-        custMapper.updateTotBuyAmt(orderMst.getCust_id(), orderMst.getTot_amount());
+        cartMapper.deletePro(cust_id, prod_no);
+
+        // 고객 총 구매 금액 누적 반영 (할인 적용된 금액만 반영)
+        custMapper.updateTotBuyAmt(cust_id, discountedTotal);
+
+        int newTotBuyAmt = custMapper.TotBuyAmt(cust_id); //총 누적 금액 조회
+        String newGrade = custMapper.GradeTotBuyAmt(newTotBuyAmt);// 누적 금액에 맞는 등급 조회
+
+        // 현재 등급보다 높은 등급으로만 업데이트
+        if (!newGrade.equals(currentGrade)) {
+            custMapper.updateGrade(cust_id, newGrade);
+        }
 
         return ord_no;
     }

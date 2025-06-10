@@ -24,3 +24,21 @@ export const adjustColor = (color, amount) => {
     }
     return color; // 매칭 실패 시 원래 색상 반환
 };
+
+export const generateRGBArray = (count) => {
+    const rgbArray = [];
+  
+    for (let i = 0; i < count; i++) {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+  
+      rgbArray.push(`rgb(${r}, ${g}, ${b})`);
+    }
+  
+    return rgbArray;
+}
+
+
+
+
