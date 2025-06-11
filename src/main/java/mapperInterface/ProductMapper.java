@@ -36,6 +36,6 @@ public interface ProductMapper {
     
     // 결제시 상품 갯수 삭제[박민혁]
     @Update("UPDATE product SET prod_cnt = prod_cnt - #{cnt} WHERE prod_no = #{prod_no} AND prod_cnt >= #{cnt}")
-    void decreaseProdCnt(@Param("prod_no") int prodNo, @Param("cnt") int quantity);
+    void decreaseProdCnt(@Param("prod_no") int prod_no, @Param("cnt") int cnt);
 
 }
