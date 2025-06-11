@@ -18,16 +18,19 @@ const ProductPage = () => {
   }, []);
 
   const productDelete = (prod_no) => {
+    const confirmed = window.confirm("해당 상품을 삭제하시겠습니까?");
+    if (!confirmed) return;
+
     axios.delete("http://localhost:8080/product/delete", { params: { prodNo: prod_no } })
       .then(() => {
-        alert("삭제 완료");
+        alert("삭제되었습니다.");
         window.location.reload();
       })
       .catch((err) => {
-        alert("삭제 실패");
+        alert("삭제에 실패했습니다.");
         console.error(err);
-      });
-  };
+    });
+};
 
   const getImageByProdNo = (prod_no) => {
     const image = productImages.find(img => img.prod_no === prod_no);

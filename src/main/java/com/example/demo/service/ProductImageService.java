@@ -10,4 +10,5 @@ public interface ProductImageService {
 	ProductImageDTO getImageByProdNo(int prodNo);
 	void updateImage(ProductImageDTO image);
 	int deleteImageProduct(int prodNo);
+	int countProductsUsingImage(String img_path);
 }

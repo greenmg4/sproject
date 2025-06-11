@@ -39,5 +39,10 @@ public class ProductImageServiceImpl implements ProductImageService{
     public int deleteImageProduct(int prodNo) {
     	return productImageMapper.deleteImageProduct(prodNo);
     }
+    
+    @Override
+    public int countProductsUsingImage(String img_path) {
+        return productImageMapper.countByImagePath(img_path);
+    }
 
 }
