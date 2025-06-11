@@ -32,7 +32,8 @@ public interface ProductMapper {
 	
 	
 	// 회원 상품 디테일[박민혁]
-    @Select("SELECT * FROM product WHERE prod_no = #{prod_no}")
+    @Select(" SELECT p.prod_no, p.prod_nm, p.prod_price, p.publisher, p.author_nm, i.img_path FROM product p"
+    		+ "  LEFT JOIN product_img i ON p.prod_no = i.prod_no AND i.img_class = '01' WHERE p.prod_no = #{prod_no}")
 	ProductDTO ProDetail(int prod_no);
     
     // 결제시 상품 갯수 삭제[박민혁]
