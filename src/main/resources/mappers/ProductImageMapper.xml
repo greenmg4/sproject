@@ -43,5 +43,9 @@
   <delete id="deleteImageProduct">
   	DELETE FROM product_img WHERE prod_no = #{prod_no}
   </delete>
+  
+  <select id="countByImagePath" resultType="int">
+  	SELECT COUNT(*) FROM product_img WHERE img_path = #{img_path}
+  </select>
 
 </mapper>

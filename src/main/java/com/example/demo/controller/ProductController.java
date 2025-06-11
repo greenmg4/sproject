@@ -138,14 +138,48 @@ public class ProductController {
         return ResponseEntity.ok("상품 수정 완료");
     }
     
+    
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProduct(@RequestParam int prodNo) {   	
-    	if(productService.deleteProduct(prodNo) > 0 && productImageService.deleteImageProduct(prodNo) > 0) {
-    		return ResponseEntity.ok("상품 삭제 완료");
-    	}else {
-    		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("삭제 실패");
-    	}
+    public ResponseEntity<String> deleteProduct(@RequestParam int prodNo) {
+        try {
+            ProductImageDTO image = productImageService.getImageByProdNo(prodNo);
+            String relativePath = image != null ? image.getImg_path() : null;
+            String fullPath = relativePath != null
+                    ? System.getProperty("user.dir") + "/front/react/public/" + relativePath
+                    : null;
+
+            // DB 삭제 먼저
+            int deletedProduct = productService.deleteProduct(prodNo);
+            int deletedImage = productImageService.deleteImageProduct(prodNo);
+
+            if (deletedProduct > 0 && deletedImage > 0) {
+                if (relativePath != null) {
+                    int refCount = productImageService.countProductsUsingImage(relativePath);
+                    if (refCount == 0 && fullPath != null) {
+                        File file = new File(fullPath);
+                        if (file.exists()) {
+                            if (file.delete()) {
+                                System.out.println("이미지 파일 삭제 성공: " + fullPath);
+                            } else {
+                                System.err.println("이미지 파일 삭제 실패: " + fullPath);
+                            }
+                        } else {
+                            System.out.println("파일이 존재하지 않음: " + fullPath);
+                        }
+                    }
+                }
+
+                return ResponseEntity.ok("상품 삭제 완료");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("DB 삭제 실패");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예외 발생: " + e.getMessage());
+        }
     }
+
+
     
     
     

@@ -129,7 +129,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 };
 console.log(sessionStorage.getItem("loginID"))
 
-    const goProductList = (url, jsonData) => {
+    const goProList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
         //alert(`** proList 요청전 url=${url}, jsonData=${JSON.stringify(jsonData)}`);
         
@@ -137,22 +137,82 @@ console.log(sessionStorage.getItem("loginID"))
     };
 
 
+<<<<<<< HEAD
+=======
+    // 회원혜택
+    const goMemberBenefit = (url) => {
+
+        apiCall(url, 'GET', null, null)
+        .then((response) => {
+            if( response.length === 0) {
+                setMemberShipData([]);
+            } else {
+    
+                // API 응답 데이터를 productData 형식으로 변환
+                const formattedData = response.map(item => ({
+                    grade: item.grade,
+                    disc_rate: item.disc_rate,
+                    disc_max_amt: item.disc_max_amt.toLocaleString(),
+                    std_amt: item.std_amt.toLocaleString(),
+                }));
+    
+                setMemberShipData(formattedData);
+            }
+        })
+        .catch((err) => {
+            if (err === 502) {
+            alert(`** 처리도중 오류 발생, err=${err}`);
+            } else if (err === 403) {
+            alert(`** Server Reject : 접근권한이 없습니다. => ${err}`);
+            } else {
+            alert(`** serverDataRequest 시스템 오류, err=${err}`);
+            }
+        });
+
+        openModal();
+    }
+
+    // 엔터 키 입력 시 handleSearch 실행
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
+
+>>>>>>> branch 'main' of https://github.com/greenmg4/sproject.git
     const [searchType, setSearchType] = useState("A"); // Default search type
     const [searchInput, setSearchInput] = useState(""); // Input value
 
     const handleSearch = () => {
+
+        // 검색어를 입력하지 않으면, 로직 실행하지 않음.
+        if (!searchInput.trim()) {
+            //alert("검색어를 입력해주세요.");
+            return;
+        }
+
         let searchData = {};
         if (searchType === "A") {
-            searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
+            //A: 통합검색
+            //searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
+            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: searchInput, author_nm: "" };
         } else if (searchType === "author") {
-            searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
+            //author: 저자검색
+            //searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
+            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: "", author_nm: searchInput };
         }
+<<<<<<< HEAD
         alert   (`** 검색 요청전 url=/product/proList, searchData=${JSON.stringify(searchData)}`);
         goProductList("/product/proList", searchData);
+=======
+        //alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
+        goProList("/product/prolist", searchData);
+>>>>>>> branch 'main' of https://github.com/greenmg4/sproject.git
     };
 
     const categories = [
-        { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
+        // { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
+        { id: "tooltip-all", category: "", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-novel", category: "01", category_nm: "소설", icon: mdiBookOpenBlankVariantOutline, tooltip: "소설" },
         { id: "tooltip-essay", category: "02", category_nm: "에세이", icon: mdiDrawPen, tooltip: "에세이" },
         { id: "tooltip-humanities", category: "03", category_nm: "인문", icon: mdiBabyFaceOutline, tooltip: "인문" },
@@ -245,6 +305,7 @@ console.log(sessionStorage.getItem("loginID"))
                                     placeholder="검색어를 입력하세요" 
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={handleKeyDown} // 엔터 키 이벤트 처리
                                 />
 
                                 <span 
@@ -281,7 +342,12 @@ console.log(sessionStorage.getItem("loginID"))
             <div className='header-category-container'>
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
+<<<<<<< HEAD
                         <span onClick={() => { goProductList("/product/proList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
+=======
+                        {/* <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}> */}
+                        <span onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, category_nm: "", prod_nm: "", author_nm: "" }) }}>
+>>>>>>> branch 'main' of https://github.com/greenmg4/sproject.git
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>

@@ -49,9 +49,11 @@ function MainDefault() {
 
         const handleDoublClick = (product) => {
             
-            let jsonData = { prod_no: `${product.prod_no}`, category: "A", category_nm: "", prod_nm: `${product.prod_nm}`, author_nm: "" };
+            //let jsonData = { prod_no: `${product.prod_no}`, category: "A", category_nm: "", prod_nm: `${product.prod_nm}`, author_nm: "" };
+            let jsonData = { prod_no: `${product.prod_no}`, category: "", category_nm: "", prod_nm: "", author_nm: "" };
+            //alert(JSON.stringify(jsonData, null, 2));
 
-            navigate("/product/productlist", { state: jsonData });
+            navigate("/product/ProList", { state: jsonData });
         };
 
     return (
@@ -64,8 +66,8 @@ function MainDefault() {
                 (
                 <img alt="MainImage" src="images/homeImages/library01.png" width={800} height={400} /> 
 
-                 ) :
-                 (
+                ) :
+                (
                     <div style={  { width: "80%", margin: "0 auto", paddingTop: "20px" }}>
                         <Slider {...settings}>
                         {products.map((product) => (
@@ -76,7 +78,7 @@ function MainDefault() {
                         ))}
                         </Slider>
                     </div>
-                    )
+                )
             }   
             </div>
         </div>
