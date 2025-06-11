@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./ProductPage.css";
+
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const navigate = useNavigate();
+  const [searchType, setSearchType] = useState("all");
+  const [searchText, setSearchText] = useState("");
+
+  const searchProducts = () => {
+  const searchCond = {
+    prod_nm: searchType === "all" ? searchText : null,
+    author_nm: searchType === "author" ? searchText : null
+  };
+
+  axios.post("http://localhost:8080/product/proList", searchCond)
+    .then((res) => setProducts(res.data))
+    .catch((err) => {
+      console.error("검색 실패:", err);
+      alert("검색 중 오류가 발생했습니다.");
+    });
+};
+
 
   useEffect(() => {
     axios.get("http://localhost:8080/product/page")
@@ -59,49 +78,56 @@ const ProductPage = () => {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "auto" }}>
-      <h2>📚 상품 목록</h2>
+    <div className="product-page-container">
+    <h2>📚 상품 목록</h2>
+    <div className="product-search-bar">
+      <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+        <option value="all">통합검색</option>
+        <option value="author">저자 검색</option>
+      </select>
+    <input
+      type="text"
+      value={searchText}
+      onChange={(e) => setSearchText(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") searchProducts();
+      }}
+      placeholder="검색어를 입력하세요"
+    />
+      <button onClick={searchProducts}>검색</button>
+    </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "1.5rem"
-      }}>
-        {products.map((p) => (
-          <div key={p.prod_no} style={{
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            padding: "1rem",
-            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-            textAlign: "center"
-          }}>
-            {getImageByProdNo(p.prod_no) && (
-              <img
-                alt="productimage"
-                src={getImageByProdNo(p.prod_no)}
-                width={180}
-                height={180}
-                style={{ objectFit: "cover", marginBottom: "1rem" }}
-              />
-            )}
-            <div style={{ marginBottom: "1rem" }}>
-              <strong>{p.prod_nm}</strong><br />
-              가격: {p.prod_price}원<br />
-              저자: {p.author_nm}<br />
-              카테고리: {getCategoryName(p.category)}<br />
-              재고: {p.prod_cnt}<br />
-              상태: {p.status === "1" ? "판매중" : "판매종료"}<br />
-              출판사: {p.publisher}<br />
-              등록일: {p.reg_dtm}<br />
-              수정일: {p.upd_dtm || "없음"}<br />
-              설명: {p.book_desc}
-            </div>
-            <button onClick={() => goToUpdateProductPage(p.prod_no)}>상품 수정</button>&nbsp;&nbsp;
+    <div className="product-grid">
+      {products.map((p) => (
+        <div className="product-card" key={p.prod_no}>
+          {getImageByProdNo(p.prod_no) && (
+            <img
+              alt="productimage"
+              src={getImageByProdNo(p.prod_no)}
+              className="product-image"
+            />
+          )}
+          <div className="product-info">
+            <strong>{p.prod_nm}</strong><br />
+            가격: {p.prod_price}원<br />
+            저자: {p.author_nm}<br />
+            카테고리: {getCategoryName(p.category)}<br />
+            재고: {p.prod_cnt}<br />
+            상태: {p.status === "1" ? "판매중" : "판매종료"}<br />
+            출판사: {p.publisher}<br />
+            등록일: {p.reg_dtm}<br />
+            수정일: {p.upd_dtm || "없음"}<br />
+            설명: {p.book_desc}
+          </div>
+          <div className="product-actions">
+            <button onClick={() => goToUpdateProductPage(p.prod_no)}>상품 수정</button>
             <button onClick={() => productDelete(p.prod_no)}>상품 삭제</button>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
+  </div>
+
   );
 };
 

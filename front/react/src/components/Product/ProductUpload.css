@@ -1,0 +1,85 @@
+.product-upload-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f8f9f4;
+  color: #2e3d30;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  margin: 3rem auto;
+  max-width: 600px;
+  transition: all 0.3s ease;
+}
+
+.product-upload-container h2 {
+  color: #3f5d45;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.product-upload-container .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.product-upload-container label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #2f4632;
+}
+
+.product-upload-container input[type="text"],
+.product-upload-container input[type="number"],
+.product-upload-container select,
+.product-upload-container textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5c0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.product-upload-container input[type="text"]:focus,
+.product-upload-container input[type="number"]:focus,
+.product-upload-container select:focus,
+.product-upload-container textarea:focus {
+  outline: none;
+  border-color: #6b8e65;
+  box-shadow: 0 0 0 3px rgba(107, 142, 101, 0.15);
+}
+
+.product-upload-container input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+.product-upload-container button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background-color: #6b8e65;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.product-upload-container button:hover {
+  background-color: #557755;
+}
+
+@media (max-width: 600px) {
+  .product-upload-container {
+    padding: 1.5rem;
+  }
+
+  .product-upload-container h2 {
+    font-size: 1.4rem;
+  }
+}

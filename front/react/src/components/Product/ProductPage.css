@@ -1,0 +1,124 @@
+.product-page-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f4f6f1;
+  color: #2e3d30;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+}
+
+.product-page-container h2 {
+  text-align: center;
+  color: #3f5d45;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+
+.product-card {
+  border: 1px solid #cbd5c0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+}
+
+.product-info {
+  font-size: 0.95rem;
+  color: #3e4d3b;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  text-align: left;
+  width: 100%;
+}
+
+.product-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.product-actions button {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #6b8e65;
+  transition: background-color 0.3s ease;
+}
+
+.product-actions button:hover {
+  background-color: #557755;
+}
+
+.product-actions button:last-child {
+  background-color: #a05a5a;
+}
+
+.product-actions button:last-child:hover {
+  background-color: #884444;
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-search-bar select,
+.product-search-bar input {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.product-search-bar button {
+  padding: 0.6rem 1rem;
+  background-color: #6b8e65;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product-search-bar button:hover {
+  background-color: #557755;
+}
