@@ -22,6 +22,7 @@ public class OrderMstController {
     @Autowired
     private CustMapper custMapper;
     
+    // 주문 저장 [박민혁]
     @PostMapping("/save")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequestDTO dto) {
         try {
@@ -34,6 +35,7 @@ public class OrderMstController {
         }
     }
     
+    // 할인율 [박민혁]
     @GetMapping("/discount/{cust_id}")
     public ResponseEntity<?> getDiscountInfo(@PathVariable("cust_id") String custId) {
         String grade = custMapper.selectGradeByCustId(custId);

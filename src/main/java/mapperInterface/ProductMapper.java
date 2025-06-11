@@ -24,11 +24,11 @@ public interface ProductMapper {
     int deleteProduct(int prodNo);
 
     
-    // 상품 리스트 출력
+    // 상품 리스트 출력[박민혁]
 	List<ProductDTO> ProList(SearchCondDTO searchCond);
 	
 	
-	// 회원 상품 디테일
+	// 회원 상품 디테일[박민혁]
     @Select("SELECT * FROM product WHERE prod_no = #{prod_no}")
 	ProductDTO ProDetail(int prod_no);
 

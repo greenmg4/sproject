@@ -36,14 +36,14 @@ public class ProductController {
     private final ProductService productService;
     private final ProductImageService productImageService;
     
-    //상품 리스트 출력
+    //상품 리스트 출력[박민혁]
     @PostMapping("/proList")
     public ResponseEntity<List<ProductDTO>> proList(@RequestBody SearchCondDTO searchCond) {
         List<ProductDTO> product = productService.ProList(searchCond);
         return ResponseEntity.ok(product);
     }
     
-    //회원 상품 디테일 출력
+    //회원 상품 디테일 출력[박민혁]
     @GetMapping("/{prod_no}")
     public ProductDTO ProDetail(@PathVariable int prod_no) {
         return productService.ProDetail(prod_no);

@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProductDTO {
+	//[박민혁]
 	private int prod_no, prod_price, prod_cnt;
 
 	private String prod_nm, category, status, publisher, author_nm, book_desc, suggest_yn; 

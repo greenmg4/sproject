@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-
+//[박민혁]
 @RestController
 @RequestMapping("/api/payment")
 public class PaymentController {
