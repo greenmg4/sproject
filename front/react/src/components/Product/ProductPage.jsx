@@ -31,8 +31,9 @@ const ProductPage = () => {
 
   const getImageByProdNo = (prod_no) => {
     const image = productImages.find(img => img.prod_no === prod_no);
-    return image ? `http://localhost:8080${image.img_path}` : null;
+    return image ? `/${image.img_path}` : null;
   };
+
 
   const goToUpdateProductPage = (prod_no) => {
     navigate(`/product/update/${prod_no}`);
