@@ -181,6 +181,27 @@ export default function OrderPayment() {
     }
   }, [cust_id, items, navigate]);
 
+  useEffect(() => {
+  if (!cust_id) return;
+
+  const fetchDefaultAddress = async () => {
+    try {
+      const res = await fetch(`/api/address/default/${cust_id}`);
+      if (!res.ok) throw new Error("기본 배송지를 불러올 수 없습니다.");
+      const data = await res.json();
+
+      setPostcode(data.postcode);
+      setAddress(data.address1);
+      setDetailAddress(data.address2);
+    } catch (error) {
+      console.error("기본 배송지 오류:", error);
+    }
+  };
+
+  fetchDefaultAddress();
+}, [cust_id]);
+  
+
   const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
 
   useEffect(() => {

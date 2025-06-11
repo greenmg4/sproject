@@ -10,6 +10,9 @@ public interface AddressService {
     void deleteAddress(Long seq);
     void setDefaultAddress(String cust_id, Long seq);
     void updateAddress(AddressDTO dto);
+    
+    // 기본 주소 호출
+    AddressDTO DefaultAddress(String custId);
 
     
    
