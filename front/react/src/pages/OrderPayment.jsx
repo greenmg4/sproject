@@ -313,7 +313,7 @@ const finalAmount = itemTotalPrice + shippingFee - productDiscount;
               }}
             >
               <img
-                src={item.img_path || "/images/recommendation/default-product.png"}
+                src={ `/${item.img_path}`}
                 alt={item.prod_nm}
                 style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "6px" }}
               />
