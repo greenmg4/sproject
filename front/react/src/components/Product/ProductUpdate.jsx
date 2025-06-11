@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./ProductUpdate.css";
 
 const ProductUpdate = () => {
   const { prodNo } = useParams();
@@ -68,13 +69,14 @@ const ProductUpdate = () => {
   if (!product) return <div>로딩 중...</div>;
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="product-update-container">
       <h2>✏️ 상품 수정</h2>
 
       {productImage && (
-        <div>
+        <div className="form-group">
+          <label>현재 이미지</label>
           <img
-            src={`http://localhost:8080${productImage.img_path}`}
+            src={`/${productImage.img_path}`}
             alt="상품 이미지"
             width={180}
             height={180}
@@ -83,59 +85,84 @@ const ProductUpdate = () => {
         </div>
       )}
 
-      <input type="file" onChange={handleFileChange} accept="image/*" /><br />
-      <select value={img_class} onChange={(e) => setImgClass(e.target.value)}>
-        <option value="01">메인이미지</option>
-        <option value="02">정면</option>
-        <option value="03">상</option>
-        <option value="04">하</option>
-        <option value="05">좌</option>
-        <option value="06">우</option>
-      </select><br />
+      <div className="form-group">
+        <label>새 이미지 업로드</label>
+        <input type="file" onChange={handleFileChange} accept="image/*" />
+      </div>
 
-      <span>상품 이름: </span>
-      <input name="prod_nm" value={product.prod_nm} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>이미지 구분</label>
+        <select value={img_class} onChange={(e) => setImgClass(e.target.value)}>
+          <option value="01">메인이미지</option>
+          <option value="02">정면</option>
+          <option value="03">상</option>
+          <option value="04">하</option>
+          <option value="05">좌</option>
+          <option value="06">우</option>
+        </select>
+      </div>
 
-      <span>상품 가격: </span>
-      <input name="prod_price" value={product.prod_price} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>상품 이름</label>
+        <input name="prod_nm" value={product.prod_nm} onChange={handleChange} />
+      </div>
 
-      <span>카테고리: </span>
-      <select name="category" value={product.category} onChange={handleChange}>
-        <option value="01">소설</option>
-        <option value="02">에세이</option>
-        <option value="03">인문</option>
-        <option value="04">요리</option>
-        <option value="05">건강</option>
-        <option value="06">정치</option>
-        <option value="07">종교</option>
-        <option value="08">과학</option>
-        <option value="09">외국어</option>
-        <option value="10">IT</option>
-      </select><br />
+      <div className="form-group">
+        <label>상품 가격</label>
+        <input name="prod_price" type="number" value={product.prod_price} onChange={handleChange} />
+      </div>
 
-      <span>상품 상태: </span>
-      <select name="status" value={product.status} onChange={handleChange}>
-        <option value="1">판매중</option>
-        <option value="2">판매종료</option>
-      </select><br />
+      <div className="form-group">
+        <label>카테고리</label>
+        <select name="category" value={product.category} onChange={handleChange}>
+          <option value="01">소설</option>
+          <option value="02">에세이</option>
+          <option value="03">인문</option>
+          <option value="04">요리</option>
+          <option value="05">건강</option>
+          <option value="06">정치</option>
+          <option value="07">종교</option>
+          <option value="08">과학</option>
+          <option value="09">외국어</option>
+          <option value="10">IT</option>
+        </select>
+      </div>
 
-      <span>재고수: </span>
-      <input name="prod_cnt" value={product.prod_cnt} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>상품 상태</label>
+        <select name="status" value={product.status} onChange={handleChange}>
+          <option value="1">판매중</option>
+          <option value="2">판매종료</option>
+        </select>
+      </div>
 
-      <span>출판사: </span>
-      <input name="publisher" value={product.publisher} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>재고수</label>
+        <input name="prod_cnt" type="number" value={product.prod_cnt} onChange={handleChange} />
+      </div>
 
-      <span>저자: </span>
-      <input name="author_nm" value={product.author_nm} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>출판사</label>
+        <input name="publisher" value={product.publisher} onChange={handleChange} />
+      </div>
 
-      <span>추천 여부: </span>
-      <select name="suggest_yn" value={product.suggest_yn} onChange={handleChange}>
-        <option value="N">일반도서</option>
-        <option value="Y">추천도서</option>
-      </select><br />
+      <div className="form-group">
+        <label>저자</label>
+        <input name="author_nm" value={product.author_nm} onChange={handleChange} />
+      </div>
 
-      <span>상품 설명: </span>
-      <textarea name="book_desc" value={product.book_desc} onChange={handleChange} /><br />
+      <div className="form-group">
+        <label>추천 여부</label>
+        <select name="suggest_yn" value={product.suggest_yn} onChange={handleChange}>
+          <option value="N">일반도서</option>
+          <option value="Y">추천도서</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>상품 설명</label>
+        <textarea name="book_desc" value={product.book_desc} onChange={handleChange} />
+      </div>
 
       <button onClick={handleUpdate}>수정하기</button>
     </div>
