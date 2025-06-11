@@ -3,7 +3,9 @@ package mapperInterface;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.model.ProductDTO;
 import com.example.demo.model.SearchCondDTO;
@@ -31,5 +33,9 @@ public interface ProductMapper {
 	// 회원 상품 디테일[박민혁]
     @Select("SELECT * FROM product WHERE prod_no = #{prod_no}")
 	ProductDTO ProDetail(int prod_no);
+    
+    // 결제시 상품 갯수 삭제[박민혁]
+    @Update("UPDATE product SET prod_cnt = prod_cnt - #{cnt} WHERE prod_no = #{prod_no} AND prod_cnt >= #{cnt}")
+    void decreaseProdCnt(@Param("prod_no") int prod_no, @Param("cnt") int cnt);
 
 }
