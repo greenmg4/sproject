@@ -66,20 +66,16 @@
 	</delete>
 
 	<!-- 상품 조회 -->
-	<select id="ProList" parameterType="com.example.demo.model.ProductDTO" resultType="com.example.demo.model.ProductDTO">
-	  SELECT * FROM product
-	  WHERE 1=1
-	  <if test="category != null and category != ''">
-	    AND category = #{category}
-	  </if>
-	  <if test="prod_nm != null and prod_nm != ''">
-	    AND product_name LIKE CONCAT('%', #{prod_nm}, '%')
-	  </if>
-	  <if test="author_nm != null and author_nm != ''">
-	    AND author_nm = #{author_nm}
-	  </if>
-	  <if test="prod_no != null">
-	    AND prod_no = #{prod_no}
-	  </if>
+	<select id="ProList" parameterType="com.example.demo.model.SearchCondDTO" resultType="com.example.demo.model.ProductDTO">
+	    SELECT * FROM product WHERE 1 = 1
+	    <if test="category != null and category != ''">
+	        AND category = #{category}
+	    </if>
+	    <if test="prod_nm != null and prod_nm.trim() != ''">
+		    AND prod_nm LIKE CONCAT('%', #{prod_nm}, '%')
+		</if>
+	    <if test="author_nm != null and author_nm != ''">
+	        AND author_nm LIKE CONCAT('%', #{author_nm}, '%')
+	    </if>
 	</select>
 </mapper>

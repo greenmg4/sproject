@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.ProductDTO;
 import com.example.demo.model.ProductImageDTO;
+import com.example.demo.model.SearchCondDTO;
 import com.example.demo.service.ProductImageService;
 import com.example.demo.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,9 +38,9 @@ public class ProductController {
     
     //상품 리스트 출력
     @PostMapping("/proList")
-    public List<ProductDTO> proList(@RequestBody ProductDTO pdto){
-        System.out.println("검색조건: " + pdto);
-        return productService.ProList(pdto);
+    public ResponseEntity<List<ProductDTO>> proList(@RequestBody SearchCondDTO searchCond) {
+        List<ProductDTO> product = productService.ProList(searchCond);
+        return ResponseEntity.ok(product);
     }
     
     //회원 상품 디테일 출력
