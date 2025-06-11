@@ -208,7 +208,7 @@ console.log(sessionStorage.getItem("loginID"))
             //searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
             searchData = { prod_no: "", category: "", category_nm: "", prod_nm: "", author_nm: searchInput };
         }
-        alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
+        //alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
         goProList("/product/prolist", searchData);
     };
 
