@@ -39,6 +39,12 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void updateAddress(AddressDTO dto) {
     	addressMapper.updateAddress(dto);    	
-    }    
+    }
+
+    
+    @Override
+    public AddressDTO DefaultAddress(String custId) {
+        return addressMapper.DefaultAddress(custId);
+    }
 
 }

@@ -66,8 +66,8 @@ export function getStorageData() {
 }  
 
 // 상품 리스트 출력
-export async function ProList(category) {
-   return await apiCall(`/product/proList?category=${category}`, 'GET', null, null);
+export async function ProList(searchCond) {
+  return await apiCall('/product/proList', 'POST', searchCond, null);
 }
 
 // 상품 디테일
@@ -88,7 +88,7 @@ export async function CartDetail(cust_id) {
 // 내정보
 export const getUserInfo = (cust_id) => {
   return apiCall("/api/user/info", "POST", cust_id);
-};
+}
 
 // 배송지 관련
 

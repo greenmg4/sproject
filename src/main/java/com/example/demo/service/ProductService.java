@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.model.ProductDTO;
+import com.example.demo.model.SearchCondDTO;
 
 public interface ProductService {
     List<ProductDTO> getAllProducts();
@@ -14,7 +15,7 @@ public interface ProductService {
     
     
     // 회원 상품 리스트 출력
-    List<ProductDTO> ProList(String category);
+    List<ProductDTO> ProList(SearchCondDTO searchCond);
 	
     // 회원 상품 디테일 출력
     ProductDTO ProDetail(int prod_no);

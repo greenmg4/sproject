@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,5 +54,14 @@ public class AddressController {
         addressService.updateAddress(dto);
     }
 
+    // 기본 주소 호출
+    @GetMapping("/default/{custId}")
+    public ResponseEntity<AddressDTO> DefaultAddress(@PathVariable String custId) {
+        AddressDTO dto = addressService.DefaultAddress(custId);  // 수정됨
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
     
 }

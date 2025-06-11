@@ -16,6 +16,15 @@ export default function OrderPayment() {
     phone: initialPhone,
   } = location.state || {};
 
+  const inputStyle = {
+    marginBottom: "12px",
+    padding: "10px",
+    fontSize: "14px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    width: "100%",
+  };
+
   // 배송지 정보
   const [postcode, setPostcode] = useState("");
   const [address1, setAddress] = useState("");
@@ -172,6 +181,27 @@ export default function OrderPayment() {
     }
   }, [cust_id, items, navigate]);
 
+  useEffect(() => {
+  if (!cust_id) return;
+
+  const fetchDefaultAddress = async () => {
+    try {
+      const res = await fetch(`/api/address/default/${cust_id}`);
+      if (!res.ok) throw new Error("기본 배송지를 불러올 수 없습니다.");
+      const data = await res.json();
+
+      setPostcode(data.postcode);
+      setAddress(data.address1);
+      setDetailAddress(data.address2);
+    } catch (error) {
+      console.error("기본 배송지 오류:", error);
+    }
+  };
+
+  fetchDefaultAddress();
+}, [cust_id]);
+  
+
   const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
 
   useEffect(() => {
@@ -202,88 +232,70 @@ const finalAmount = itemTotalPrice + shippingFee - productDiscount;
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px", display: "flex", gap: "20px" }}>
       <div style={{ flex: 2 }}>
         {/* 배송지 정보 */}
-        <section style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
-          <h3 style={{ fontSize: "18px", marginBottom: "15px" }}>배송지 정보</h3>
+        <section
+          style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "8px",
+            padding: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <h3 style={{ fontSize: "18px", marginBottom: "15px", textAlign: "center" }}>배송지 정보</h3>
 
-          <input
-            type="text"
-            placeholder="수령인 이름"
-            value={cust_nm}
-            onChange={(e) => setCustNm(e.target.value)}
-            style={{
-              marginBottom: "12px",
-              padding: "10px",
-              fontSize: "14px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              width: "100%",
-            }}
-          />
-          <input
-            type="text"
-            placeholder="전화번호"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            style={{
-              marginBottom: "12px",
-              padding: "10px",
-              fontSize: "14px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              width: "100%",
-            }}
-          />
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ width: "95%", maxWidth: "500px", margin: "0 auto" }}>
             <input
               type="text"
-              placeholder="우편번호"
-              value={postcode}
-              readOnly
-              style={{ padding: "10px", fontSize: "14px", borderRadius: "4px", border: "1px solid #ccc", flex: "1" }}
+              placeholder="수령인 이름"
+              value={cust_nm}
+              onChange={(e) => setCustNm(e.target.value)}
+              style={inputStyle}
             />
-            <button
-              onClick={openPostcodePopup}
-              style={{
-                padding: "10px 16px",
-                fontSize: "14px",
-                backgroundColor: "#3498db",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              배송지 입력
-            </button>
+            <input
+              type="text"
+              placeholder="전화번호"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              style={inputStyle}
+            />
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+              <input
+                type="text"
+                placeholder="우편번호"
+                value={postcode}
+                readOnly
+                style={{ ...inputStyle, flex: 1 }}
+              />
+              <button
+                onClick={openPostcodePopup}
+                style={{
+                  padding: "10px 16px",
+                  fontSize: "14px",
+                  backgroundColor: "#3498db",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                배송지 입력
+              </button>
+            </div>
+            <input
+              type="text"
+              placeholder="주소"
+              value={address1}
+              readOnly
+              style={inputStyle}
+            />
+            <input
+              type="text"
+              placeholder="상세주소"
+              value={address2}
+              onChange={(e) => setDetailAddress(e.target.value)}
+              style={inputStyle}
+            />
           </div>
-          <input
-            type="text"
-            placeholder="주소"
-            value={address1}
-            readOnly
-            style={{
-              marginTop: "12px",
-              padding: "10px",
-              fontSize: "14px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              width: "100%",
-            }}
-          />
-          <input
-            type="text"
-            placeholder="상세주소"
-            value={address2}
-            onChange={(e) => setDetailAddress(e.target.value)}
-            style={{
-              marginTop: "12px",
-              padding: "10px",
-              fontSize: "14px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              width: "100%",
-            }}
-          />
         </section>
 
         {/* 주문 상품 목록 */}
