@@ -42,6 +42,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     
+    // 기본 주소 호출[박민혁]
     @Override
     public AddressDTO DefaultAddress(String custId) {
         return addressMapper.DefaultAddress(custId);

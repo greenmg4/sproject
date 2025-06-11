@@ -65,17 +65,43 @@
 		DELETE FROM product where prod_no = #{prod_no}
 	</delete>
 
-	<!-- 상품 조회 -->
+	<!-- 상품 조회 [박민혁] -->
 	<select id="ProList" parameterType="com.example.demo.model.SearchCondDTO" resultType="com.example.demo.model.ProductDTO">
-	    SELECT * FROM product WHERE 1 = 1
+	  SELECT p.prod_no, p.prod_nm, p.prod_price, p.publisher, p.author_nm, i.img_path FROM product p 
+	  LEFT JOIN product_img i ON p.prod_no = i.prod_no AND i.img_class = '01'
+	  WHERE p.status = '1'
 	    <if test="category != null and category != ''">
-	        AND category = #{category}
+	      AND p.category = #{category}
 	    </if>
-	    <if test="prod_nm != null and prod_nm.trim() != ''">
-		    AND prod_nm LIKE CONCAT('%', #{prod_nm}, '%')
-		</if>
+	    <if test="prod_nm != null and prod_nm != ''">
+	      AND p.prod_nm LIKE CONCAT('%', #{prod_nm}, '%')
+	    </if>
 	    <if test="author_nm != null and author_nm != ''">
-	        AND author_nm LIKE CONCAT('%', #{author_nm}, '%')
+	      AND p.author_nm LIKE CONCAT('%', #{author_nm}, '%')
 	    </if>
 	</select>
+	
+	<!-- 추천 상품 조회 -->
+	<select id="getSuggestProductList" resultType="map">
+		SELECT p.prod_no
+		     , p.category
+		     , (select b.detail_nm from comm_cd a, comm_cd_detail b where a.cd_id = '104' and a.cd_id = b.cd_id and b.detail_cd = p.category LIMIT 1 ) as category_nm
+		     , p.prod_nm
+		     , prod_price
+		     , prod_cnt
+		     , publisher
+		     , book_desc
+		     , suggest_yn
+		     , img_path
+		     , CASE WHEN img_path IS NULL OR img_path = '' THEN ''
+		            ELSE SUBSTRING_INDEX(img_path, '/', -1)
+		        END AS img_file_nm
+		  FROM PRODUCT p
+		  LEFT JOIN PRODUCT_IMG i 
+		    ON p.prod_no = i.prod_no
+		 WHERE 1=1
+		   AND suggest_yn = 'Y'
+	</select>
+	
+	
 </mapper>

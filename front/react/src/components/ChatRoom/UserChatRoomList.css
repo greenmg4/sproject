@@ -1,115 +1,94 @@
-.chat-room {
+.chat-room-list {
   max-width: 760px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+  margin: 3rem auto;
+  padding: 2.5rem;
+  font-family: 'Noto Sans KR', sans-serif;
 
-.chat-list {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  height: 500px;
-  overflow-y: auto;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background: #fafafa;
-}
-
-.messagebox {
-  display: inline-block;
-  max-width: 70%;
-  padding: 8px 12px;
-  margin: 4px 0;
-  word-break: break-word;
-  font-size: 0.95rem;
-}
-
-.messagebox.right {
-  align-self: flex-end;
-  background: #b5ecf4;
-  border-radius: 25px 0 25px 25px;
-}
-
-.messagebox.left {
-  align-self: flex-start;
-  background: #d3f3f8;
-  border-radius: 0 25px 25px 25px;
-}
-
-.messagebox.system {
-  align-self: center;
-  background: #eee;
-  color: #555;
-  border-radius: 10px;
-  font-style: italic;
-}
-
-/* wave 텍스트 효과 */
-@keyframes wave {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-4px); }
-  100% { transform: translateY(0); }
-}
-
-.messagebox.system.wave {
-  animation: wave 1.2s ease-in-out infinite;
+  background-color: #f4f7f2;         /* 💚 살짝 올리브 들어간 연한 배경 */
+  border: 1px solid #e0e8dc;         /* 🎯 존재감은 있지만 튀지 않음 */
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); /* 🪄 살짝 떠 있는 느낌 */
 }
 
 
-/* 입력창 */
-.inputbox {
-  display: flex;
-  gap: 0.5rem;
+.chat-room-list h2 {
+  text-align: center;
+  color: #3f5d45;
+  margin-bottom: 1.5rem;
 }
 
-.inputbox input {
-  flex: 1;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-}
-
-.inputbox button {
-  padding: 0 1rem;
+/* 시작 버튼 */
+.chat-room-list button {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 0.8rem 1.5rem;
+  background-color: #6b8e65;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
   border: none;
-  background: #4ea9c1;
-  color: #fff;
-  border-radius: 20px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.inputbox button:disabled {
-  background: #888;
-  cursor: not-allowed;
+.chat-room-list button:hover {
+  background-color: #557755;
 }
 
-.finish-btn {
-  background: #f05050;
+/* 리스트 UL */
+.chat-room-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.finish-btn:disabled {
-  background: #aaa;
+/* 각 채팅방 카드 */
+.chat-room {
+  display: block;
+  background-color: #f8f9f4; /* 부드러운 아이보리 */
+  border: 1px solid #cbd5c0;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: #2f4632;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.notification-dot {
+.chat-room:hover {
+  background-color: #f0f5eb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 종료된 채팅방 흐리게 */
+.chat-room.closed {
+  opacity: 0.5;
+}
+
+/* 제목 영역 */
+.room-title {
+  font-weight: 600;
+  color: #2e3d30;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+/* 알림 뱃지 */
+.room-title .notification-dot {
   display: inline-block;
   width: 8px;
   height: 8px;
-  margin-left: 6px;
+  margin-left: 8px;
   border-radius: 50%;
   background: #ff4d4f;
 }
 
-.room-title .ended-tag {
-  margin-left: 4px;
-  font-size: 0.75rem;
-  color: #888;
+/* 마지막 메시지 */
+.last-message {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
 }
-
-.chat-room.closed {        /* 종료된 문의 흐리게 */
-  opacity: 0.55 !important;   /* ← 우선순위 보강 */
-}
-
-

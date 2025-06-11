@@ -26,7 +26,7 @@ public class CartController {
 	@Autowired
 	private CartService cservice;
 	
-	// 장바구니 저장
+	// 장바구니 저장[박민혁]
 	@PostMapping("/addCart")
 	public ResponseEntity<String> addCart(@RequestBody CartDTO cart, HttpSession session) {
 	    String cust_id = (String) session.getAttribute("loginID");
@@ -45,7 +45,7 @@ public class CartController {
 	    }
 	}
 	
-	// 장바구니 호출 
+	// 장바구니 호출 [박민혁]
 	@PostMapping("/CartDetail")
 	public ResponseEntity<List<CartDTO>> CartDetail(@RequestBody Map<String, String> request) {
 	    String cust_id = request.get("cust_id");
@@ -53,7 +53,7 @@ public class CartController {
 	    return ResponseEntity.ok(CartDetail);
 	}
 
-	//장바구니 상품 수량 변경 
+	//장바구니 상품 수량 변경 [박민혁]
     @PostMapping("/updateCnt")
     public ResponseEntity<String> updateCnt(@RequestBody CartDTO cart) {
         try {

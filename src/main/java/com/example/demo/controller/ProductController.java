@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +37,14 @@ public class ProductController {
     private final ProductService productService;
     private final ProductImageService productImageService;
     
-    //상품 리스트 출력
+    //상품 리스트 출력[박민혁]
     @PostMapping("/proList")
     public ResponseEntity<List<ProductDTO>> proList(@RequestBody SearchCondDTO searchCond) {
         List<ProductDTO> product = productService.ProList(searchCond);
         return ResponseEntity.ok(product);
     }
     
-    //회원 상품 디테일 출력
+    //회원 상품 디테일 출력[박민혁]
     @GetMapping("/{prod_no}")
     public ProductDTO ProDetail(@PathVariable int prod_no) {
         return productService.ProDetail(prod_no);
@@ -74,21 +75,21 @@ public class ProductController {
 
         String fileName = image.getOriginalFilename();
 
-        // ✅ 저장 경로 구성
+        //  저장 경로 구성
         String uploadDir = System.getProperty("user.dir") + "/front/react/public/images/uploadimages/";
         System.out.println("실제 업로드 경로: " + uploadDir);
         File dir = new File(uploadDir);
         if (!dir.exists()) {
-            dir.mkdirs();  // ✅ 경로가 없으면 생성
+            dir.mkdirs();  //  경로가 없으면 생성
         }
 
-        // ✅ 파일 저장
+        //  파일 저장
         String savePath = uploadDir + fileName;
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
         img.setProd_no(prodNo);
-        img.setImg_path("images/uploadimages/" + fileName); // ✅ DB에는 상대 경로만 저장
+        img.setImg_path("images/uploadimages/" + fileName); //  DB에는 상대 경로만 저장
         img.setImg_class(imgClass);
 
         productImageService.insertImage(img);
@@ -179,9 +180,21 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예외 발생: " + e.getMessage());
         }
     }
-
-
     
+
+    // 추천상품(suggest_yn = 'Y') 조회
+    @GetMapping("/getSuggestProductList")
+    public ResponseEntity<?> getSuggestProductList() {
+    	
+ 		List<Map<String,Object>> list = productService.getSuggestProductList();
+    	if ( list !=null && list.size() >= 0 ) {  // 추천상품이 없을 수도 있으므로 0도 포함.	
+			return ResponseEntity.ok().body(list);
+		} else {
+			return ResponseEntity
+				  .status(HttpStatus.BAD_GATEWAY) 
+				  .body("getSuggestProductList Error");
+		}
+    }
     
     
 }//class

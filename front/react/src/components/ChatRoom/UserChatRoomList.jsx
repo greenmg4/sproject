@@ -100,9 +100,9 @@ function UserChatRoomList() {
   return (
     <div className="chat-room-list">
       <h2>내 문의내역</h2>
-			<button onClick={goToChatUser} style={{ marginBottom: '15px' }}>
-  			채팅상담 시작
-			</button>
+			<div style={{ textAlign: 'center' }}>
+        <button onClick={goToChatUser}>채팅상담 시작</button>
+      </div>
       <ul>
         {rooms.map(r => {
           const isClosed = r.qna_type === 2 || r.qna_type === '2';

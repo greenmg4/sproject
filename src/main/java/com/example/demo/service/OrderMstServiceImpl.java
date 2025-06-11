@@ -17,6 +17,7 @@ import com.example.demo.model.OrderRequestDTO;
 import mapperInterface.CartMapper;
 import mapperInterface.CustMapper;
 import mapperInterface.OrderMstMapper;
+import mapperInterface.ProductMapper;
 
 @Service
 public class OrderMstServiceImpl implements OrderMstService {
@@ -30,6 +31,11 @@ public class OrderMstServiceImpl implements OrderMstService {
     @Autowired
     private CartMapper cartMapper;
     
+    @Autowired
+    private ProductMapper productMapper; 
+    
+    
+    //[박민혁]
     @Transactional
     @Override
     public int saveOrder(OrderRequestDTO dto) throws Exception {
@@ -79,6 +85,9 @@ public class OrderMstServiceImpl implements OrderMstService {
                 detail.setProd_no(item.getProd_no());
                 detail.setBuy_price(item.getBuy_price());
                 detail.setCnt(item.getCnt());
+                
+                productMapper.decreaseProdCnt(Integer.parseInt(item.getProd_no()), item.getCnt());
+                
                 return detail;
             }).collect(Collectors.toList());
         OMMapper.insertOrderDetails(details);

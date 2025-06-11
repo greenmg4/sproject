@@ -1,0 +1,89 @@
+.product-update-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f8f9f4;
+  color: #2e3d30;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  max-width: 700px;
+  margin: 3rem auto;
+}
+
+.product-update-container h2 {
+  color: #3f5d45;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.product-update-container .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.product-update-container label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #2f4632;
+}
+
+.product-update-container input[type="text"],
+.product-update-container input[type="number"],
+.product-update-container textarea,
+.product-update-container select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #cbd5c0;
+  border-radius: 8px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.product-update-container textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.product-update-container input:focus,
+.product-update-container select:focus,
+.product-update-container textarea:focus {
+  border-color: #6b8e65;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 142, 101, 0.15);
+}
+
+.product-update-container img {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.product-update-container button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #6b8e65;
+  color: white;
+  font-size: 1.05rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.product-update-container button:hover {
+  background-color: #557755;
+}
+
+@media (max-width: 600px) {
+  .product-update-container {
+    padding: 1.5rem;
+  }
+
+  .product-update-container h2 {
+    font-size: 1.4rem;
+  }
+}
