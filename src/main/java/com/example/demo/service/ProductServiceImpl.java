@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -55,4 +56,11 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.ProDetail(prod_no);
 	}
 
+	//추천 상품 리스트 출력
+	@Override
+	public List<Map<String, Object>> getSuggestProductList() {
+		return productMapper.getSuggestProductList();
+	}
+	
+	
 }
