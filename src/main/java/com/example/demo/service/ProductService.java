@@ -14,7 +14,7 @@ public interface ProductService {
     
     
     // 회원 상품 리스트 출력
-    List<ProductDTO> ProList(String category);
+    List<ProductDTO> ProList(ProductDTO pdto);
 	
     // 회원 상품 디테일 출력
     ProductDTO ProDetail(int prod_no);

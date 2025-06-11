@@ -114,7 +114,7 @@ export default function OrderPayment() {
 
     IMP.request_pay(
       {
-        pg: "html5_inicis.INIpayTest",
+        pg: "kakaopay.TC0ONETIME",
         pay_method: "card",
         merchant_uid,
         name: productName,

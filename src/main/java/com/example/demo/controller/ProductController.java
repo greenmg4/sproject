@@ -35,10 +35,11 @@ public class ProductController {
     private final ProductService productService;
     private final ProductImageService productImageService;
     
-    //회원 상품 리스트 출력
-    @GetMapping("/proList")
-    public List<ProductDTO> proList(@RequestParam String category){
-    	return productService.ProList(category);	
+    //상품 리스트 출력
+    @PostMapping("/proList")
+    public List<ProductDTO> proList(@RequestBody ProductDTO pdto){
+        System.out.println("검색조건: " + pdto);
+        return productService.ProList(pdto);
     }
     
     //회원 상품 디테일 출력

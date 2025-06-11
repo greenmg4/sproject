@@ -8,21 +8,31 @@ export default function ProductList() {
   const { category = 'A' } = location.state || {};
   const [list, setList] = useState(null);
 
-const searchCond = {
-  category: '',      // 또는 '', null
-  prod_nm: '',        // 또는 '책이름'
-  author_nm: '',      // 또는 '저자명'
-  prod_no: ''         // 또는 상품번호
-};
 
-ProList(searchCond)
-  .then(data => {
-    if (data.length > 0) setList(data);
-    else {
-      alert('출력할 상품이 없습니다 ~~');
-      setList([]);
-    }
-  });
+  useEffect(() => {
+    setList(null);
+    
+    const searchCond = {
+      category: category,
+      prod_nm: '',
+      author_nm: '',
+      prod_no: ''
+    };
+
+    ProList(searchCond)
+      .then(data => {
+        if (data.length > 0) setList(data);
+        else {
+          alert('출력할 상품이 없습니다 ~~');
+          setList([]);
+        }
+      })
+      .catch(err => {
+        alert('상품 조회 중 오류가 발생했습니다.');
+        setList([]);
+      });
+  }, [category]);
+
   if (list === null) {
     return <div className="loading">Loading...</div>;
   }
