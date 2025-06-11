@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './UserChatRoomList.css';
 
 const BASE_URL = 'http://localhost:8080';
@@ -11,6 +11,27 @@ function UserChatRoomList() {
   const [rooms, setRooms] = useState([]);        // 화면용 채팅방 목록
   const [myQnaNos, setMyQnaNos] = useState([]);  // 내가 가진 qna_no 집합
   const stomp = useRef(null);
+	const navigate = useNavigate();
+
+	const goToChatUser = async () => {
+		const custId = sessionStorage.getItem("loginID");
+		if (!custId) {
+			alert("로그인이 필요한 기능입니다.");
+			return;
+		}
+
+		const confirmed = window.confirm("채팅문의를 시작하시겠습니까?");
+		if (!confirmed) return;
+
+		try {
+			const res = await axios.post(`${BASE_URL}/chat/create`, {}, { withCredentials: true });
+			const { qna_no } = res.data;
+			navigate(`/chat/${qna_no}`);
+		} catch (err) {
+			console.error("채팅방 생성 실패:", err);
+			alert("채팅방 생성 중 오류가 발생했습니다.");
+		}
+};
 
   /* ① 최초 목록 -------------------------------------------------- */
   useEffect(() => {
@@ -79,6 +100,9 @@ function UserChatRoomList() {
   return (
     <div className="chat-room-list">
       <h2>내 문의내역</h2>
+			<button onClick={goToChatUser} style={{ marginBottom: '15px' }}>
+  			채팅상담 시작
+			</button>
       <ul>
         {rooms.map(r => {
           const isClosed = r.qna_type === 2 || r.qna_type === '2';
