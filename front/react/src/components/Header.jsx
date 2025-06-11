@@ -305,7 +305,7 @@ console.log(sessionStorage.getItem("loginID"))
                     </tr>
                     </tbody>
                 </table>              
-            </div>  
+            </div>
 			
 
             {/*------------- 카테고리 메뉴 ---------------*/}

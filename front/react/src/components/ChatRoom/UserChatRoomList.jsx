@@ -29,7 +29,7 @@ function UserChatRoomList() {
 			navigate(`/chat/${qna_no}`);
 		} catch (err) {
 			console.error("채팅방 생성 실패:", err);
-			alert("채팅방 생성 중 오류가 발생했습니다."); 
+			alert("채팅방 생성 중 오류가 발생했습니다.");
 		}
 };
 
