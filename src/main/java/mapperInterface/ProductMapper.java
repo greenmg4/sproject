@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.example.demo.model.ProductDTO;
+import com.example.demo.model.SearchCondDTO;
 
 @Mapper
 public interface ProductMapper {
@@ -23,14 +24,12 @@ public interface ProductMapper {
     int deleteProduct(int prodNo);
 
     
-    // 회원 상품 리스트 출력
-    @Select("SELECT p.*, pi.img_path FROM product p LEFT JOIN product_img pi"
-    	    +"  ON p.prod_no = pi.prod_no AND pi.img_class = '01'"
-    	    +" WHERE #{category} = 'A' OR p.category = #{category}")
-	List<ProductDTO> ProList(String category);
+    // 상품 리스트 출력
+	List<ProductDTO> ProList(SearchCondDTO searchCond);
 	
 	
 	// 회원 상품 디테일
     @Select("SELECT * FROM product WHERE prod_no = #{prod_no}")
 	ProductDTO ProDetail(int prod_no);
+
 }

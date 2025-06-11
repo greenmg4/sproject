@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.ProductDTO;
+import com.example.demo.model.SearchCondDTO;
 
 import lombok.RequiredArgsConstructor;
 import mapperInterface.ProductMapper;
@@ -42,10 +43,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     
-    // 회원 상품 리스트 출력
+    // 상품 리스트 출력
 	@Override
-	public List<ProductDTO> ProList(String category) {
-		return productMapper.ProList(category);
+	public List<ProductDTO> ProList(SearchCondDTO searchCond) {
+		return productMapper.ProList(searchCond);
 	}
 
 	//회원 상품 디테일 출력
@@ -53,4 +54,5 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO ProDetail(int prod_no) {
 		return productMapper.ProDetail(prod_no);
 	}
+
 }

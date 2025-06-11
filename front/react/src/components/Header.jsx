@@ -128,8 +128,8 @@ console.log(sessionStorage.getItem("loginID"))
     const goProList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
         //alert(`** proList 요청전 url=${url}, jsonData=${JSON.stringify(jsonData)}`);
-        
-        navigate(url, { state: jsonData });
+        //navigate(url, { state: jsonData });
+        navigate('/product/proList', { state: jsonData });
     };
 
 
@@ -184,18 +184,22 @@ console.log(sessionStorage.getItem("loginID"))
             return;
         }
 
+        let st = searchType || "A"; // 기본 '통합검색'으로 세팅
         let searchData = {};
-        if (searchType === "A") {
+        if (st === "A") {
             //A: 통합검색
-            //searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
-            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: searchInput, author_nm: "" };
-        } else if (searchType === "author") {
+            searchData = { prod_no: "", category: "", prod_nm: searchInput, author_nm: "" };
+        } else if (st === "author") {
             //author: 저자검색
-            //searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
-            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: "", author_nm: searchInput };
+            searchData = { prod_no: "", category: "", prod_nm: "", author_nm: searchInput };
         }
-        //alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
-        goProList("/product/prolist", searchData);
+        alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
+
+        goProList("/product/prolist", {
+            category: "",
+            searchType: searchType === "A" ? "all" : searchType,
+            keyword: searchInput
+            });
     };
 
     const categories = [
@@ -330,8 +334,7 @@ console.log(sessionStorage.getItem("loginID"))
             <div className='header-category-container'>
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
-                        {/* <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}> */}
-                        <span onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, category_nm: "", prod_nm: "", author_nm: "" }) }}>
+                        <span onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, prod_nm: "", author_nm: "" }) }}>
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>
@@ -407,4 +410,3 @@ console.log(sessionStorage.getItem("loginID"))
 
 
 export default Header;
-

@@ -65,4 +65,17 @@
 		DELETE FROM product where prod_no = #{prod_no}
 	</delete>
 
+	<!-- 상품 조회 -->
+	<select id="ProList" parameterType="com.example.demo.model.SearchCondDTO" resultType="com.example.demo.model.ProductDTO">
+	    SELECT * FROM product WHERE 1 = 1
+	    <if test="category != null and category != ''">
+	        AND category = #{category}
+	    </if>
+	    <if test="prod_nm != null and prod_nm.trim() != ''">
+		    AND prod_nm LIKE CONCAT('%', #{prod_nm}, '%')
+		</if>
+	    <if test="author_nm != null and author_nm != ''">
+	        AND author_nm LIKE CONCAT('%', #{author_nm}, '%')
+	    </if>
+	</select>
 </mapper>
