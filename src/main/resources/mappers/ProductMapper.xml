@@ -78,4 +78,29 @@
 	        AND author_nm LIKE CONCAT('%', #{author_nm}, '%')
 	    </if>
 	</select>
+	
+	
+	<!-- 추천 상품 조회 -->
+	<select id="getSuggestProductList" resultType="map">
+		SELECT p.prod_no
+		     , p.category
+		     , (select b.detail_nm from comm_cd a, comm_cd_detail b where a.cd_id = '104' and a.cd_id = b.cd_id and b.detail_cd = p.category LIMIT 1 ) as category_nm
+		     , p.prod_nm
+		     , prod_price
+		     , prod_cnt
+		     , publisher
+		     , book_desc
+		     , suggest_yn
+		     , img_path
+		     , CASE WHEN img_path IS NULL OR img_path = '' THEN ''
+		            ELSE SUBSTRING_INDEX(img_path, '/', -1)
+		        END AS img_file_nm
+		  FROM PRODUCT p
+		  LEFT JOIN PRODUCT_IMG i 
+		    ON p.prod_no = i.prod_no
+		 WHERE 1=1
+		   AND suggest_yn = 'Y'
+	</select>
+	
+	
 </mapper>

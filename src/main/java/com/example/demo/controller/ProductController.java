@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -180,7 +181,20 @@ public class ProductController {
         }
     }
     
-    
+
+    // 추천상품(suggest_yn = 'Y') 조회
+    @GetMapping("/getSuggestProductList")
+    public ResponseEntity<?> getSuggestProductList() {
+    	
+ 		List<Map<String,Object>> list = productService.getSuggestProductList();
+    	if ( list !=null && list.size() >= 0 ) {  // 추천상품이 없을 수도 있으므로 0도 포함.	
+			return ResponseEntity.ok().body(list);
+		} else {
+			return ResponseEntity
+				  .status(HttpStatus.BAD_GATEWAY) 
+				  .body("getSuggestProductList Error");
+		}
+    }
     
     
 }//class
