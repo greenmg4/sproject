@@ -139,7 +139,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 };
 console.log(sessionStorage.getItem("loginID"))
 
-    const goProductList = (url, jsonData) => {
+    const goProList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
         //alert(`** proList 요청전 url=${url}, jsonData=${JSON.stringify(jsonData)}`);
         
@@ -180,20 +180,36 @@ console.log(sessionStorage.getItem("loginID"))
         openModal();
     }
 
-
+    // 엔터 키 입력 시 handleSearch 실행
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
 
     const [searchType, setSearchType] = useState("A"); // Default search type
     const [searchInput, setSearchInput] = useState(""); // Input value
 
     const handleSearch = () => {
+
+        // 검색어를 입력하지 않으면, 로직 실행하지 않음.
+        if (!searchInput.trim()) {
+            //alert("검색어를 입력해주세요.");
+            return;
+        }
+
         let searchData = {};
         if (searchType === "A") {
-            searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
+            //A: 통합검색
+            //searchData = { prod_no: null, category: "A", category_nm: "통합검색", prod_nm: searchInput, author_nm: "" };
+            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: searchInput, author_nm: "" };
         } else if (searchType === "author") {
-            searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
+            //author: 저자검색
+            //searchData = { prod_no: null, category: "A", category_nm: "저자 검색", prod_nm: "", author_nm: searchInput };
+            searchData = { prod_no: "", category: "", category_nm: "", prod_nm: "", author_nm: searchInput };
         }
-        alert   (`** 검색 요청전 url=/product/productlist, searchData=${JSON.stringify(searchData)}`);
-        goProductList("/product/productlist", searchData);
+        alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
+        goProList("/product/prolist", searchData);
     };
 
     const categories = [
@@ -291,6 +307,7 @@ console.log(sessionStorage.getItem("loginID"))
                                     placeholder="검색어를 입력하세요" 
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={handleKeyDown} // 엔터 키 이벤트 처리
                                 />
 
                                 <span 
@@ -327,7 +344,8 @@ console.log(sessionStorage.getItem("loginID"))
             <div className='header-category-container'>
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
-                        <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}>
+                        {/* <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}> */}
+                        <span onClick={() => { goProList("/product/ProList", { prod_no:null , category: item.category, category_nm: "", prod_nm: "", author_nm: "" }) }}>
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>
