@@ -1,66 +1,88 @@
 .chat-room-list {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background-color: #f9f9f9;
+  max-width: 760px;
+  margin: 3rem auto;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 0 1rem;
 }
 
 .chat-room-list h2 {
   text-align: center;
+  color: #3f5d45;
   margin-bottom: 1.5rem;
 }
 
+/* 시작 버튼 */
+.chat-room-list button {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 0.8rem 1.5rem;
+  background-color: #6b8e65;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chat-room-list button:hover {
+  background-color: #557755;
+}
+
+/* 리스트 UL */
 .chat-room-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.chat-room-list li {
-  margin-bottom: 1rem;
-}
-
-.chat-room-list a {
+/* 각 채팅방 카드 */
+.chat-room {
   display: block;
-  padding: 1rem;
+  background-color: #f8f9f4; /* 부드러운 아이보리 */
+  border: 1px solid #cbd5c0;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
   text-decoration: none;
-  color: #333;
-  background-color: #e8f4fc;
-  border-radius: 8px;
-  border: 1px solid #c8e6f9;
-  transition: background-color 0.2s ease;
+  color: #2f4632;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.chat-room-list a:hover {
-  background-color: #d0ecff;
-  color: #000;
-  font-weight: 500;
+.chat-room:hover {
+  background-color: #f0f5eb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.chat-room-list .notification-dot {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 10px;
-  height: 10px;
-  background-color: red;
+/* 종료된 채팅방 흐리게 */
+.chat-room.closed {
+  opacity: 0.5;
+}
+
+/* 제목 영역 */
+.room-title {
+  font-weight: 600;
+  color: #2e3d30;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+/* 알림 뱃지 */
+.room-title .notification-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
   border-radius: 50%;
+  background: #ff4d4f;
 }
 
-/* 상대 위치 지정 */
-.chat-room-list .chat-room {
-  position: relative;
+/* 마지막 메시지 */
+.last-message {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
 }
-
-@keyframes wave {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-4px); }
-  100% { transform: translateY(0); }
-}
-
-.messagebox.system.wave {
-  animation: wave 1.2s ease-in-out infinite;
-}
-
