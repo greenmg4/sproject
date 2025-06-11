@@ -148,7 +148,7 @@ export default function Cart() {
                 onChange={() => toggleSelectOne(item.prod_no)}
               />
               <img
-                src={item.img_path || '/images/recommendation/default-product.png'}
+                src={ `/${item.img_path}`}
                 alt={item.prod_nm}
                 style={{ width: '100px', height: '100px', objectFit: 'cover' }}
               />
