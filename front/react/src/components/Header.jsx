@@ -213,7 +213,8 @@ console.log(sessionStorage.getItem("loginID"))
     };
 
     const categories = [
-        { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
+        // { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
+        { id: "tooltip-all", category: "", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-novel", category: "01", category_nm: "소설", icon: mdiBookOpenBlankVariantOutline, tooltip: "소설" },
         { id: "tooltip-essay", category: "02", category_nm: "에세이", icon: mdiDrawPen, tooltip: "에세이" },
         { id: "tooltip-humanities", category: "03", category_nm: "인문", icon: mdiBabyFaceOutline, tooltip: "인문" },
@@ -345,7 +346,7 @@ console.log(sessionStorage.getItem("loginID"))
                 {categories.map((item) => (
                     <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
                         {/* <span onClick={() => { goProductList("/product/ProList", { prod_no:null , category: item.category, category_nm: item.category_nm, prod_nm: "", author_nm: "" }) }}> */}
-                        <span onClick={() => { goProList("/product/ProList", { prod_no:null , category: item.category, category_nm: "", prod_nm: "", author_nm: "" }) }}>
+                        <span onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, category_nm: "", prod_nm: "", author_nm: "" }) }}>
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>
