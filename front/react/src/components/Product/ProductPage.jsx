@@ -8,6 +8,23 @@ const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const navigate = useNavigate();
+  const [searchType, setSearchType] = useState("all");
+  const [searchText, setSearchText] = useState("");
+
+  const searchProducts = () => {
+  const searchCond = {
+    prod_nm: searchType === "all" ? searchText : null,
+    author_nm: searchType === "author" ? searchText : null
+  };
+
+  axios.post("http://localhost:8080/product/proList", searchCond)
+    .then((res) => setProducts(res.data))
+    .catch((err) => {
+      console.error("검색 실패:", err);
+      alert("검색 중 오류가 발생했습니다.");
+    });
+};
+
 
   useEffect(() => {
     axios.get("http://localhost:8080/product/page")
@@ -63,6 +80,22 @@ const ProductPage = () => {
   return (
     <div className="product-page-container">
     <h2>📚 상품 목록</h2>
+    <div className="product-search-bar">
+      <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+        <option value="all">통합검색</option>
+        <option value="author">저자 검색</option>
+      </select>
+    <input
+      type="text"
+      value={searchText}
+      onChange={(e) => setSearchText(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") searchProducts();
+      }}
+      placeholder="검색어를 입력하세요"
+    />
+      <button onClick={searchProducts}>검색</button>
+    </div>
 
     <div className="product-grid">
       {products.map((p) => (

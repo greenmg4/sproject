@@ -74,21 +74,21 @@ public class ProductController {
 
         String fileName = image.getOriginalFilename();
 
-        // ✅ 저장 경로 구성
+        //  저장 경로 구성
         String uploadDir = System.getProperty("user.dir") + "/front/react/public/images/uploadimages/";
         System.out.println("실제 업로드 경로: " + uploadDir);
         File dir = new File(uploadDir);
         if (!dir.exists()) {
-            dir.mkdirs();  // ✅ 경로가 없으면 생성
+            dir.mkdirs();  //  경로가 없으면 생성
         }
 
-        // ✅ 파일 저장
+        //  파일 저장
         String savePath = uploadDir + fileName;
         image.transferTo(new File(savePath));
 
         ProductImageDTO img = new ProductImageDTO();
         img.setProd_no(prodNo);
-        img.setImg_path("images/uploadimages/" + fileName); // ✅ DB에는 상대 경로만 저장
+        img.setImg_path("images/uploadimages/" + fileName); //  DB에는 상대 경로만 저장
         img.setImg_class(imgClass);
 
         productImageService.insertImage(img);
@@ -179,8 +179,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예외 발생: " + e.getMessage());
         }
     }
-
-
+    
     
     
     

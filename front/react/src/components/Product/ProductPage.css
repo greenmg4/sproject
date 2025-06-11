@@ -91,3 +91,34 @@
     grid-template-columns: 1fr;
   }
 }
+
+.product-search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-search-bar select,
+.product-search-bar input {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.product-search-bar button {
+  padding: 0.6rem 1rem;
+  background-color: #6b8e65;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product-search-bar button:hover {
+  background-color: #557755;
+}
