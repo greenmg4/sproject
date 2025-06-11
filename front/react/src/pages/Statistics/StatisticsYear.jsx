@@ -210,7 +210,7 @@ const StatisticsYear = () => {
                             <td>원</td>
                         </tr>
                         <tr>
-                            <th>년평균 매출</th>
+                            <th>월평균 매출</th>
                             <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)' }}>{`${yearResult.avgTotAmount}`}</td>
                             <td>원</td>
                         </tr>
