@@ -85,6 +85,35 @@ export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }
 
+// 내정보
 export const getUserInfo = (cust_id) => {
   return apiCall("/api/user/info", "POST", cust_id);
 };
+
+// 배송지 관련
+
+// 배송지 리스트 조회 (custId를 path param으로 GET 요청)
+export async function getAddresses(custId) {
+  return await apiCall(`/api/address/list/${custId}`, 'GET', null, null);
+}
+
+// 배송지 추가 (POST 요청, data는 주소 객체)
+export async function addAddress(addressdata) {
+  return await apiCall('/api/address/add', 'POST', addressdata, null);
+}
+
+// 배송지 삭제 (DELETE 요청, seq를 path param으로)
+export async function deleteAddress(seq) {
+  return await apiCall(`/api/address/delete/${seq}`, 'DELETE', null, null);
+}
+
+// 기본 배송지 설정 (POST 요청, data는 { cust_id, seq })
+export async function setDefaultAddress({ custId, seq }) {
+  return await apiCall('/api/address/default', 'POST', { custId, seq }, null);
+}
+
+// 배송지 수정
+export async function updateAddress(addressData) {
+  return await apiCall('/api/address/update', 'PUT', addressData);
+}
+
