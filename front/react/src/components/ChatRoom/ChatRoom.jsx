@@ -225,14 +225,14 @@ function ChatRoom() {
         <button onClick={send} disabled={!inputEnabled || chatEnded}>
           전송
         </button>
-        {isCounselor &&
           <button
             className="finish-btn"
             onClick={finish}
             disabled={chatEnded}>
             문의 종료
-          </button>}
+          </button>
       </div>
+
     </div>
   );
 }
