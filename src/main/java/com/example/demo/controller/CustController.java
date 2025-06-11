@@ -54,6 +54,26 @@ public class CustController {
         }
     }
     
+    
+    @GetMapping("/session-check")
+    public ResponseEntity<?> sessionCheck(HttpSession session) {
+        String cust_id = (String) session.getAttribute("loginID");
+        String grade = (String) session.getAttribute("grade");
+
+        if (cust_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("msg", "로그인 상태 아님"));
+        }
+
+        String cust_nm = cservice.search_name(cust_id);
+
+        return ResponseEntity.ok(Map.of(
+            "cust_id", cust_id,
+            "cust_nm", cust_nm,
+            "grade", grade
+        ));
+    }
+    
     //어드민 체크
     @GetMapping("/admincheck")
     public ResponseEntity<?> admincheck(HttpSession session, CustDTO dto){
