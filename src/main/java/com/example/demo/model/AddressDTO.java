@@ -11,5 +11,6 @@ public class AddressDTO {
     private String address2;
     private String zip;
     private String rcv_nm;          
-    private String rcv_phone;      
+    private String rcv_phone;  
+    private String default_yn;
 }
