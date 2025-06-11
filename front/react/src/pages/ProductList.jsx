@@ -72,7 +72,7 @@ export default function ProductList() {
               }}
             >
               <img
-                src={item.img_path || '/images/recommendation/default-product.png'}
+                src={`/${item.img_path}`}
                 alt={item.prod_nm}
                 className="product-image"
               />

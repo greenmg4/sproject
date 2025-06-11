@@ -94,11 +94,11 @@ export default function ProductDetail() {
     <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
       {/* 이미지 영역 */}
       <div style={{ flex: '1' }}>
-        <img
-          src={product.img_path || '/images/recommendation/default-product.png'}
-          alt={product.prod_nm}
-          style={{ width: '100%', borderRadius: '8px' }}
-        />
+      <img
+        src={`/${product.img_path}`}
+        alt={product.prod_nm}
+        style={{ width: '100%', borderRadius: '8px' }}
+      />
       </div>
 
       {/* 상품 정보 영역 */}
