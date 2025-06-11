@@ -43,13 +43,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     
-    // 상품 리스트 출력
+    // 상품 리스트 출력[박민혁]
 	@Override
 	public List<ProductDTO> ProList(SearchCondDTO searchCond) {
 		return productMapper.ProList(searchCond);
 	}
 
-	//회원 상품 디테일 출력
+	//회원 상품 디테일 출력[박민혁]
 	@Override
 	public ProductDTO ProDetail(int prod_no) {
 		return productMapper.ProDetail(prod_no);

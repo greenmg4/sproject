@@ -54,7 +54,7 @@ public class AddressController {
         addressService.updateAddress(dto);
     }
 
-    // 기본 주소 호출
+    // 기본 주소 호출[박민혁]
     @GetMapping("/default/{custId}")
     public ResponseEntity<AddressDTO> DefaultAddress(@PathVariable String custId) {
         AddressDTO dto = addressService.DefaultAddress(custId);  // 수정됨

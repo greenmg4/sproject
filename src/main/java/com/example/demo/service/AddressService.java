@@ -11,7 +11,7 @@ public interface AddressService {
     void setDefaultAddress(String cust_id, Long seq);
     void updateAddress(AddressDTO dto);
     
-    // 기본 주소 호출
+    // 기본 주소 호출[박민혁]
     AddressDTO DefaultAddress(String custId);
 
     

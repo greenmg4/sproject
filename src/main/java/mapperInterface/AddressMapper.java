@@ -17,7 +17,7 @@ public interface AddressMapper {
     void setDefaultAddress(@Param("cust_id") String custId, @Param("seq") Long seq);
     void updateAddress(AddressDTO dto);
     
-    // 기본 주소 호출
+    // 기본 주소 호출[박민혁]
     @Select("SELECT zip, address1, address2 FROM delivery_addr WHERE"
     		+ " cust_id = #{custId} AND default_yn = 'Y' LIMIT 1")
     AddressDTO DefaultAddress(String custId);
