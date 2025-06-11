@@ -19,7 +19,7 @@ import { Tooltip } from "react-tooltip";
 // import { useSelector, useDispatch } from 'react-redux';
 
 
-function Header({ cust_nm, token, isLoggedIn, onLogout }) {
+function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo }) {
 
     // 회원혜택 Modal Open 조건
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -106,22 +106,15 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 
 
     // 내 정보 보기
-    const goToUserInfo = () => {
-    const cust_id = sessionStorage.getItem("loginID");
-    if (!cust_id) {
+    // 내 정보 보기 (props.userInfo를 그대로 전달)
+const goToUserInfo = () => {
+    if (!isLoggedIn || !userInfo) {
         alert("로그인이 필요합니다.");
         return;
     }
 
-    getUserInfo({ cust_id })
-        .then((response) => {
-            sessionStorage.setItem("userInfo", JSON.stringify(response));
-            navigate("/userinfo");
-        })
-        .catch((error) => {
-            console.error("사용자 정보 불러오기 실패:", error);
-            alert("사용자 정보를 불러오지 못했습니다.");
-        });
+    // navigate 시 userInfo를 함께 넘김
+    navigate("/userinfo", { state: { userInfo } });
 };
 console.log(sessionStorage.getItem("loginID"))
 
