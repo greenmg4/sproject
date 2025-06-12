@@ -27,6 +27,7 @@ public class CustController {
     @Autowired
     private CustService cservice;
 
+    //로그인 [박민혁] / 등급 가져오기 [김정민]
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CustDTO cdto, HttpSession session) {
         String cust_pw = cservice.login(cdto);

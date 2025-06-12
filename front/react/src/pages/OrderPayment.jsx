@@ -114,7 +114,8 @@ export default function OrderPayment() {
 
     IMP.request_pay(
       {
-        pg: "kakaopay.TC0ONETIME",
+        //pg: "kakaopay.TC0ONETIME",
+        pg: "html5_inicis.INIpayTest",
         pay_method: "card",
         merchant_uid,
         name: productName,
@@ -228,73 +229,41 @@ const productDiscount = Math.min(
 );
 const finalAmount = itemTotalPrice + shippingFee - productDiscount;
 
+const handlePhoneChange = (e) => {
+  let rawValue = e.target.value.replace(/\D/g, ""); // 숫자만 추출
+  rawValue = rawValue.slice(0, 11); // 최대 11자리로 제한
+
+  let formatted = "";
+  if (rawValue.length < 4) {
+    formatted = rawValue;
+  } else if (rawValue.length < 8) {
+    formatted = `${rawValue.slice(0, 3)}-${rawValue.slice(3)}`;
+  } else {
+    formatted = `${rawValue.slice(0, 3)}-${rawValue.slice(3, 7)}-${rawValue.slice(7)}`;
+  }
+  setPhone(formatted);
+};
+
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px", display: "flex", gap: "20px" }}>
       <div style={{ flex: 2 }}>
         {/* 배송지 정보 */}
-        <section
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "20px",
-          }}
+        <section style={{border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px",}}
         >
           <h3 style={{ fontSize: "18px", marginBottom: "15px", textAlign: "center" }}>배송지 정보</h3>
 
           <div style={{ width: "95%", maxWidth: "500px", margin: "0 auto" }}>
-            <input
-              type="text"
-              placeholder="수령인 이름"
-              value={cust_nm}
-              onChange={(e) => setCustNm(e.target.value)}
-              style={inputStyle}
-            />
-            <input
-              type="text"
-              placeholder="전화번호"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              style={inputStyle}
-            />
+            <input type="text" placeholder="수령인 이름" value={cust_nm} onChange={(e) => setCustNm(e.target.value)} style={inputStyle}/>
+            <input type="text" placeholder="전화번호" value={phone} onChange={handlePhoneChange} style={inputStyle}/>
+            
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-              <input
-                type="text"
-                placeholder="우편번호"
-                value={postcode}
-                readOnly
-                style={{ ...inputStyle, flex: 1 }}
-              />
-              <button
-                onClick={openPostcodePopup}
-                style={{
-                  padding: "10px 16px",
-                  fontSize: "14px",
-                  backgroundColor: "#3498db",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                배송지 입력
-              </button>
+              <input type="text" placeholder="우편번호" value={postcode} readOnly style={{ ...inputStyle, flex: 1 }}/>
+              <button onClick={openPostcodePopup}
+                style={{padding: "10px 16px", fontSize: "14px", backgroundColor: "#3498db", color: "#fff", 
+                  border: "none", borderRadius: "4px", cursor: "pointer", whiteSpace: "nowrap",}}>배송지 입력</button>
             </div>
-            <input
-              type="text"
-              placeholder="주소"
-              value={address1}
-              readOnly
-              style={inputStyle}
-            />
-            <input
-              type="text"
-              placeholder="상세주소"
-              value={address2}
-              onChange={(e) => setDetailAddress(e.target.value)}
-              style={inputStyle}
-            />
+            <input type="text" placeholder="주소" value={address1} readOnly  style={inputStyle}/>
+            <input type="text" placeholder="상세주소" value={address2} onChange={(e) => setDetailAddress(e.target.value)} style={inputStyle}/>
           </div>
         </section>
 
@@ -302,21 +271,9 @@ const finalAmount = itemTotalPrice + shippingFee - productDiscount;
         <section style={{ border: "1px solid #e0e0e0", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
           <h3 style={{ fontSize: "18px", marginBottom: "15px" }}>주문 상품</h3>
           {items.map((item) => (
-            <div
-              key={item.prod_no}
-              style={{
-                display: "flex",
-                gap: "15px",
-                alignItems: "center",
-                padding: "12px 0",
-                borderBottom: "1px solid #f0f0f0",
-              }}
-            >
-              <img
-                src={ `/${item.img_path}`}
-                alt={item.prod_nm}
-                style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "6px" }}
-              />
+            <div key={item.prod_no} style={{display: "flex", gap: "15px", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #f0f0f0"}}>
+              <img src={ `/${item.img_path}`}alt={item.prod_nm}
+                style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "6px" }}/>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: "16px", marginBottom: "6px" }}>{item.prod_nm}</p>
                 <p style={{ fontSize: "14px", color: "#555" }}>
@@ -384,20 +341,8 @@ const finalAmount = itemTotalPrice + shippingFee - productDiscount;
         <button
           onClick={handlePayment}
           disabled={!isFormValid}
-          style={{
-            width: "100%",
-            padding: "15px 0",
-            fontSize: "16px",
-            fontWeight: "bold",
-            color: "#fff",
-            backgroundColor: isFormValid ? "#3498db" : "#b0c7d9",
-            border: "none",
-            borderRadius: "8px",
-            cursor: isFormValid ? "pointer" : "not-allowed",
-          }}
-        >
-          결제하기
-        </button>
+          style={{width: "100%", padding: "15px 0", fontSize: "16px", fontWeight: "bold", color: "#fff",
+            backgroundColor: isFormValid ? "#3498db" : "#b0c7d9", border: "none", borderRadius: "8px", cursor: isFormValid ? "pointer" : "not-allowed"}}>결제하기</button>
       </div>
     </div>
   );
