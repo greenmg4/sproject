@@ -99,7 +99,10 @@ export async function getAddresses(custId) {
 
 // 배송지 추가 (POST 요청, data는 주소 객체)
 export async function addAddress(addressdata) {
+  console.log("🔍 apiService에서 전달받은 주소 데이터:", addressdata);
   return await apiCall('/api/address/add', 'POST', addressdata, null);
+  
+
 }
 
 // 배송지 삭제 (DELETE 요청, seq를 path param으로)

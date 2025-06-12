@@ -4,7 +4,7 @@ import { addAddress } from '../../service/apiService';
 import DaumPostcode from 'react-daum-postcode';
 import '../../styles/UserAddr/UserAddressF.css'; // 스타일 파일 import
 
-function UserAddressF({ cust_id: propCustId, onSave }) {
+function UserAddressF({ loginInfo, onSave }) {
   const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
   // 로그인된 사용자 ID 저장
@@ -25,16 +25,15 @@ function UserAddressF({ cust_id: propCustId, onSave }) {
   // 상세주소 입력칸 보이기 여부
   const [showAddress2, setShowAddress2] = useState(false);
 
-  // 로그인 정보나 props로 받은 사용자 ID 저장
+    // 🔹 props로 받은 loginInfo에서 cust_id를 추출하여 custId로 설정
   useEffect(() => {
-    const stored = sessionStorage.getItem('loginInfo');
-    if (propCustId) {
-      setCustId(propCustId);
-    } else if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed?.cust_id) setCustId(parsed.cust_id);
+    if (loginInfo?.cust_id) {
+      setCustId(loginInfo.cust_id);
     }
-  }, [propCustId]);
+  }, [loginInfo]); // loginInfo가 바뀌면 재실행
+
+
+
 
   // 전화번호 자동 하이픈 처리 함수
   const formatPhoneNumber = (input) => {
@@ -87,6 +86,7 @@ function UserAddressF({ cust_id: propCustId, onSave }) {
 
     try {
       const fullData = { ...form, cust_id: custId }; // 최종 전송 데이터
+      console.log('최종 전송 데이터:', fullData);       // 🔍 디버깅 로그
       await addAddress(fullData);                    // API 호출로 주소 추가
       if (onSave) onSave();                          // 저장 후 콜백 실행
       navigate('/useraddress');                      // 주소 목록 페이지로 이동
@@ -136,20 +136,21 @@ function UserAddressF({ cust_id: propCustId, onSave }) {
         />
       </div>
 
-      {/* 주소 표시 및 검색 버튼 */}
-      <div className="form-group address1-group">
-        <label>주소</label>
-        {/* readOnly 주소 입력칸 */}
-        <input
-          name="address1"
-          placeholder="도로명 주소"
-          value={`${form.zip} ${form.address1}`}
-          readOnly
-        />
-        <span className="search-btn" onClick={() => setIsPostcodeOpen(true)}>
-          주소 검색
-        </span>
-      </div>
+     {/* 주소 표시 및 검색 버튼 */}
+          <div className="form-group address1-group">
+            <label>주소</label>
+            {/* 주소를 선택하기 전에는 placeholder만 보이고, 선택한 후에는 [우편번호] 주소 형식으로 출력 */}
+            <input
+              name="address1"
+              placeholder="도로명 주소"
+              value={form.zip ? `[${form.zip}] ${form.address1}` : ''}
+              readOnly
+            />
+            <span className="search-btn" onClick={() => setIsPostcodeOpen(true)}>
+              주소 검색
+            </span>
+          </div>
+
 
       {/* 상세주소 입력칸 (주소 선택 후에만 보임) */}
       {showAddress2 && (
