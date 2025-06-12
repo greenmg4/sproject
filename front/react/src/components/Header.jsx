@@ -207,7 +207,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
             //author: 저자검색
             searchData = { prod_no: "", category: "", prod_nm: "", author_nm: searchInput };
         }
-        alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
+        //alert   (`** 검색 요청전 url=/product/prolist, searchData=${JSON.stringify(searchData)}`);
 
         goProList("/product/prolist", {
             category: "",
