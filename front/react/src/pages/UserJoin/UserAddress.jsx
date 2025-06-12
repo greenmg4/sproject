@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {  getAddresses, deleteAddress, setDefaultAddress } from '../../service/apiService';
 
-import '../../styles/UserAddr/UserAddress.css'; // 외부 CSS 연결
+import '../../styles/User/UserAddress.css'; // 외부 CSS 연결
 
 function UserAddress({ loginInfo }) {
   const navigate = useNavigate();

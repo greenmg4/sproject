@@ -42,7 +42,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo}) {
                    element={<Login onLoginSubmit={onLoginSubmit}/>}/>            
             <Route path="/userjoin" element={<UserJoin />} />
             <Route path="/userinfo" element={<UserInfo loginInfo={loginInfo} isLoggedIn={isLoggedIn} />} />
-            <Route path="/useredit" element={<UserEdit />} />
+            <Route path="/useredit" element={<UserEdit loginInfo={loginInfo} isLoggedIn={isLoggedIn} />} />
             <Route path="/useraddress" element={<UserAddress loginInfo={loginInfo} />}/>
              <Route path="/useraddressf" element={<UserAddressF loginInfo={loginInfo}/>} />
             <Route path="/useraddressu" element={<UserAddressU/>} />

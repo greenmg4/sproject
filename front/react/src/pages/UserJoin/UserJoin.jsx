@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; 
 import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
-import '../../styles/UserAddr/UserAddressF.css';
+import '../../styles/User/UserAddressF.css';
 
 const UserJoin = () => {
   const [form, setForm] = useState({
