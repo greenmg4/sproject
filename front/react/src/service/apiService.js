@@ -65,32 +65,32 @@ export function getStorageData() {
         else return null;
 }  
 
-//로그인 세션
+//로그인 세션[박민혁]
 export async function checkLogin() {
   return await apiCall('/cust/session-check', 'GET', null, null);
 }
 
-// 상품 리스트 출력
+// 상품 리스트 출력[박민혁]
 export async function ProList(searchCond) {
   return await apiCall('/product/proList', 'POST', searchCond, null);
 }
 
-// 상품 디테일
+// 상품 디테일[박민혁]
 export async function ProDetail(prod_no) {
   return await apiCall(`/product/${prod_no}`, 'GET', null, null);
 }
 
-// 장바구니 상품 추가
+// 장바구니 상품 추가[박민혁]
 export async function addCart(product) {
   return await apiCall('/cart/addCart', 'POST', product, null);
 }
 
-// 장바구니
+// 장바구니[박민혁]
 export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }
 
-// 내정보
+// 내정보[박민혁]
 export const getUserInfo = (cust_id) => {
   return apiCall("/api/user/info", "POST", cust_id);
 }
