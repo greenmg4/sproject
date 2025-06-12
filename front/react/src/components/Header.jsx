@@ -19,7 +19,7 @@ import { Tooltip } from "react-tooltip";
 // import { useSelector, useDispatch } from 'react-redux';
 
 
-function Header({ cust_nm, token, isLoggedIn, onLogout }) {
+function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }) {
 
     // 회원혜택 Modal Open 조건
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -29,6 +29,9 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
     const openModal = () => setModalIsOpen(true);
     // 회원혜택 정보
     const [MemberShipData, setMemberShipData] = useState([]); // 초기 상태를 빈 배열로 설정
+
+    // 1. 로컬 상태로 userInfo 관리하기 (propUserInfo를 초기값으로)
+    const [userInfo, setUserInfo] = useState(propUserInfo);
 
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
@@ -45,6 +48,25 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
             }
         });
     }, [isLoggedIn]);
+
+
+        // 2. isLoggedIn, propUserInfo 변화에 따라 userInfo를 API 호출해서 가져오기
+    useEffect(() => {
+        if (isLoggedIn && !propUserInfo) {
+            // 로그인은 되어 있는데 propUserInfo 없으면 API 호출
+            getUserInfo()
+                .then(data => {
+                    setUserInfo(data);
+                })
+                .catch(err => {
+                    console.error("사용자 정보 가져오기 실패:", err);
+                    setUserInfo(null);
+                });
+        } else {
+            // propUserInfo가 있으면 로컬 상태로 복사
+            setUserInfo(propUserInfo);
+        }
+    }, [isLoggedIn, propUserInfo]);
 
     const serverTest = () => {
         let url = '/test/check-server';
@@ -107,23 +129,15 @@ function Header({ cust_nm, token, isLoggedIn, onLogout }) {
 
     // 내 정보 보기
     const goToUserInfo = () => {
-    const cust_id = sessionStorage.getItem("loginID");
-    if (!cust_id) {
+    if (!isLoggedIn || !userInfo) {
         alert("로그인이 필요합니다.");
         return;
     }
 
-    getUserInfo({ cust_id })
-        .then((response) => {
-            sessionStorage.setItem("userInfo", JSON.stringify(response));
-            navigate("/userinfo");
-        })
-        .catch((error) => {
-            console.error("사용자 정보 불러오기 실패:", error);
-            alert("사용자 정보를 불러오지 못했습니다.");
-        });
+    // navigate 시 userInfo를 함께 넘김
+    navigate("/userinfo", { state: { userInfo } });
 };
-console.log(sessionStorage.getItem("loginID"))
+console.log("로그인된 사용자 ID:", userInfo?.cust_id); 
 
     const goProList = (url, jsonData) => {
         //console.log(`** proList url=${url}, jsonData=${jsonData}`);
