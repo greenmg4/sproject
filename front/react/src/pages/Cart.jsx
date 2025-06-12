@@ -125,12 +125,9 @@ export default function Cart() {
           {/* 전체 선택 */}
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
             <label>
-              <input
-                type="checkbox"
-                checked={isAllSelected}
-                onChange={toggleSelectAll}
+              <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll}
                 style={{ marginRight: '5px' }} />
-              전체 선택
+                전체 선택
             </label>
           </div>
 
@@ -146,16 +143,8 @@ export default function Cart() {
                 gap: '20px'
               }}
             >
-              <input
-                type="checkbox"
-                checked={selectedItems.includes(item.prod_no)}
-                onChange={() => toggleSelectOne(item.prod_no)}
-              />
-              <img
-                src={`/${item.img_path}`}
-                alt={item.prod_nm}
-                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-              />
+              <input type="checkbox" checked={selectedItems.includes(item.prod_no)} onChange={() => toggleSelectOne(item.prod_no)}/>
+              <img src={`/${item.img_path}`} alt={item.prod_nm} style={{ width: '100px', height: '100px', objectFit: 'cover' }}/>
               <div>
                 <h4>{item.prod_nm}</h4>
                 <p>가격: {item.prod_price.toLocaleString()}원</p>
@@ -187,9 +176,7 @@ export default function Cart() {
             </div>
 
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button
-                onClick={() =>
-                  navigate("/order/payment", {
+              <button onClick={() => navigate("/order/payment", {
                     state: {
                       selectedCartItems,
                       totalPrice,
@@ -210,9 +197,7 @@ export default function Cart() {
                 선택 결제
               </button>
 
-              <button
-                onClick={DeletePro}
-                disabled={selectedItems.length === 0}
+              <button onClick={DeletePro} disabled={selectedItems.length === 0}
                 style={{
                   padding: '10px 20px',
                   backgroundColor: '#dc3545',
@@ -224,8 +209,7 @@ export default function Cart() {
                 선택 삭제
               </button>
 
-              <button
-                onClick={() => navigate('/')}
+              <button onClick={() => navigate('/')}
                 style={{
                   padding: '10px 20px',
                   backgroundColor: '#6c757d',

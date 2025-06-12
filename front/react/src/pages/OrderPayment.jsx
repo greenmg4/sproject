@@ -26,7 +26,7 @@ export default function OrderPayment() {
   };
 
   // 배송지 정보
-  const [postcode, setPostcode] = useState("");
+  const [zip, setPostcode] = useState("");
   const [address1, setAddress] = useState("");
   const [address2, setDetailAddress] = useState("");
 
@@ -46,7 +46,7 @@ export default function OrderPayment() {
 
 
   const isFormValid =
-    postcode &&
+    zip &&
     address1 &&
     address2 &&
     cust_nm &&
@@ -81,8 +81,8 @@ export default function OrderPayment() {
   const openPostcodePopup = () => {
     new window.daum.Postcode({
       oncomplete: (data) => {
-        setPostcode(data.zonecode);
-        setAddress(data.address);
+        setPostcode(data.zip);     // 이 값이 zip 변수에 들어가므로 백엔드와 맞춤
+        setAddress(data.address);       // address1
       },
     }).open();
   };
@@ -124,7 +124,7 @@ export default function OrderPayment() {
         buyer_name: cust_nm,
         buyer_tel: phone,
         buyer_addr: `${address1} ${address2}`,
-        buyer_postcode: postcode,
+        buyer_postcode: zip,
       },
       async (rsp) => {
         if (rsp.success) {
@@ -142,7 +142,7 @@ export default function OrderPayment() {
                 rcv_phone: phone,
                 address1,
                 address2,
-                zip: postcode,
+                zip: zip,
                 order_items: items.map((item) => ({
                   prod_no: item.prod_no,
                   buy_price: item.prod_price,
@@ -183,24 +183,24 @@ export default function OrderPayment() {
   }, [cust_id, items, navigate]);
 
   useEffect(() => {
-  if (!cust_id) return;
+    if (!cust_id) return;
 
-  const fetchDefaultAddress = async () => {
-    try {
-      const res = await fetch(`/api/address/default/${cust_id}`);
-      if (!res.ok) throw new Error("기본 배송지를 불러올 수 없습니다.");
-      const data = await res.json();
+    const fetchDefaultAddress = async () => {
+      try {
+        const res = await fetch(`/api/address/default/${cust_id}`);
+        if (!res.ok) throw new Error("기본 배송지를 불러올 수 없습니다.");
+        const data = await res.json();
 
-      setPostcode(data.postcode);
-      setAddress(data.address1);
-      setDetailAddress(data.address2);
-    } catch (error) {
-      console.error("기본 배송지 오류:", error);
-    }
-  };
+        setPostcode(data.zip);           
+        setAddress(data.address1);
+        setDetailAddress(data.address2);
+      } catch (error) {
+        console.error("기본 배송지 오류:", error);
+      }
+    };
 
-  fetchDefaultAddress();
-}, [cust_id]);
+    fetchDefaultAddress();
+  }, [cust_id]);
   
 
   const shippingFee = itemTotalPrice >= 30000 ? 0 : 2500;
@@ -257,7 +257,7 @@ const handlePhoneChange = (e) => {
             <input type="text" placeholder="전화번호" value={phone} onChange={handlePhoneChange} style={inputStyle}/>
             
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-              <input type="text" placeholder="우편번호" value={postcode} readOnly style={{ ...inputStyle, flex: 1 }}/>
+              <input type="text" placeholder="우편번호" value={zip} readOnly style={{ ...inputStyle, flex: 1 }}/>
               <button onClick={openPostcodePopup}
                 style={{padding: "10px 16px", fontSize: "14px", backgroundColor: "#3498db", color: "#fff", 
                   border: "none", borderRadius: "4px", cursor: "pointer", whiteSpace: "nowrap",}}>배송지 입력</button>
