@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiCall } from './service/apiService';
-import axios from "axios";
+import axios from 'axios';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,17 +15,22 @@ function App() {
   const [loginInfo, setLoginInfo] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // 서버 세션 기반 로그인 확인 (sessionStorage 안 씀!)
+  // ✅ 세션 로그인 상태 확인
   useEffect(() => {
     axios.get('/cust/session-check', { withCredentials: true })
       .then(res => {
-        setIsLoggedIn(true);
-        setLoginInfo(res.data);
-        if (res.data.grade === 'A') {
-          setIsAdmin(true);
+        if (res.data.loggedIn) {
+          setLoginInfo(res.data.user);
+          setIsLoggedIn(true);
+          setIsAdmin(res.data.user?.role === 'admin');
+        } else {
+          setLoginInfo(res.data);
+          setIsLoggedIn(true);
+          setIsAdmin(res.data.grade === 'A');
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.log("세션 체크 실패:", err);
         setIsLoggedIn(false);
         setLoginInfo(null);
         setIsAdmin(false);
@@ -71,7 +76,7 @@ function App() {
       });
   };
 
-  // ✅ 로그아웃 함수 (변경 없음)
+  // ✅ 로그아웃 함수
   const onLogout = () => {
     console.log("로그아웃 함수 실행");
 
@@ -87,14 +92,7 @@ function App() {
         navigate("/");
       })
       .catch((err) => {
-        if (err?.status === 502) {
-          alert("로그아웃 실패, 다시 시도하세요 ~~");
-        } else if (err?.response?.status === 403) {
-          alert(`** Server Reject : 접근권한이 없습니다. => ${err.message || err}`);
-        } else {
-          alert(`** onLogout 시스템 오류, err=${err.message || err}`);
-        }
-        console.error("로그아웃 실패 에러:", err);
+        alert(`** 로그아웃 실패: ${err.message || err}`);
         setIsLoggedIn(false);
         setLoginInfo(null);
         setIsAdmin(false);
@@ -109,6 +107,7 @@ function App() {
         isLoggedIn={isLoggedIn}
         isAdmin={isAdmin}
         onLogout={onLogout}
+        userInfo={loginInfo}
       />
       <Main
         onLoginSubmit={onLoginSubmit}
