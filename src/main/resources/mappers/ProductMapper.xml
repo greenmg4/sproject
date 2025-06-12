@@ -97,9 +97,9 @@
 		            ELSE SUBSTRING_INDEX(img_path, '/', -1)
 		        END AS img_file_nm
 		  FROM PRODUCT p
-		  LEFT JOIN PRODUCT_IMG i 
-		    ON p.prod_no = i.prod_no
+		     , PRODUCT_IMG i 
 		 WHERE 1=1
+		   and p.prod_no = i.prod_no
 		   AND suggest_yn = 'Y'
 	</select>
 	
