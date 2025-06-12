@@ -1,39 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { checkLogin } from '../service/apiService';
 
 export default function Cart() {
   const [cartDetail, setCartDetail] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const cust_id = sessionStorage.getItem("loginID");
+  const [cust_id, setCustId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!cust_id) {
-      alert("로그인 후 이용해 주세요.");
-      return;
-    }
-    fetchCartDetail();
-  }, [cust_id]);
+    const fetchUserAndCart = async () => {
+      try {
+        const res = await checkLogin();  // 세션 체크 API 호출
+        console.log("checkLogin response:", res);
+        // 응답 구조에 맞게 cust_id 추출 (예: res.data.cust_id)
+        const cust_id = res?.cust_id || res?.data?.cust_id;
+        if (!cust_id) throw new Error("로그인 정보 없음");
+        setCustId(cust_id);
+        fetchCartDetail(cust_id);
+      } catch (error) {
+        alert("로그인 후 이용해 주세요.");
+        navigate('/login'); // 로그인 페이지로 이동 (필요 시)
+      }
+    };
+
+    fetchUserAndCart();
+  }, [navigate]);
 
   // 장바구니 상세 불러오기
-  const fetchCartDetail = () => {
+  const fetchCartDetail = (cust_id) => {
     axios.post(`/cart/CartDetail`, { cust_id })
       .then(res => setCartDetail(res.data))
       .catch(err => console.error("장바구니 불러오기 실패", err));
   };
 
-  // 수량 변경 함수 (소문자 함수명으로 통일)
+  // 수량 변경
   const updateCnt = (prod_no, newCnt) => {
     if (newCnt < 1) return;
     axios.post("/cart/updateCnt", {
       cust_id,
       prod_no,
       cnt: newCnt
-    }).then(() => fetchCartDetail());
+    }).then(() => fetchCartDetail(cust_id))
+      .catch(err => console.error("수량 변경 실패", err));
   };
 
-  // 선택 삭제 함수
+  // 선택 삭제
   const DeletePro = () => {
     if (selectedItems.length === 0) return;
     axios.post("/cart/deletePro", {
@@ -41,28 +54,29 @@ export default function Cart() {
       prod_no: selectedItems
     }).then(() => {
       setSelectedItems([]);
-      fetchCartDetail();
-    });
+      fetchCartDetail(cust_id);
+    }).catch(err => console.error("선택 삭제 실패", err));
   };
 
   if (!cust_id) return <div>로그인 후 이용해 주세요.</div>;
 
-  // 선택된 상품만 필터링
+  // 선택된 상품 필터링
   const selectedCartItems = cartDetail.filter(item =>
     selectedItems.includes(item.prod_no)
   );
 
-  // 총 금액 계산
+  // 총 가격 계산
   const totalPrice = selectedCartItems.reduce(
     (sum, item) => sum + item.prod_price * item.cnt, 0
   );
 
-  // 선택된 상품 수량 합계 계산
+  // 총 수량 계산
   const totalCount = selectedCartItems.reduce((sum, item) => sum + item.cnt, 0);
 
+  // 전체 선택 여부
   const isAllSelected = cartDetail.length > 0 && selectedItems.length === cartDetail.length;
 
-  // 전체 선택 / 해제
+  // 전체 선택/해제 토글
   const toggleSelectAll = () => {
     if (isAllSelected) {
       setSelectedItems([]);
@@ -71,13 +85,12 @@ export default function Cart() {
     }
   };
 
-  // 개별 선택 / 해제
+  // 개별 선택/해제 토글
   const toggleSelectOne = (prod_no) => {
     setSelectedItems(prev =>
       prev.includes(prod_no) ? prev.filter(id => id !== prod_no) : [...prev, prod_no]
     );
   };
-
 
   return (
     <div className="contents">
@@ -97,8 +110,7 @@ export default function Cart() {
           gap: '20px'
         }}>
           <div>장바구니가 비어있습니다.</div>
-          <button
-            onClick={() => navigate('/')}
+          <button onClick={() => navigate('/')}
             style={{
               padding: '10px 20px',
               backgroundColor: '#6c757d',
@@ -106,33 +118,25 @@ export default function Cart() {
               border: 'none',
               borderRadius: '5px',
               cursor: 'pointer'
-            }}>
-            둘러보기
-          </button>
+            }}>둘러보기</button>
         </div>
       ) : (
         <>
           {/* 전체 선택 */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-start', 
-          marginBottom: '10px' 
-        }}>
-          <label>
-            <input
-              type="checkbox"
-              checked={isAllSelected}
-              onChange={toggleSelectAll}
-              style={{ marginRight: '5px' }}
-            />
-            전체 선택
-          </label>
-        </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={toggleSelectAll}
+                style={{ marginRight: '5px' }} />
+              전체 선택
+            </label>
+          </div>
 
           {/* 장바구니 상품 목록 */}
           {cartDetail.map(item => (
-            <div
-              key={item.prod_no}
+            <div key={item.prod_no}
               style={{
                 border: '1px solid #ccc',
                 padding: '10px',
@@ -148,7 +152,7 @@ export default function Cart() {
                 onChange={() => toggleSelectOne(item.prod_no)}
               />
               <img
-                src={ `/${item.img_path}`}
+                src={`/${item.img_path}`}
                 alt={item.prod_nm}
                 style={{ width: '100px', height: '100px', objectFit: 'cover' }}
               />
@@ -219,6 +223,7 @@ export default function Cart() {
                 }}>
                 선택 삭제
               </button>
+
               <button
                 onClick={() => navigate('/')}
                 style={{
