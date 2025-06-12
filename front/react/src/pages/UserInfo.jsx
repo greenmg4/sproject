@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
+  
 
   // "내정보 수정" 페이지로 이동
   const goToEditPage = () => {
@@ -17,21 +18,18 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      alert('로그인이 필요합니다.');
-      navigate('/login');
-      return;
-    }
-
-    // 세션 기반 유저 정보 요청
-    axios.post('/api/user/info', {}, { withCredentials: true })
+  if (loginInfo && loginInfo.cust_id) {
+    axios.post('/api/user/info', { cust_id: loginInfo.cust_id }, { withCredentials: true })
       .then(res => {
         setUserInfo(res.data);
       })
       .catch(err => {
         console.error('유저 정보를 가져오는 데 실패했습니다.', err);
+        alert('로그인이 필요합니다.');
+        navigate('/login');
       });
-  }, [isLoggedIn, navigate]);
+  }
+}, [loginInfo, navigate]);
 
   if (!userInfo) {
     return <div>불러오는 중...</div>;

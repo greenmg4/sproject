@@ -24,7 +24,7 @@ import OrderPayment from '../pages/OrderPayment';
 import UserChatRoomList from './ChatRoom/UserChatRoomList';
 
 
-function Main({onLoginSubmit, isLoggedIn, loginInfo }) {
+function Main({onLoginSubmit}) {
     return (
         <div>
         <Routes>
@@ -41,9 +41,9 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo }) {
             <Route path="/login" 
                    element={<Login onLoginSubmit={onLoginSubmit}/>}/>            
             <Route path="/userjoin" element={<UserJoin />} />
-            <Route path="/userinfo" element={<UserInfo isLoggedIn={isLoggedIn} loginInfo={loginInfo} />} />
+            <Route path="/userinfo" element={<UserInfo />} />
             <Route path="/useredit" element={<UserEdit />} />
-            <Route path="/useraddress" element={<UserAddress loginInfo={loginInfo} />} />
+            <Route path="/useraddress" element={<UserAddress/>}/>
              <Route path="/useraddressf" element={<UserAddressF />} />
             <Route path="/useraddressu" element={<UserAddressU/>} />
             <Route path="/product/proList" element={<ProductList />} />
