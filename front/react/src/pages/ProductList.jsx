@@ -65,8 +65,7 @@ export default function ProductList() {
       <div className="product-grid">
         {list.map((item, i) => (
           <div className="product-card" key={i}>
-            <Link
-              to={{
+            <Link to={{
                 pathname: `/product/${item.prod_no}`,
                 state: item,
               }}

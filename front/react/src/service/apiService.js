@@ -65,6 +65,11 @@ export function getStorageData() {
         else return null;
 }  
 
+//로그인 세션
+export async function checkLogin() {
+  return await apiCall('/cust/session-check', 'GET', null, null);
+}
+
 // 상품 리스트 출력
 export async function ProList(searchCond) {
   return await apiCall('/product/proList', 'POST', searchCond, null);
