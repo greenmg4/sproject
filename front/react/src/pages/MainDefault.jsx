@@ -115,19 +115,37 @@ function MainDefault() {
                     <h3>{suggestResult[0].name}</h3>
                 </div>
             ) : (
-                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px" }}>
+                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px"}}>
                     <Slider {...settings}>
                         {suggestResult.map((product) => (
-                            <div key={product.prod_no} onDoubleClick={() => handleDoublClick(product)} style={{ cursor: "pointer" }}>
-                                <img src={product.image} alt={product.name} style={{ height: "500px", objectFit: "cover" }} />
+                            <div 
+                                key={product.prod_no} 
+                                onDoubleClick={() => handleDoublClick(product)} 
+                                style={{ cursor: "pointer" }}
+                            >
+                                <div style={{ 
+                                    display: "flex", 
+                                    justifyContent: "center", /* 가로 중앙 */
+                                    alignItems: "center", /* 세로 중앙 */
+                                    height: "500px" /* 부모 요소 높이 지정 */
+                                }}>
+                                    <img 
+                                        src={product.image} 
+                                        alt={product.name} 
+                                        style={{ 
+                                            width: "750px", 
+                                            height: "auto", /* 비율 유지 */
+                                            objectFit: "contain" 
+                                        }} 
+                                    />
+                                </div>
                                 <h3>{product.name}</h3>
                             </div>
+
                         ))}
                     </Slider>
                 </div>
             )}
-
-
 
             </div>
         </div>

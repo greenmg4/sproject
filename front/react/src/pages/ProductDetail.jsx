@@ -69,13 +69,15 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
+    // <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px' }}>
+    <div className="product-detail" style={{ padding: '20px', display: 'flex', gap: '30px', width: '90%', height:'620px', overflow:'hidden' }}>
       {/* 이미지 영역 */}
       <div style={{ flex: '1' }}>
       <img
         src={`/${product.img_path}`}
         alt={product.prod_nm}
-        style={{ width: '100%', borderRadius: '8px' }}/>
+        // style={{ width: '100%', borderRadius: '8px' }}/>
+        style={{ width: '50%', borderRadius: '8px' }}/>
       </div>
 
       {/* 상품 정보 영역 */}
