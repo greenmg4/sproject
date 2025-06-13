@@ -50,14 +50,14 @@ export default function AdminCustList() {
   };
 
   const suspend = id => {
-    if(!window.confirm('정지?')) return;
+    if(!window.confirm('해당 회원을 정지시키겠습니까?')) return;
     axios.put('/cust/suspend',{cust_id:id},{withCredentials:true})
          .then(()=>setUsers(p=>p.map(u=>u.cust_id===id?{...u,status:3}:u)))
          .catch(err=>alert(err.response?.data||'정지 실패'));
   };
 
   const unsuspend = id => {
-    if(!window.confirm('해제?')) return;
+    if(!window.confirm('해당 회원의 정지를 해제시키겠습니까?')) return;
     axios.put('/cust/unsuspend',{cust_id:id},{withCredentials:true})
          .then(()=>setUsers(p=>p.map(u=>u.cust_id===id?{...u,status:1}:u)))
          .catch(err=>alert(err.response?.data||'해제 실패'));
