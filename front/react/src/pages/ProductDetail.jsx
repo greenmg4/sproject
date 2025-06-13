@@ -77,7 +77,7 @@ export default function ProductDetail() {
         src={`/${product.img_path}`}
         alt={product.prod_nm}
         // style={{ width: '100%', borderRadius: '8px' }}/>
-        style={{ width: '50%', borderRadius: '8px' }}/>
+        style={{ height:'550px', borderRadius: '8px' }}/>
       </div>
 
       {/* 상품 정보 영역 */}
