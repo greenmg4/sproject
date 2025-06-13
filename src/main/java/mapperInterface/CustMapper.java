@@ -47,10 +47,13 @@ public interface CustMapper {
     
     
     
-    
-    
-    
-    
+    java.util.List<CustDTO> findAllWithoutPassword();
+    void updateStatusSimple(@Param("cust_id") String cust_id, @Param("status")  int status);
+    int selectStatusByCustId(@Param("cust_id") String cust_id);
+    void updateGradeSimple(@Param("cust_id") String cust_id, @Param("grade")   String grade);
+    java.util.List<CustDTO> searchMember(@Param("type") String type, @Param("keyword") String keyword);
+
+
     
     
 	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기

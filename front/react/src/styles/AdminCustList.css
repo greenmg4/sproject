@@ -1,0 +1,112 @@
+/* AdminCustList.css */
+
+.admin-cust-list {
+  max-width: 1280px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-cust-list h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #388e3c; /* ← 기존 #222 대신 초록 계열 */
+  text-align: left;
+}
+
+/* 🔍 검색창 영역 */
+.admin-cust-list form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-cust-list form select,
+.admin-cust-list form input {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.admin-cust-list form input {
+  flex: 0 0 200px;
+}
+
+.admin-cust-list form button {
+  padding: 6px 12px;
+  background-color: #4caf50; /* 연한 초록 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-cust-list form button:hover {
+  background-color: #388e3c; /* 진한 초록 */
+}
+
+/* 테이블 스타일 */
+.admin-cust-list table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.admin-cust-list th,
+.admin-cust-list td {
+  padding: 10px 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 13px;
+}
+
+.admin-cust-list th {
+  background-color: #f0fdf4; /* 살짝 연한 초록 느낌 */
+  font-weight: 600;
+  color: #2e7d32; /* 짙은 초록 텍스트 */
+}
+
+.admin-cust-list tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.admin-cust-list tr:hover {
+  background-color: #e8f5e9; /* 초록 톤 hover */
+}
+
+/* 버튼 및 셀렉트 */
+.admin-cust-list button {
+  padding: 4px 8px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0078d7;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-cust-list button:hover {
+  background-color: #005fa3;
+}
+
+.admin-cust-list button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.admin-cust-list select {
+  padding: 4px 6px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
