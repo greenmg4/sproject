@@ -66,7 +66,7 @@ function UserChatRoomList() {
           if (m.cust_id === 'system' && m.qna_class === 0) return; // system 안내
           if (!myQnaNos.includes(m.qna_no)) return;                // 내 방만
 
-          setRooms(prev => {
+          setRooms(prev => { 
             const exists = prev.find(r => r.qna_no === m.qna_no);
             if (exists) {
               /* 더 최신(seq 큰) 메시지만 반영 */

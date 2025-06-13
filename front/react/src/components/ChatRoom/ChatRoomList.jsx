@@ -57,7 +57,7 @@ function ChatRoomList() {
     client.activate();
     stomp.current = client;
     return () => client.deactivate();
-  }, []);
+  }, []); 
 
   /* ③ 렌더링 ---------------------------------------------------- */
   return (

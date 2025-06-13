@@ -213,7 +213,7 @@ function ChatRoom() {
             </div>
           );
         })}
-      </div>
+      </div> 
 
       <div className="inputbox">
         <input

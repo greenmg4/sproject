@@ -22,6 +22,7 @@ import UserAddressF from '../pages/UserJoin/UserAddressF';
 import UserAddressU from '../pages/UserJoin/UserAddressU';
 import OrderPayment from '../pages/OrderPayment';
 import UserChatRoomList from './ChatRoom/UserChatRoomList';
+import CustList from '../pages/Admin/AdminCustList';
 
 
 function Main({onLoginSubmit, isLoggedIn, loginInfo}) {
@@ -48,6 +49,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo}) {
             <Route path="/useraddressu" element={<UserAddressU/>} />
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
+            <Route path="/custlist" element={<CustList />} />
             <Route path="/cart/addCart" element={<Cart />} />
             <Route path="/statistics/data" element={<StatisticsTab />} />
             <Route path="/order/payment" element={<OrderPayment />} />
