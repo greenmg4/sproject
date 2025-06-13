@@ -11,4 +11,55 @@
 		AND STATUS='1'
 	</select>
 	
+	    <!-- 전체 회원목록 (비밀번호 제외) -->
+	<select id="findAllWithoutPassword" resultType="com.example.demo.model.CustDTO">
+	    SELECT cust_id, cust_nm, phone, email,
+	           address1, address2, zip, gender, birthday,
+	           status, grade, reg_dtm, upd_dtm, tot_buy_amt
+	    FROM custom
+	    WHERE grade IN ('N','S','G','V','A')
+	    ORDER BY (grade = 'A') DESC, reg_dtm DESC
+	</select>
+
+    <!-- status 수정 (등급 변경·정지 공통) -->
+	<update id="updateStatusSimple">
+	    UPDATE custom
+	    SET status = #{status}
+	    WHERE cust_id = #{cust_id}
+	</update>
+	
+	<!-- grade 수정 (등급 변경·정지 공통) -->
+    <update id="updateGradeSimple">
+        UPDATE custom
+        SET grade = #{grade}
+        WHERE cust_id = #{cust_id}
+    </update>
+	
+	
+	<!-- status 조회 -->
+	<select id="selectStatusByCustId" resultType="int" parameterType="string">
+	    SELECT status
+	    FROM   custom
+	    WHERE  cust_id = #{cust_id}
+	</select>
+	
+	<select id="searchMember" resultType="com.example.demo.model.CustDTO">
+	  SELECT cust_id, cust_nm, phone, email,
+	         address1, address2, zip, gender, birthday,
+	         status, grade, reg_dtm, upd_dtm, tot_buy_amt
+	  FROM custom
+	  WHERE grade IN ('N','S','G','V','A')
+	    <choose>
+	      <when test="type == 'id'">
+	        AND cust_id LIKE #{keyword}
+	      </when>
+	      <otherwise>
+	        AND cust_nm LIKE #{keyword}
+	      </otherwise>
+	    </choose>
+	  ORDER BY (grade='A') DESC, reg_dtm DESC
+	</select>
+	
+	 
+	
 </mapper>
