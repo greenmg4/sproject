@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/cust")
 @RequiredArgsConstructor
-public class CustController {
+public class CustController { 
 
     @Autowired
     private CustService cservice;

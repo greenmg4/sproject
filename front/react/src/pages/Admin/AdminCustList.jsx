@@ -64,7 +64,7 @@ export default function AdminCustList() {
   };
 
   /* ---------- 렌더 ---------- */
-  return (
+  return ( 
     <div className="admin-cust-list">
       <h2>회원 목록</h2>
 

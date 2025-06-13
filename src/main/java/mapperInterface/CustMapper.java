@@ -45,7 +45,7 @@ public interface CustMapper {
     
     
     
-    
+     
     
     java.util.List<CustDTO> findAllWithoutPassword();
     void updateStatusSimple(@Param("cust_id") String cust_id, @Param("status")  int status);

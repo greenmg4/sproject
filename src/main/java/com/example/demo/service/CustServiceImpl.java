@@ -41,7 +41,7 @@ public class CustServiceImpl implements CustService {
         CustMapper.updateStatusSimple(cust_id, status);
     }
 
-    @Override
+    @Override 
     public void updateGrade(String cust_id, String grade) {
         CustMapper.updateGradeSimple(cust_id, grade);
     }

@@ -219,7 +219,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
             });
     };
 
-    const categories = [
+    const categories = [ 
         // { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-all", category: "", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-novel", category: "01", category_nm: "소설", icon: mdiBookOpenBlankVariantOutline, tooltip: "소설" },
