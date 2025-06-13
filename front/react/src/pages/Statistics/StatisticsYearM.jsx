@@ -155,7 +155,7 @@ const StatisticsYearM = () => {
                     <label className="search-title" >Month</label>
                     <input type="month" className="search-condition" value={selectedYm}  ref={monthRef} onChange={(event) => handleMonthChange("/statistics/monthsaleslist")}/>
                 </div>
-                <div style={{height: '450px'}}>
+                <div className="statistics-table-container" style={{height: '340px'}}>
                     <Bar data={dataYm} options={optionsYm} />
                 </div>
 
