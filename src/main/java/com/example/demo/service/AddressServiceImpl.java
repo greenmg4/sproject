@@ -14,6 +14,8 @@ import mapperInterface.AddressMapper;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressMapper addressMapper;
+    
+    
 
     @Override
     public List<AddressDTO> getAddresses(String cust_id) {
@@ -48,4 +50,9 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.DefaultAddress(custId);
     }
 
+
+    //회원가입 시 입력 배송지 주소 추
+    
+    
+    
 }

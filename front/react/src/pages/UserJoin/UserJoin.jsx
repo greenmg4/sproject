@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; 
 import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
-import '../../styles/UserAddr/UserAddressF.css';
+import '../../styles/User/UserAddressF.css';
 
 const UserJoin = () => {
   const [form, setForm] = useState({
@@ -30,6 +30,9 @@ const UserJoin = () => {
 
   const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
   const [showAddress2, setShowAddress2] = useState(false);
+
+      // 🔹 추가된 상태 (상단 useState 부분에 추가)
+    const [addr_class, setAddrClass] = useState('01'); // 기본값 '집'
 
   const getEmail = () => {
     const domain = form.emailDomain === 'other' ? form.emailDomainOther : form.emailDomain;
@@ -169,6 +172,8 @@ const UserJoin = () => {
 
     if (Object.keys(errors).length > 0) return; // 오류 있으면 제출 중단
 
+
+
     const payload = {
       cust_id: form.cust_id,
       password: form.password,
@@ -180,6 +185,7 @@ const UserJoin = () => {
       address2: form.address2,
       birthday: form.birthday,
       gender: form.gender,
+      addr_class: addr_class // ✅ addr_class 추가 전달 (주소지 구분)
     };
 
     try {
@@ -363,6 +369,27 @@ const UserJoin = () => {
             />
           </div>
         )}
+
+         {/* ▶ 추가된 주소지 구분 셀렉트 — showAddress2 기준으로만 노출 */}
+        {showAddress2 && (
+          <div className="form-group">
+              <label>주소지 구분</label>
+              <select
+                name="addr_class"
+                value={addr_class}
+                onChange={(e) => setAddrClass(e.target.value)}
+                required
+              >
+                <option value="01">집</option>
+                <option value="02">회사</option>
+                <option value="03">지인</option>
+              </select>
+            {formErrors.addr_class && (
+              <p style={{ color: 'red' }}>{formErrors.addr_class}</p>
+            )}
+          </div>
+        )}
+
 
         <button type="submit">회원가입</button>
       </form>

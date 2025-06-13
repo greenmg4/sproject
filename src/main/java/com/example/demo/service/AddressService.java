@@ -13,6 +13,9 @@ public interface AddressService {
     
     // 기본 주소 호출[박민혁]
     AddressDTO DefaultAddress(String custId);
+    
+    //회원가입 배송지 추가
+    
 
     
    

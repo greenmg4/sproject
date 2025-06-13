@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { updateAddress } from '../../service/apiService';
 import DaumPostcode from 'react-daum-postcode';
-import '../../styles/UserAddr/UserAddressF.css'; // 📌 추가 폼과 동일한 CSS 사용
+import '../../styles/User/UserAddressF.css'; // 📌 추가 폼과 동일한 CSS 사용
 
 function UserAddressU() {
   const { state } = useLocation();
