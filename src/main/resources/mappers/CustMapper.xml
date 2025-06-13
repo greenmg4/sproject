@@ -8,6 +8,7 @@
 		SELECT grade
 		FROM custom
 		WHERE cust_id = #{cust_id}
+		AND STATUS='1'
 	</select>
 	
 </mapper>
