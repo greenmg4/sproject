@@ -99,8 +99,9 @@
 		  FROM PRODUCT p
 		     , PRODUCT_IMG i 
 		 WHERE 1=1
-		   and p.prod_no = i.prod_no
+		   AND p.prod_no = i.prod_no
 		   AND suggest_yn = 'Y'
+		   AND status = '1'
 	</select>
 	
 	
