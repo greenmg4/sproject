@@ -7,8 +7,7 @@
 	<select id="selectGradeByCustId">
 		SELECT grade
 		FROM custom
-		WHERE cust_id = #{cust_id}
-		AND STATUS='1'
+		WHERE cust_id = #{cust_id} and status='1'
 	</select>
 	
 	    <!-- 전체 회원목록 (비밀번호 제외) -->
@@ -40,7 +39,7 @@
 	<select id="selectStatusByCustId" resultType="int" parameterType="string">
 	    SELECT status
 	    FROM   custom
-	    WHERE  cust_id = #{cust_id}
+	    WHERE  cust_id = #{cust_id} 
 	</select>
 	
 	<select id="searchMember" resultType="com.example.demo.model.CustDTO">
@@ -60,6 +59,12 @@
 	  ORDER BY (grade='A') DESC, reg_dtm DESC
 	</select>
 	
+	<!-- 탈퇴 -->
+	<update id="withdrawUser" parameterType="com.example.demo.model.CustDTO">
+	  UPDATE custom
+	  SET status = '2'
+	  WHERE cust_id = #{cust_id}
+	</update>
 	 
 	
 </mapper>

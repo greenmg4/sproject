@@ -37,6 +37,13 @@ function App() {
       });
   }, []);
 
+  // 로그인 상태 초기화 함수 (추가)
+  const resetLoginInfo = () => {
+    setIsLoggedIn(false);
+    setLoginInfo(null);
+    setIsAdmin(false);
+  };
+
   // 로그인 함수
   const onLoginSubmit = (cust_Id, Password) => {
     const url = "/cust/login";
@@ -67,12 +74,12 @@ function App() {
           setLoginInfo(null);
           navigate("/login");
           return;
-        } else if (status !== 1) {
-          alert(`알 수 없는 상태코드(${status}) 입니다.`);
-          setIsLoggedIn(false);
-          setLoginInfo(null);
-          navigate("/login");
-          return;
+         } else if (status !== 1) {
+           alert(`알 수 없는 상태코드(${status}) 입니다.`);
+           setIsLoggedIn(false);
+           setLoginInfo(null);
+           navigate("/login");
+           return;
         }
 
         //정상회원(status === 1)일 경우 로그인 처리
@@ -137,6 +144,7 @@ function App() {
         onLoginSubmit={onLoginSubmit}
         isLoggedIn={isLoggedIn}
         loginInfo={loginInfo}
+        resetLoginInfo={resetLoginInfo}  
       />
       <Footer />
     </div>
