@@ -9,6 +9,9 @@ export default function Cart() {
   const [cust_id, setCustId] = useState(null);
   const navigate = useNavigate();
 
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
   useEffect(() => {
     const fetchUserAndCart = async () => {
       try {
@@ -30,7 +33,7 @@ export default function Cart() {
 
   // 장바구니 상세 불러오기
   const fetchCartDetail = (cust_id) => {
-    axios.post(`/api/cart/CartDetail`, { cust_id })
+    axios.post(`${API_BASE_URL}/api/cart/CartDetail`, { cust_id })
       .then(res => setCartDetail(res.data))
       .catch(err => console.error("장바구니 불러오기 실패", err));
   };
@@ -38,7 +41,7 @@ export default function Cart() {
   // 수량 변경
   const updateCnt = (prod_no, newCnt) => {
     if (newCnt < 1) return;
-    axios.post("/api/cart/updateCnt", {
+    axios.post(`${API_BASE_URL}/api/cart/updateCnt`, {
       cust_id,
       prod_no,
       cnt: newCnt
@@ -49,7 +52,7 @@ export default function Cart() {
   // 선택 삭제
   const DeletePro = () => {
     if (selectedItems.length === 0) return;
-    axios.post("/api/cart/deletePro", {
+    axios.post(`${API_BASE_URL}/api/cart/deletePro`, {
       cust_id,
       prod_no: selectedItems
     }).then(() => {

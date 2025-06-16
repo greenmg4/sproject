@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 const UserEdit = ({ loginInfo, isLoggedIn }) => {
   const navigate = useNavigate();
 
+      const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
   // 사용자 정보 form 상태 초기화
   const [form, setForm] = useState({
     cust_id: '',
@@ -28,7 +31,7 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
     }
 
     // 사용자 정보 요청
-    axios.post('/api/user/info', { cust_id: loginInfo.cust_id }, {
+    axios.post(`${API_BASE_URL}/api/user/info`, { cust_id: loginInfo.cust_id }, {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
@@ -59,7 +62,7 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('/api/user/update', form, {
+    axios.post(`${API_BASE_URL}/api/user/update`, form, {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
