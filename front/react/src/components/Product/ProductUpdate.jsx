@@ -126,7 +126,15 @@ export default function ProductUpdate() {
       <div className="form-group">
         <label>카테고리</label>
         <select name="category" value={product.category} onChange={handleChange}>
-          {/* ...카테고리 옵션 그대로... */}
+          <option value="01">소설</option>
+          <option value="02">에세이</option>
+          <option value="03">인문</option>
+          <option value="04">요리</option>
+          <option value="05">건강</option>
+          <option value="06">정치</option>
+          <option value="07">종교</option>
+          <option value="08">과학</option>
+          <option value="09">외국어</option>
           <option value="10">IT</option>
         </select>
       </div>
