@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Staticstics from "./Statistics"
 import StaticsticsProd from "./StatisticsProd"
+import axios from 'axios';
 
 const TabComponent = () => {
     const [activeTab, setActiveTab] = useState(0);
+
+    /* ---------- 관리자 체크 ---------- */
+    const navigate = useNavigate();
+    useEffect(() => {
+        axios
+        .get(`/cust/admincheck`, { withCredentials: true })
+        .then(() => init())                              // 통과 시 데이터 로드
+        .catch(() => {
+            //alert('관리자 권한 없음');
+            navigate('/', { replace: true });
+            return;
+        });
+
+        function init() {
+        ;
+        }
+    },[]);
+
 
     const tabs = [
         { name: '매출정보', content: <Staticstics /> }, // Statistics 컴포넌트 추가
@@ -14,7 +34,7 @@ const TabComponent = () => {
     ];
 
     return (
-        <div className="statistics-background" style={{ width: '100%', height: '100%'}}>            
+        <div className="statistics-background" style={{ width: '100%', height: '670px',  overflowX:'hidden', overflowY:'scroll'}}>            
             <div className='statistics-tab'>
                 {tabs.map((tab, index) => (
                     <div
@@ -32,7 +52,7 @@ const TabComponent = () => {
                     </div>
                 ))}
             </div>
-            <div style={{ width:'98%', padding: '20px', border: '1px solid #ddd' }}>
+            <div style={{ width:'98%', paddingLeft: '20px', paddingRight: '20px', border: '1px solid #ddd' }}>
                 {tabs[activeTab].content}
             </div>
         </div>
