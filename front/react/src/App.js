@@ -96,13 +96,18 @@ function App() {
         setLoginInfo(null);
         setIsAdmin(false);
 
-        if (err?.status === 502) {
-          alert("id 또는 password 가 다릅니다, 다시하세요 ~~");
-        } else if (err?.response?.status === 403) {
-          alert(`** Server Reject : 접근권한이 없습니다. => ${err.message}`);
-        } else {
-          alert(`** onLoginSubmit 시스템 오류, err=${err.message || err}`);
-        }
+        const errStatus = err?.response?.status;
+
+  if (errStatus === 401) {
+    // 로그인 실패 (잘못된 아이디/비번)
+    alert("id 또는 password 가 다릅니다.");
+  } else if (errStatus === 403) {
+    // 접근 권한 없음
+    alert(`** Server Reject : 접근권한이 없습니다. => ${err.message}`);
+  } else {
+    // 그 외 서버 오류
+    alert(`** onLoginSubmit 시스템 오류, err=${err.message || err}`);
+  }
         navigate("/login");
       });
   };
