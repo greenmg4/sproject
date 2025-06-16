@@ -293,7 +293,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                             {/* 로고 영역 */}
                             <span className='header-logo'>
                                 <Link to="/">
-                                    <img style={{ width: '80px', height:'60px', float:'left', paddingLeft:'10px'}} src="images/homeImages/main_logo.png" alt="로고" />
+                                    <img style={{ width: '80px', height:'60px', float:'left', paddingLeft:'10px'}} src={"/" +"images/homeImages/main_logo.png"} alt="로고" />
                                 </Link>
                             </span>
                         </td>
