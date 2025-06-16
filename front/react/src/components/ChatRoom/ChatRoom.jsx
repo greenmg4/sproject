@@ -29,9 +29,12 @@ function ChatRoom() {
   const stomp = useRef(null);
   const isCounselor = grade === 'A';
 
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
   // ① 로그인 사용자 정보
   useEffect(() => {
-    axios.get(`/api/chat/userinfo`)
+    axios.get(`${API_BASE_URL}/api/chat/userinfo`)
       .then(r => {
         setCustId(r.data.cust_id);
         setGrade(r.data.grade);
@@ -43,7 +46,7 @@ function ChatRoom() {
   // ② WebSocket 연결 및 히스토리 불러오기
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`/stomp`),
+      webSocketFactory: () => new SockJS(`${API_BASE_URL}/stomp`),
       onConnect: () => {
         client.subscribe(`/sub/chat/room/${qna_no}`, msg => {
           const m = JSON.parse(msg.body);
@@ -79,7 +82,7 @@ function ChatRoom() {
     client.activate();
     stomp.current = client;
 
-    axios.get(`/api/chat/history/${qna_no}`)
+    axios.get(`${API_BASE_URL}/api/chat/history/${qna_no}`)
       .then(res => {
         setChatList(res.data);
 

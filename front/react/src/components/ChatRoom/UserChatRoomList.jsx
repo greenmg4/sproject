@@ -8,6 +8,9 @@ import './UserChatRoomList.css';
 
 
 function UserChatRoomList() {
+
+      const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   /* ─────────────────────────── 상태 & 레퍼런스 ─────────────────────────── */
   const [rooms, setRooms]     = useState([]);  // 화면에 표시할 채팅방 목록
   const [myQnaNos, setMyQnaNos] = useState([]); // 내가 가진 qna_no 목록
@@ -18,12 +21,12 @@ function UserChatRoomList() {
   /* ───────────────────────────── 채팅방 생성 ───────────────────────────── */
   const goToChatUser = async () => {
   try {
-    const sessionRes = await axios.get(`/api/cust/session-check`, { withCredentials: true });
+    const sessionRes = await axios.get(`${API_BASE_URL}/api/cust/session-check`, { withCredentials: true });
 
     const confirmed = window.confirm('채팅문의를 시작하시겠습니까?');
     if (!confirmed) return;
 
-    const res = await axios.post(`/api/chat/create`, {}, { withCredentials: true });
+    const res = await axios.post(`${API_BASE_URL}/api/chat/create`, {}, { withCredentials: true });
     const { qna_no } = res.data;
     navigate(`/chat/${qna_no}`);
 
@@ -40,7 +43,7 @@ function UserChatRoomList() {
   /* ① 최초 목록 조회 (마운트 1회) ───────────────────────────────────────── */
   useEffect(() => {
     axios
-      .get(`/api/chat/mychats`, { withCredentials: true })
+      .get(`${API_BASE_URL}/api/chat/mychats`, { withCredentials: true })
       .then(res => {
         /* system 안내 제외 + qna_no별 최신 seq만 남기기 */
         const latestMap = new Map(); // { qna_no → 메시지 }
@@ -70,7 +73,7 @@ function UserChatRoomList() {
   /* ③ WebSocket 연결 (마운트 1회) ──────────────────────────────────────── */
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`/stomp`),
+      webSocketFactory: () => new SockJS(`${API_BASE_URL}/stomp`),
       reconnectDelay: 5000,                // 연결 끊기면 5초마다 재시도
       debug: () => {},                     // 필요 없으면 로그 억제
       onConnect: () => {

@@ -21,6 +21,9 @@ import { Tooltip } from "react-tooltip";
 
 function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }) {
 
+     const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
     // 회원혜택 Modal Open 조건
     const [modalIsOpen, setModalIsOpen] = useState(false);
     // 회원혜택 Modal 닫기 함수
@@ -38,7 +41,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
 
     useEffect(() => {
         if (!isLoggedIn) return;
-        axios.get("/api/cust/admincheck", {
+        axios.get(`${API_BASE_URL}/api/cust/admincheck`, {
             withCredentials: true
         })
         .then(() => setIsAdmin(true))

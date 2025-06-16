@@ -16,7 +16,8 @@
       author_nm,
       DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS reg_dtm,
       DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS upd_dtm,
-      book_desc
+      book_desc,
+      suggest_yn
     FROM product
   </select>
   
@@ -39,7 +40,8 @@
 	    author_nm,
 	    DATE_FORMAT(reg_dtm, '%Y-%m-%d %H:%i:%s') AS reg_dtm,
 	    DATE_FORMAT(upd_dtm, '%Y-%m-%d %H:%i:%s') AS upd_dtm,
-	    book_desc
+	    book_desc,
+	    suggest_yn
 	  FROM product
 	  WHERE prod_no = #{prod_no}
 	</select>

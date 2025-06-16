@@ -10,6 +10,8 @@ import Main from './components/Main';
 
 function App() {
   const navigate = useNavigate();
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginInfo, setLoginInfo] = useState(null);
@@ -17,7 +19,7 @@ function App() {
 
   // 세션 로그인 상태 확인
   useEffect(() => {
-    axios.get('/api/cust/session-check', { withCredentials: true })
+    axios.get(`${API_BASE_URL}/api/cust/session-check`, { withCredentials: true })
       .then(res => {
         if (res.data.loggedIn) {
           setLoginInfo(res.data.user);
@@ -116,7 +118,7 @@ function App() {
   const onLogout = () => {
     console.log("로그아웃 함수 실행");
 
-    const url = "/api/cust/logout";
+    const url = `${API_BASE_URL}/api/cust/logout`;
 
     axios.get(url, { withCredentials: true })
       .then(() => {

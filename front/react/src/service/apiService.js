@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./app-config";
+//import { API_BASE_URL } from "./app-config";
 // => 필요시 사용 
 import axios from "axios";
 
@@ -6,6 +6,9 @@ import axios from "axios";
 // => 요청시 필요한 정보를 매개변수로 전달받음
 // => ACCESS_TOKEN 도 매개변수로 전달함
 export async function apiCall(url, method, requestData, token) {
+
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
   // 1.1) headers & token
   // => indexOf('join')
