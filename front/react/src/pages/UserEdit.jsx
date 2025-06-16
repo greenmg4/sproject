@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const UserEdit = () => {
+const UserEdit = ({ loginInfo, isLoggedIn }) => {
   const navigate = useNavigate();
-  
+
+  // 사용자 정보 form 상태 초기화
   const [form, setForm] = useState({
     cust_id: '',
     cust_pw: '',
@@ -13,43 +14,39 @@ const UserEdit = () => {
     phone: '',
     email: '',
     zip: '',
-    addr1: '',
-    addr2: ''
+    address1: '',
+    address2: ''
   });
 
-  // 로그인 여부 확인 및 정보 불러오기
+  // 로그인 여부 확인 및 사용자 정보 불러오기
   useEffect(() => {
-  const cust_id = sessionStorage.getItem("loginID");
-  console.log("UserEdit 페이지 cust_id (from sessionStorage):", cust_id);
+    // loginInfo가 없거나 cust_id가 없으면 로그인 페이지로 이동
+    if (!loginInfo || !loginInfo.cust_id) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
-  if (!cust_id) {
-    alert("로그인이 필요합니다.");
-    navigate("/login");
-    return;
-  }
-
-  // axios 요청 시작
-  axios.post('/api/user/info', { cust_id }, {
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(res => {
-      console.log("서버 응답:", res);
-
-      if (res.data && res.data.cust_id) {
-        setForm(res.data);
-      } else {
-        console.warn("서버 응답에 데이터 없음:", res.data);
-        alert("사용자 정보가 비어 있습니다.");
-      }
+    // 사용자 정보 요청
+    axios.post('/api/user/info', { cust_id: loginInfo.cust_id }, {
+      headers: { 'Content-Type': 'application/json' }
     })
-    .catch(err => {
-      console.error("axios 요청 실패:", err);
-      alert("서버로부터 사용자 정보를 받아오는 데 실패했습니다.");
-    });
-}, [navigate]);
+      .then(res => {
+        console.log("서버 응답:", res);
+        if (res.data && res.data.cust_id) {
+          setForm(res.data);
+        } else {
+          console.warn("서버 응답에 사용자 정보가 없습니다:", res.data);
+          alert("사용자 정보를 불러올 수 없습니다.");
+        }
+      })
+      .catch(err => {
+        console.error("유저 정보 불러오기 실패:", err);
+        alert("서버로부터 사용자 정보를 받아오는 데 실패했습니다.");
+      });
+  }, [loginInfo, navigate]);
 
-
-  // 입력값 변경 처리
+  // 입력값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prevForm => ({
@@ -58,7 +55,7 @@ const UserEdit = () => {
     }));
   };
 
-  // 수정 완료 시 백엔드에 요청
+  // 수정 완료 시 서버에 사용자 정보 업데이트 요청
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -67,7 +64,7 @@ const UserEdit = () => {
     })
       .then(res => {
         alert("수정 완료되었습니다.");
-        navigate("/userinfo"); // 내 정보 페이지로 이동
+        navigate("/userinfo"); // 수정 후 내정보 페이지로 이동
       })
       .catch(err => {
         console.error("수정 실패", err);

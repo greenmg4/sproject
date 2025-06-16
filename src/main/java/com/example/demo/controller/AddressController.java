@@ -33,8 +33,11 @@ public class AddressController {
 
 
     @PostMapping("/add")
-    public void add(@RequestBody AddressDTO dto) {
+    public void add(@RequestBody AddressDTO dto) {    	
+        System.out.println("=== add 메소드 진입 ==="); // ✅ 들어오는지 확인
+        System.out.println("받은 주소 데이터 : " + dto); // DTO 값 확인
         addressService.addAddress(dto);
+
     }
 
     @DeleteMapping("/delete/{seq}")

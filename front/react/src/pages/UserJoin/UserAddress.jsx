@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {  getAddresses, deleteAddress, setDefaultAddress } from '../../service/apiService';
 
-import '../../styles/UserAddr/UserAddress.css'; // 외부 CSS 연결
+import '../../styles/User/UserAddress.css'; // 외부 CSS 연결
 
-function UserAddress() {
-  const location = useLocation();
+function UserAddress({ loginInfo }) {
   const navigate = useNavigate();
 
   // 로그인 정보 가져오기 (state → sessionStorage 순)
-  const loginInfoFromState = location.state?.loginInfo;
-  const loginInfo = loginInfoFromState || JSON.parse(sessionStorage.getItem('loginInfo'));
+
 
   const [addresses, setAddresses] = useState([]);     // 주소 리스트 상태
   const [selectedSeq, setSelectedSeq] = useState(null); // 선택된 주소 seq (기본 설정용)

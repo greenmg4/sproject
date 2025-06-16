@@ -133,9 +133,11 @@ function MainDefault() {
                                         src={product.image} 
                                         alt={product.name} 
                                         style={{ 
-                                            width: "750px", 
-                                            height: "auto", /* 비율 유지 */
-                                            objectFit: "contain" 
+                                            //width: "100%", 
+                                            //height: "auto", /* 비율 유지 */
+                                            height: "450px", /* 모든 이미지의 높이를 동일하게 설정 */
+                                            //objectFit: "contain" 
+                                            objectFit: "cover" /* 이미지가 잘리지 않도록 조정 */
                                         }} 
                                     />
                                 </div>

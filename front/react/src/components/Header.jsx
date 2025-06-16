@@ -124,7 +124,10 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
     const goTouserJoin = () => {
         console.log("회원가입 버튼 클릭됨");
         navigate("/userjoinp")};
-
+    
+    const goToCustList = () => {
+        navigate("custlist")
+    }
 
 
     // 내 정보 보기
@@ -216,7 +219,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
             });
     };
 
-    const categories = [
+    const categories = [ 
         // { id: "tooltip-all", category: "A", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-all", category: "", category_nm: "모든책", icon: mdiBookMultiple, tooltip: "모든책보기" },
         { id: "tooltip-novel", category: "01", category_nm: "소설", icon: mdiBookOpenBlankVariantOutline, tooltip: "소설" },
@@ -267,6 +270,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                 <>
                     <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span><span>|</span>
                     <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span><span>|</span>
+                    <span onClick={goToCustList} className="header-menu-item">회원목록</span><span>|</span>
                     <span onClick={goToPL} className="header-menu-item">상품업로드</span><span>|</span>
                     <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span><span>|</span>
                 </>
