@@ -4,9 +4,8 @@ import axios from 'axios';
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
 
-  // 서버에서 결제 내역 불러오기
   useEffect(() => {
-    axios.get('/orderList')  // 백엔드에서 이 API 만들어야 함
+    axios.get('/api/List') 
       .then((res) => {
         setOrders(res.data);
       })
@@ -17,7 +16,7 @@ const OrderList = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>🧾 결제 내역</h2>
+      <h2>결제 내역</h2>
       {orders.length === 0 ? (
         <p>결제 내역이 없습니다.</p>
       ) : (
@@ -28,17 +27,19 @@ const OrderList = () => {
               <th>상품명</th>
               <th>결제 금액</th>
               <th>결제 일시</th>
-              <th>결제 상태</th>
+              <th>보낸이</th>
+              <th>수령인</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order.orderId}>
-                <td>{order.orderId}</td>
-                <td>{order.productName}</td>
-                <td>{order.amount.toLocaleString()}원</td>
-                <td>{order.paidAt}</td>
-                <td>{order.status}</td>
+              <tr key={order.ord_no}>
+                <td>{order.ord_no}</td>
+                <td>{order.product_summary}</td>
+                <td>{order.tot_amount.toLocaleString()}원</td>
+                <td>{formatDate(order.ord_dtm)}</td>
+                <td>{order.cust_nm}</td>
+                <td>{order.rcv_nm}</td>
               </tr>
             ))}
           </tbody>
@@ -46,6 +47,12 @@ const OrderList = () => {
       )}
     </div>
   );
+};
+
+// 날짜 포맷 함수
+const formatDate = (datetimeStr) => {
+  const date = new Date(datetimeStr);
+  return date.toLocaleString('ko-KR');
 };
 
 export default OrderList;
