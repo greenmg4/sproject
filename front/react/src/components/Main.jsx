@@ -20,12 +20,13 @@ import UserJoinP from '../pages/UserJoin/UserJoinP';
 import UserAddress from '../pages/UserJoin/UserAddress';
 import UserAddressF from '../pages/UserJoin/UserAddressF';
 import UserAddressU from '../pages/UserJoin/UserAddressU';
+import UserWithdraw from '../pages/UserJoin/UserWithdraw';
 import OrderPayment from '../pages/OrderPayment';
 import UserChatRoomList from './ChatRoom/UserChatRoomList';
 import CustList from '../pages/Admin/AdminCustList';
 
 
-function Main({onLoginSubmit, isLoggedIn, loginInfo}) {
+function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
     return (
         <div>
         <Routes>
@@ -47,6 +48,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo}) {
             <Route path="/useraddress" element={<UserAddress loginInfo={loginInfo} />}/>
              <Route path="/useraddressf" element={<UserAddressF loginInfo={loginInfo}/>} />
             <Route path="/useraddressu" element={<UserAddressU/>} />
+            <Route path="/userwithdraw" element={<UserWithdraw resetLoginInfo={resetLoginInfo} />} />
             <Route path="/product/proList" element={<ProductList />} />
             <Route path="/product/:prod_no" element={<ProductDetail />} />
             <Route path="/custlist" element={<CustList />} />

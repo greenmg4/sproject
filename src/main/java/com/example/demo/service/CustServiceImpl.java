@@ -55,6 +55,16 @@ public class CustServiceImpl implements CustService {
     public List<CustDTO> searchMember(String type, String keyword) {
         return CustMapper.searchMember(type, "%" + keyword + "%");
     }
+    
+    
+    // 탈퇴    
+    @Override
+    public boolean withdrawUser(String cust_id) {
+        int result = CustMapper.withdrawUserStatus(cust_id);
+        return result > 0;
+	}
 
 
+    
+    
 }

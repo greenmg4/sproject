@@ -13,7 +13,7 @@
     ) VALUES (
       #{cust_id}, #{password}, #{cust_nm}, #{phone}, #{email},
       #{address1}, #{address2}, #{zip}, #{gender}, #{birthday},
-      #{status}, #{grade}, #{tot_buy_amt}, NOW(), NOW()
+      "1", #{grade}, #{tot_buy_amt}, NOW(), NOW()
     )
   </insert>
 

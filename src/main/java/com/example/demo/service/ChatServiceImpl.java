@@ -81,5 +81,7 @@ public class ChatServiceImpl implements ChatService {
     public String findCustName(String custId) {
         return mapper.selectCustName(custId);
     }
+    
+    
 
 }

@@ -16,6 +16,12 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
     navigate("/useraddress", { state: { loginInfo: userInfo } });
   };
 
+  //탈퇴하기 
+  const goToWithdraw = () => {
+    navigate("/userwithdraw");
+  }
+
+  // 로그인 정보 불러오기
   useEffect(() => {
       console.log("loginInfo 확인:", loginInfo);
   if (loginInfo && loginInfo.cust_id) {
@@ -54,6 +60,7 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
       </ul>
       <button onClick={goToAddressPage} style={{ marginTop: '20px' }}>배송지 관리</button>
       <button onClick={goToEditPage} style={{ marginTop: '10px', marginLeft: '10px' }}>내정보 수정</button>
+      <button onClick={goToWithdraw} style={{ marginTop: '10px', marginLeft: '10px' }}>탈퇴하기</button>
     </div>
   );
 };

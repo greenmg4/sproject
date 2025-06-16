@@ -42,8 +42,9 @@ public interface CustMapper {
     @Select("SELECT disc_max_amt FROM grade_disc WHERE grade = #{grade}")
     int DiscMaxAmt(@Param("grade") String grade);
 
-    
-    
+    //회원탈퇴
+    @Update("UPDATE custom SET status = 2 WHERE cust_id = #{cust_id}")
+    int withdrawUserStatus(String cust_id);
     
      
     
@@ -52,12 +53,12 @@ public interface CustMapper {
     int selectStatusByCustId(@Param("cust_id") String cust_id);
     void updateGradeSimple(@Param("cust_id") String cust_id, @Param("grade")   String grade);
     java.util.List<CustDTO> searchMember(@Param("type") String type, @Param("keyword") String keyword);
-
-
+    
     
     
 	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기
 
+	
 
 	
 	

@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'; 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiCall } from './service/apiService';
@@ -15,7 +15,7 @@ function App() {
   const [loginInfo, setLoginInfo] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // ✅ 세션 로그인 상태 확인
+  // 세션 로그인 상태 확인
   useEffect(() => {
     axios.get('/cust/session-check', { withCredentials: true })
       .then(res => {
@@ -37,7 +37,14 @@ function App() {
       });
   }, []);
 
-  // ✅ 로그인 함수
+  // 로그인 상태 초기화 함수 (추가)
+  const resetLoginInfo = () => {
+    setIsLoggedIn(false);
+    setLoginInfo(null);
+    setIsAdmin(false);
+  };
+
+  // 로그인 함수
   const onLoginSubmit = (cust_Id, Password) => {
     const url = "/cust/login";
     const data = { cust_id: cust_Id, password: Password };
@@ -52,6 +59,30 @@ function App() {
           return;
         }
 
+        //상태값(status)에 따른 처리 추가
+        const status = response.status;
+
+        if (status === 2) {
+          alert("탈퇴회원입니다. 로그인이 불가능합니다.");
+          setIsLoggedIn(false);
+          setLoginInfo(null);
+          navigate("/login");
+          return;
+        } else if (status === 3) {
+          alert("정지된 회원입니다. 로그인이 불가능합니다.");
+          setIsLoggedIn(false);
+          setLoginInfo(null);
+          navigate("/login");
+          return;
+         } else if (status !== 1) {
+           alert(`알 수 없는 상태코드(${status}) 입니다.`);
+           setIsLoggedIn(false);
+           setLoginInfo(null);
+           navigate("/login");
+           return;
+        }
+
+        //정상회원(status === 1)일 경우 로그인 처리
         alert('로그인 성공');
         setIsLoggedIn(true);
         setLoginInfo(response);
@@ -65,18 +96,23 @@ function App() {
         setLoginInfo(null);
         setIsAdmin(false);
 
-        if (err?.status === 502) {
-          alert("id 또는 password 가 다릅니다, 다시하세요 ~~");
-        } else if (err?.response?.status === 403) {
-          alert(`** Server Reject : 접근권한이 없습니다. => ${err.message}`);
-        } else {
-          alert(`** onLoginSubmit 시스템 오류, err=${err.message || err}`);
-        }
+        const errStatus = err?.response?.status;
+
+  if (errStatus === 401) {
+    // 로그인 실패 (잘못된 아이디/비번)
+    alert("id 또는 password 가 다릅니다.");
+  } else if (errStatus === 403) {
+    // 접근 권한 없음
+    alert(`** Server Reject : 접근권한이 없습니다. => ${err.message}`);
+  } else {
+    // 그 외 서버 오류
+    alert(`** onLoginSubmit 시스템 오류, err=${err.message || err}`);
+  }
         navigate("/login");
       });
   };
 
-  // ✅ 로그아웃 함수
+  // 로그아웃 함수
   const onLogout = () => {
     console.log("로그아웃 함수 실행");
 
@@ -113,6 +149,7 @@ function App() {
         onLoginSubmit={onLoginSubmit}
         isLoggedIn={isLoggedIn}
         loginInfo={loginInfo}
+        resetLoginInfo={resetLoginInfo}  
       />
       <Footer />
     </div>

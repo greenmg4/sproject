@@ -16,6 +16,11 @@ public interface CustService {
 	void updateStatus(String cust_id, int status);
 	int selectStatusByCustId(String cust_id);
 	java.util.List<CustDTO> searchMember(String type, String keyword);
+	
+	//탈퇴
+	
+	 boolean withdrawUser(String cust_id);
+
  
 
 }
