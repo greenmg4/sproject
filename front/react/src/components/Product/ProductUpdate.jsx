@@ -4,6 +4,9 @@ import axios from 'axios';
 import './ProductUpdate.css';
 
 export default function ProductUpdate() {
+
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const { prodNo } = useParams();
   const navigate   = useNavigate();
 
@@ -15,7 +18,7 @@ export default function ProductUpdate() {
   /* -------- 관리자 체크 + 데이터 로드 -------- */
   useEffect(() => {
     axios
-      .get(`/api/cust/admincheck`, { withCredentials: true })
+      .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                             // 통과 → 상품 조회
       .catch(() => {
         alert('관리자 권한 없음');
@@ -24,7 +27,7 @@ export default function ProductUpdate() {
 
     function init() {
       axios
-        .get(`/api/product/detail`, {
+        .get(`${API_BASE_URL}/api/product/detail`, {
           params: { prodNo },
           withCredentials: true,
         })
@@ -36,7 +39,7 @@ export default function ProductUpdate() {
         .catch(err => console.error('상품 상세 조회 실패', err));
 
       axios
-        .get(`/api/product/productimage/one`, {
+        .get(`${API_BASE_URL}/api/product/productimage/one`, {
           params: { prodNo },
           withCredentials: true,
         })
@@ -55,7 +58,7 @@ export default function ProductUpdate() {
   /* -------- 업데이트 -------- */
   const handleUpdate = async () => {
     try {
-      await axios.put(`/api/product/update`, product, { withCredentials: true });
+      await axios.put(`${API_BASE_URL}/api/product/update`, product, { withCredentials: true });
 
       if (newImageFile) {
         const formData = new FormData();
@@ -64,7 +67,7 @@ export default function ProductUpdate() {
         formData.append('imgClass', img_class);
 
         await axios.post(
-          `/api/product/productimage/update`,
+          `${API_BASE_URL}/api/product/productimage/update`,
           formData,
           { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
         );
