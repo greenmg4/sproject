@@ -64,7 +64,7 @@ const UserWithdraw = ({ resetLoginInfo }) => {
 
       {showConfirm && (
         <div className="modal">
-          <p>정말 탈퇴하시겠습니까?</p>
+          <p>정말 탈퇴하시겠습니까? 탈퇴 완료 시 복구가 불가능 합니다.</p>
           <button onClick={handleConfirmYes}>예</button>
           <button onClick={handleConfirmNo}>아니오</button>
         </div>

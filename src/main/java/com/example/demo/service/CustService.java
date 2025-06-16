@@ -21,6 +21,9 @@ public interface CustService {
 	
 	 boolean withdrawUser(String cust_id);
 
- 
+	 // 비밀번호 수정 및 확인
+	 boolean checkCurrentPassword(String cust_id, String rawPassword);
+	 void changePassword(String cust_id, String newRawPassword);	 
+	 
 
 }

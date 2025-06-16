@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/User/UserAddress.css'
 
 const UserEdit = ({ loginInfo, isLoggedIn }) => {
   const navigate = useNavigate();
@@ -17,7 +18,10 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
     address1: '',
     address2: ''
   });
-
+  // 비밀번호 수정 
+  const goToPassword = () => {
+    navigate("/passwordcheck");
+  }
   // 로그인 여부 확인 및 사용자 정보 불러오기
   useEffect(() => {
     // loginInfo가 없거나 cust_id가 없으면 로그인 페이지로 이동
@@ -122,6 +126,9 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
         </label>
         <br />
         <button type="submit">수정하기</button>
+        <button type="button" variant="outline"  onClick={goToPassword} style={{ marginLeft: "10px" }}>
+        비밀번호 수정하기
+        </button>
       </form>
     </div>
   );

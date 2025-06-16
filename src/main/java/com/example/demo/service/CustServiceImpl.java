@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.CustDTO;
@@ -64,7 +65,24 @@ public class CustServiceImpl implements CustService {
         return result > 0;
 	}
 
-
+   
+    //비밀번호 수정 및 확인
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     
+    @Override
+    public boolean checkCurrentPassword(String cust_id, String rawPassword) {
+        String encPwd = CustMapper.getEncryptedPassword(cust_id);
+        if (encPwd == null) return false;
+        return passwordEncoder.matches(rawPassword, encPwd);
+    }
+
+    @Override
+    public void changePassword(String cust_id, String newRawPassword) {
+        String newEnc = passwordEncoder.encode(newRawPassword);
+        CustMapper.updatePassword(cust_id, newEnc);
+    }
+    
+
     
 }

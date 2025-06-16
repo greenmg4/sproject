@@ -46,7 +46,18 @@ public interface CustMapper {
     @Update("UPDATE custom SET status = 2 WHERE cust_id = #{cust_id}")
     int withdrawUserStatus(String cust_id);
     
-     
+    
+    //비밀번호 수정 및 확인 
+    
+    // 1) 현재 비밀번호 확인
+    @Select("SELECT password FROM custom WHERE cust_id = #{cust_id}")
+    String getEncryptedPassword(@Param("cust_id") String cust_id);
+
+    // 2) 새 비밀번호 암호화 후 저장
+    @Update("UPDATE custom SET password = #{newEncPwd}, upd_dtm = NOW() WHERE cust_id = #{cust_id}")
+    void updatePassword(@Param("cust_id") String cust_id, @Param("newEncPwd") String newEncPwd);
+
+    
     
     java.util.List<CustDTO> findAllWithoutPassword();
     void updateStatusSimple(@Param("cust_id") String cust_id, @Param("status")  int status);

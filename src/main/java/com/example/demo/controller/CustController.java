@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.CustDTO;
@@ -206,4 +207,39 @@ public class CustController {
     }
     
     
-}
+    //비밀번호 확인 및 수정 
+  
+ // ➕ 1) 현재 비밀번호 확인
+    @PostMapping("/password/check")
+    public ResponseEntity<?> checkPwd(@RequestBody Map<String, String> body, HttpSession session) {
+        String cust_id = (String) session.getAttribute("loginID");
+        if (cust_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 상태 아님"));
+        }
+        String current = body.get("currentPassword");
+        boolean ok = cservice.checkCurrentPassword(cust_id, current);
+        if (ok) return ResponseEntity.ok(Map.of("msg", "비밀번호 일치"));
+        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "비밀번호 불일치"));
+    }
+
+    // ➕ 2) 새 비밀번호 변경
+    @PutMapping("/password/change")
+    public ResponseEntity<?> changePwd(@RequestBody Map<String, String> body, HttpSession session) {
+        String cust_id = (String) session.getAttribute("loginID");
+        if (cust_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 상태 아님"));
+        }
+        String newPwd = body.get("newPassword");
+        // 백엔드에서 비밀번호 정책도 한 번 더 체크 (8자+영숫특)
+        if (newPwd.length() < 8
+            || !newPwd.matches(".*[A-Za-z].*")
+            || !newPwd.matches(".*\\d.*")
+            || !newPwd.matches(".*[^A-Za-z0-9].*")) {
+            return ResponseEntity.badRequest().body(Map.of("msg", "비밀번호 정책 위반"));
+        }
+        cservice.changePassword(cust_id, newPwd);
+        return ResponseEntity.ok(Map.of("msg", "비밀번호 변경 완료"));
+    }
+    
+    
+} 

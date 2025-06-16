@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addAddress } from '../../service/apiService';
 import DaumPostcode from 'react-daum-postcode';
-import '../../styles/User/UserAddressF.css'; // 스타일 파일 import
+import '../../styles/User/UserAddressF.css'; 
 
 function UserAddressF({ loginInfo, onSave }) {
   const navigate = useNavigate(); // 페이지 이동을 위한 훅
