@@ -1,9 +1,12 @@
 import '../styles/Main.css';
 import React, { useState, useEffect } from 'react';
-import { API_BASE_URL } from "../service/app-config";
+//import { API_BASE_URL } from "../service/app-config";
 import { getStorageData } from '../service/apiService';
 
 export default function MList() {
+
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
     
   const [list, setList] = useState(null); 
   // => 출력할 Data list 정의

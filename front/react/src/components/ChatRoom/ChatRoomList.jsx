@@ -5,9 +5,10 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import './ChatRoomList.css';
 
-const BASE_URL = 'http://localhost:8080';
 
 function ChatRoomList() {
+    const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const [rooms, setRooms] = useState([]);
   const stomp = useRef(null);
   const navigate = useNavigate();                       // ✅
@@ -15,7 +16,7 @@ function ChatRoomList() {
   /* ① 관리자 체크 + 초기화 --------------------------------------- */
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/cust/admincheck`, { withCredentials: true })
+      .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                               // 통과 → 초기화
       .catch(() => {
         alert('관리자 권한 없음');
@@ -26,7 +27,7 @@ function ChatRoomList() {
     function init() {
       /* ①-1 방 목록 조회 */
       axios
-        .get(`${BASE_URL}/chat/rooms`, { withCredentials: true })
+        .get(`${API_BASE_URL}/api/chat/rooms`, { withCredentials: true })
         .then(res =>
           setRooms(
             res.data
@@ -39,7 +40,7 @@ function ChatRoomList() {
 
       /* ①-2 WebSocket 구독 */
       const client = new Client({
-        webSocketFactory: () => new SockJS(`${BASE_URL}/ws`),
+        webSocketFactory: () => new SockJS(`${API_BASE_URL}/stomp`),
         onConnect: () => {
           client.subscribe('/sub/chat/summary', msg => {
             const m = JSON.parse(msg.body);

@@ -11,8 +11,11 @@ const TabComponent = () => {
     /* ---------- 관리자 체크 ---------- */
     const navigate = useNavigate();
     useEffect(() => {
+
+        const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
         axios
-        .get(`/cust/admincheck`, { withCredentials: true })
+        .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
         .then(() => init())                              // 통과 시 데이터 로드
         .catch(() => {
             //alert('관리자 권한 없음');

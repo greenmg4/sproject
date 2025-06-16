@@ -1,3 +1,4 @@
+// src/pages/ChatRoom.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
@@ -5,8 +6,19 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './ChatRoom.css';
 
+/* ────────────────────────────────────────────────
+   ▷ 환경변수 (비어 있으면 상대경로로 동작)
+   ──────────────────────────────────────────────── */
+const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
+const WS_BASE  = process.env.REACT_APP_WS_URL      || '/ws';
+
+/* Axios 전역 설정 */
+axios.defaults.withCredentials = true;
+if (API_BASE) axios.defaults.baseURL = API_BASE;
+
+/* 공통 함수 */
 const formatTime = ts => {
-  const d = new Date(ts);
+  const d   = new Date(ts);
   const h24 = d.getHours();
   const mm  = d.getMinutes().toString().padStart(2, '0');
   const ap  = h24 < 12 ? '오전' : '오후';
@@ -14,27 +26,22 @@ const formatTime = ts => {
   return `${ap} ${h12}:${mm}`;
 };
 
-axios.defaults.withCredentials = true;
-
 function ChatRoom() {
-  const { qna_no } = useParams();
-  const [chatList,     setChatList] = useState([]);
-  const [content,      setContent]  = useState('');
-  const [custId,       setCustId]   = useState('');
-  const [grade,        setGrade]    = useState('');
-  const [qnaClass,     setQnaClass] = useState(null);   // 0:미정 1:상품 2:배송
-  const [inputEnabled, setInput]    = useState(false);
-  const [chatEnded,    setEnded]    = useState(false);
+  const { qna_no }      = useParams();
+  const [chatList, setChatList] = useState([]);
+  const [content,  setContent]  = useState('');
+  const [custId,   setCustId]   = useState('');
+  const [grade,    setGrade]    = useState('');
+  const [qnaClass, setQnaClass] = useState(null);   // 0:미정 1:상품 2:배송
+  const [inputEnabled, setInput] = useState(false);
+  const [chatEnded,    setEnded] = useState(false);
 
-  const stomp = useRef(null);
-  const isCounselor = grade === 'A';
+  const stomp        = useRef(null);
+  const isCounselor  = grade === 'A';
 
-  const API_BASE_URL =
-  process.env.REACT_APP_API_URL || 'http://localhost:8080';
-
-  // ① 로그인 사용자 정보
+  /* ① 로그인 사용자 정보 */
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/chat/userinfo`)
+    axios.get('/chat/userinfo')
       .then(r => {
         setCustId(r.data.cust_id);
         setGrade(r.data.grade);
@@ -43,46 +50,52 @@ function ChatRoom() {
       .catch(() => alert('로그인이 필요합니다.'));
   }, []);
 
-  // ② WebSocket 연결 및 히스토리 불러오기
+  /* ② WebSocket 연결 및 히스토리 불러오기 */
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`${API_BASE_URL}/stomp`),
-      onConnect: () => {
-        client.subscribe(`/sub/chat/room/${qna_no}`, msg => {
-          const m = JSON.parse(msg.body);
-          setChatList(prev => [...prev, m]);
-
-          // 상담사 응답 시 wave 제거
-          if (m.grade === 'A' && m.qna_type === 1) {
-            setChatList(prev =>
-              prev.map(msg =>
-                msg.grade === 'C' &&
-                msg.qna_type === 0 &&
-                msg.content.includes('연결중') &&
-                msg.wave !== false
-                  ? { ...msg, wave: false }
-                  : msg
-              )
-            );
-          }
-
-          if (m.qna_class && !qnaClass) setQnaClass(m.qna_class);
-
-          if (!isCounselor && m.grade === 'A' && m.qna_type === 1)
-            setInput(true);
-
-          if (m.qna_type === 2) {
-            setEnded(true);
-            setInput(false);
-          }
-        });
-      }
+      webSocketFactory: () =>
+       new SockJS(WS_BASE, null, {
+        transports: ['xhr-streaming', 'xhr-polling'] // WebSocket 시도 OFF
+      }),
+      reconnectDelay: 5000
     });
+
+    client.onConnect = () => {
+      client.subscribe(`/sub/chat/room/${qna_no}`, msg => {
+        const m = JSON.parse(msg.body);
+        setChatList(prev => [...prev, m]);
+
+        /* 상담사 응답 시 wave 제거 */
+        if (m.grade === 'A' && m.qna_type === 1) {
+          setChatList(prev =>
+            prev.map(row =>
+              row.grade === 'C' &&
+              row.qna_type === 0 &&
+              row.content.includes('연결중') &&
+              row.wave !== false
+                ? { ...row, wave: false }
+                : row
+            )
+          );
+        }
+
+        if (m.qna_class && !qnaClass) setQnaClass(m.qna_class);
+
+        if (!isCounselor && m.grade === 'A' && m.qna_type === 1)
+          setInput(true);
+
+        if (m.qna_type === 2) {
+          setEnded(true);
+          setInput(false);
+        }
+      });
+    };
 
     client.activate();
     stomp.current = client;
 
-    axios.get(`${API_BASE_URL}/api/chat/history/${qna_no}`)
+    /* 히스토리 */
+    axios.get(`/chat/history/${qna_no}`)
       .then(res => {
         setChatList(res.data);
 
@@ -100,16 +113,16 @@ function ChatRoom() {
       });
 
     return () => client.deactivate();
-  }, [qna_no, isCounselor]);
+  }, [qna_no, isCounselor, qnaClass]);
 
-  // 메시지 발행
+  /* 메시지 발행 */
   const publish = body =>
     stomp.current?.publish({
       destination: '/pub/chat/message',
       body: JSON.stringify(body)
     });
 
-  // ③ 메시지 전송
+  /* ③ 메시지 전송 */
   const send = () => {
     if (!inputEnabled || !content.trim() || chatEnded) return;
     publish({
@@ -123,11 +136,11 @@ function ChatRoom() {
     setContent('');
   };
 
-  // ④ 고객 유형 선택
+  /* ④ 고객 유형 선택 */
   const chooseType = cls => {
     setQnaClass(cls);
 
-    // 1) 고객 메시지
+    /* 1) 고객 메시지 */
     publish({
       qna_no: +qna_no,
       cust_id: custId,
@@ -140,7 +153,7 @@ function ChatRoom() {
       qna_type: 1
     });
 
-    // 2) 시스템 안내 메시지
+    /* 2) 시스템 안내 메시지 */
     setTimeout(() => {
       publish({
         qna_no: +qna_no,
@@ -154,7 +167,7 @@ function ChatRoom() {
     }, 80);
   };
 
-  // ⑤ 상담사 종료 버튼
+  /* ⑤ 상담사 종료 버튼 */
   const finish = () => {
     if (chatEnded) return;
     publish({
@@ -167,7 +180,7 @@ function ChatRoom() {
     });
   };
 
-  // ⑥ 렌더링
+  /* ⑥ 렌더링 */
   return (
     <div className="chat-room">
       <h2>채팅 상담</h2>
@@ -180,11 +193,12 @@ function ChatRoom() {
 
       <div className="chat-list">
         {chatList.map(m => {
-          const isSystem = m.grade === 'C' || m.cust_id === 'system' || m.qna_type === 0;
+          const isSystem    = m.grade === 'C' || m.cust_id === 'system' || m.qna_type === 0;
           const isCounselor = m.grade === 'A';
-          const align = isSystem ? 'center'
-                        : isCounselor ? 'left'
-                        : 'right';
+          const align =
+            isSystem     ? 'center'
+            : isCounselor ? 'left'
+                          : 'right';
 
           return (
             <div
@@ -207,7 +221,9 @@ function ChatRoom() {
                   'messagebox',
                   align,
                   isSystem && 'system',
-                  m.wave !== false && m.qna_type === 0 && m.content.includes('연결중') && 'wave'
+                  m.wave !== false &&
+                  m.qna_type === 0 &&
+                  m.content.includes('연결중') && 'wave'
                 ].filter(Boolean).join(' ')}
               >
                 {m.content}
@@ -227,14 +243,13 @@ function ChatRoom() {
         <button onClick={send} disabled={!inputEnabled || chatEnded}>
           전송
         </button>
-          <button
-            className="finish-btn"
-            onClick={finish}
-            disabled={chatEnded}>
-            문의 종료
-          </button>
+        <button
+          className="finish-btn"
+          onClick={finish}
+          disabled={chatEnded}>
+          문의 종료
+        </button>
       </div>
-
     </div>
   );
 }

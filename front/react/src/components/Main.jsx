@@ -26,6 +26,7 @@ import UserWithdraw from '../pages/UserJoin/UserWithdraw';
 import OrderPayment from '../pages/OrderPayment';
 import UserChatRoomList from './ChatRoom/UserChatRoomList';
 import CustList from '../pages/Admin/AdminCustList';
+import OrderList from '../pages/orderList';
 
 
 
@@ -60,6 +61,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
             <Route path="/cart/addCart" element={<Cart />} />
             <Route path="/statistics/data" element={<StatisticsTab />} />
             <Route path="/order/payment" element={<OrderPayment />} />
+            <Route path="/orderList" element={<OrderList/>} />
         </Routes>
         </div>
     );

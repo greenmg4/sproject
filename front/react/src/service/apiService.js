@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./app-config";
+//import { API_BASE_URL } from "./app-config";
 // => 필요시 사용 
 import axios from "axios";
 
@@ -6,6 +6,9 @@ import axios from "axios";
 // => 요청시 필요한 정보를 매개변수로 전달받음
 // => ACCESS_TOKEN 도 매개변수로 전달함
 export async function apiCall(url, method, requestData, token) {
+
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
   // 1.1) headers & token
   // => indexOf('join')
@@ -24,7 +27,7 @@ export async function apiCall(url, method, requestData, token) {
 
   // 1.2) axios 전송 options
   let options = {
-      url: API_BASE_URL + url, 
+      url: API_BASE_URL + '/api' + url, 
       method: method, 
       headers: headers,
       withCredentials: true,  
@@ -92,34 +95,34 @@ export async function CartDetail(cust_id) {
 
 // 내정보
 export const getUserInfo = (cust_id) => {
-  return apiCall("/api/user/info", "POST", cust_id);
+  return apiCall("/user/info", "POST", cust_id);
 }
 
 // 배송지 관련
 
 // 배송지 리스트 조회 (custId를 path param으로 GET 요청)
 export async function getAddresses(custId) {
-  return await apiCall(`/api/address/list/${custId}`, 'GET', null, null);
+  return await apiCall(`/address/list/${custId}`, 'GET', null, null);
 }
 
 // 배송지 추가 (POST 요청, data는 주소 객체)
 export async function addAddress(addressdata) {
   console.log("🔍 apiService에서 전달받은 주소 데이터:", addressdata);
-  return await apiCall('/api/address/add', 'POST', addressdata, null);
+  return await apiCall('/address/add', 'POST', addressdata, null);
 }
 
 // 배송지 삭제 (DELETE 요청, seq를 path param으로)
 export async function deleteAddress(seq) {
-  return await apiCall(`/api/address/delete/${seq}`, 'DELETE', null, null);
+  return await apiCall(`/address/delete/${seq}`, 'DELETE', null, null);
 }
 
 // 기본 배송지 설정 (POST 요청, data는 { cust_id, seq })
 export async function setDefaultAddress({ custId, seq }) {
-  return await apiCall('/api/address/default', 'POST', { custId, seq }, null);
+  return await apiCall('/address/default', 'POST', { custId, seq }, null);
 }
 
 // 배송지 수정
 export async function updateAddress(addressData) {
-  return await apiCall('/api/address/update', 'PUT', addressData);
+  return await apiCall('/address/update', 'PUT', addressData);
 }
 

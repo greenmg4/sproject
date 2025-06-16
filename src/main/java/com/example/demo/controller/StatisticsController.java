@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j2;
 //@Log4j2
 //@RequiredArgsConstructor
 @RestController
-@RequestMapping("/statistics")
+@RequestMapping("/api/statistics")
 @Log4j2
 @RequiredArgsConstructor
 public class StatisticsController {
