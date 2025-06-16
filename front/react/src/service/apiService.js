@@ -90,7 +90,7 @@ export async function CartDetail(cust_id) {
   return await apiCall('/cart/CartDetail', 'POST', {cust_id}, null);
 }
 
-// 내정보[박민혁]
+// 내정보
 export const getUserInfo = (cust_id) => {
   return apiCall("/api/user/info", "POST", cust_id);
 }
@@ -106,8 +106,6 @@ export async function getAddresses(custId) {
 export async function addAddress(addressdata) {
   console.log("🔍 apiService에서 전달받은 주소 데이터:", addressdata);
   return await apiCall('/api/address/add', 'POST', addressdata, null);
-  
-
 }
 
 // 배송지 삭제 (DELETE 요청, seq를 path param으로)

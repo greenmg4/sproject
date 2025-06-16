@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class CustController {
         String cust_id = cdto.getCust_id();
         String cust_nm = cservice.search_name(cust_id);
     	String grade = cservice.selectGradeByCustId(cust_id); //등급 가져오기
-    	int    status  = cservice.selectStatusByCustId(cust_id);
+    	int    status  = cservice.selectStatusByCustId(cust_id); //상태값 조회
 
         if (cust_pw == null) {
             // 아이디 없음
@@ -57,6 +58,7 @@ public class CustController {
             return ResponseEntity.ok(Map.of(
                 "cust_id", cust_id,
                 "cust_nm", cust_nm,
+                "status", status, // 상태값 JSON포함 
                 "msg", "로그인 성공"
             ));
         } else {
@@ -173,6 +175,35 @@ public class CustController {
         return ResponseEntity.ok(cservice.searchMember(type, keyword));
     }
 
+    // 탈퇴 
+    @PostMapping("/withdraw")
+    public ResponseEntity<Map<String, Object>> withdrawUser(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 세션에서 cust_id(loginID) 꺼내기
+        String cust_id = (String) session.getAttribute("loginID");
+
+        if (cust_id == null) {
+            // 로그인 안 한 경우
+            response.put("success", false);
+            response.put("message", "로그인 상태가 아닙니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // 탈퇴 로직 실행
+        boolean success = cservice.withdrawUser(cust_id);
+
+        response.put("success", success);
+
+        if (success) {
+            // 성공 시 세션 무효화
+            session.invalidate();
+        } else {
+            response.put("message", "탈퇴 처리 중 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
     
     
 }
