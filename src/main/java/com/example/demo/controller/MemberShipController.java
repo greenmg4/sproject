@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import mapperInterface.MemberShipMapper;
 
 @RestController
-@RequestMapping("/membership")
+@RequestMapping("/api/membership")
 @Log4j2
 @RequiredArgsConstructor
 public class MemberShipController {

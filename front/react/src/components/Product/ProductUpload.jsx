@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductUpload.css';
 
-const BASE_URL = 'http://localhost:8080';
 
 export default function ProductUpload() {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ export default function ProductUpload() {
   /* ---------- 관리자 체크 ---------- */
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/cust/admincheck`, { withCredentials: true })
+      .get(`/api/cust/admincheck`, { withCredentials: true })
       .catch(() => {
         alert('관리자 권한 없음');
         navigate('/', { replace: true });
@@ -43,7 +42,7 @@ export default function ProductUpload() {
 
     try {
       await axios.post(
-        `${BASE_URL}/product/upload`,
+        `/api/product/upload`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
       );

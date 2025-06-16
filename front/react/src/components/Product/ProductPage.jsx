@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductPage.css';
 
-const BASE_URL = 'http://localhost:8080';
 
 export default function ProductPage() {
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ export default function ProductPage() {
   /* ---------- 관리자 체크 + 초기 로드 ---------- */
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/cust/admincheck`, { withCredentials: true })
+      .get(`/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                              // 통과 시 데이터 로드
       .catch(() => {
         alert('관리자 권한 없음');
@@ -26,12 +25,12 @@ export default function ProductPage() {
 
     function init() {
       axios
-        .get(`${BASE_URL}/product/page`, { withCredentials: true })
+        .get(`/api/product/page`, { withCredentials: true })
         .then(res => setProducts(res.data))
         .catch(err => console.error('상품 조회 실패:', err));
 
       axios
-        .get(`${BASE_URL}/product/productimage`, { withCredentials: true })
+        .get(`/api/product/productimage`, { withCredentials: true })
         .then(res => setProductImages(res.data))
         .catch(err => console.error('상품 이미지 조회 실패:', err));
     }
@@ -45,7 +44,7 @@ export default function ProductPage() {
     };
 
     axios
-      .post(`${BASE_URL}/product/proList`, searchCond, { withCredentials: true })
+      .post(`/api/product/proList`, searchCond, { withCredentials: true })
       .then(res => setProducts(res.data))
       .catch(err => {
         console.error('검색 실패:', err);
@@ -58,7 +57,7 @@ export default function ProductPage() {
     if (!window.confirm('해당 상품을 삭제하시겠습니까?')) return;
 
     axios
-      .delete(`${BASE_URL}/product/delete`, {
+      .delete(`/api/product/delete`, {
         params: { prodNo: prod_no },
         withCredentials: true,
       })

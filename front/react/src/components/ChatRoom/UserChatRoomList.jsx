@@ -1,3 +1,4 @@
+// UserChatRoomList.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import SockJS from 'sockjs-client';
@@ -5,40 +6,44 @@ import { Client } from '@stomp/stompjs';
 import { Link, useNavigate } from 'react-router-dom';
 import './UserChatRoomList.css';
 
-const BASE_URL = 'http://localhost:8080';
 
 function UserChatRoomList() {
-  const [rooms, setRooms] = useState([]);        // 화면용 채팅방 목록
-  const [myQnaNos, setMyQnaNos] = useState([]);  // 내가 가진 qna_no 집합
-  const stomp = useRef(null);
-	const navigate = useNavigate();
+  /* ─────────────────────────── 상태 & 레퍼런스 ─────────────────────────── */
+  const [rooms, setRooms]     = useState([]);  // 화면에 표시할 채팅방 목록
+  const [myQnaNos, setMyQnaNos] = useState([]); // 내가 가진 qna_no 목록
+  const myQnaNosRef           = useRef([]);    // 최신 qna_no 배열을 보관
+  const stomp                 = useRef(null);
+  const navigate              = useNavigate();
 
-	const goToChatUser = async () => {
-		const custId = sessionStorage.getItem("loginID");
-		if (!custId) {
-			alert("로그인이 필요한 기능입니다.");
-			return;
-		}
+  /* ───────────────────────────── 채팅방 생성 ───────────────────────────── */
+  const goToChatUser = async () => {
+  try {
+    const sessionRes = await axios.get(`/api/cust/session-check`, { withCredentials: true });
 
-		const confirmed = window.confirm("채팅문의를 시작하시겠습니까?");
-		if (!confirmed) return;
+    const confirmed = window.confirm('채팅문의를 시작하시겠습니까?');
+    if (!confirmed) return;
 
-		try {
-			const res = await axios.post(`${BASE_URL}/chat/create`, {}, { withCredentials: true });
-			const { qna_no } = res.data;
-			navigate(`/chat/${qna_no}`);
-		} catch (err) {
-			console.error("채팅방 생성 실패:", err);
-			alert("채팅방 생성 중 오류가 발생했습니다.");
-		}
+    const res = await axios.post(`/api/chat/create`, {}, { withCredentials: true });
+    const { qna_no } = res.data;
+    navigate(`/chat/${qna_no}`);
+
+  } catch (err) {
+    if (err.response && err.response.status === 401) {
+      alert('로그인이 필요한 기능입니다.');
+    } else {
+      console.error('채팅방 생성 실패:', err);
+      alert('채팅방 생성 중 오류가 발생했습니다.');
+    }
+  }
 };
 
-  /* ① 최초 목록 -------------------------------------------------- */
+  /* ① 최초 목록 조회 (마운트 1회) ───────────────────────────────────────── */
   useEffect(() => {
-    axios.get(`${BASE_URL}/chat/mychats`)
+    axios
+      .get(`/api/chat/mychats`, { withCredentials: true })
       .then(res => {
         /* system 안내 제외 + qna_no별 최신 seq만 남기기 */
-        const latestMap = new Map();              // { qna_no → 메시지 }
+        const latestMap = new Map(); // { qna_no → 메시지 }
         res.data.forEach(m => {
           if (m.cust_id === 'system' && m.qna_class === 0) return;
           const saved = latestMap.get(m.qna_no);
@@ -55,54 +60,68 @@ function UserChatRoomList() {
         setMyQnaNos(list.map(r => r.qna_no));
       })
       .catch(console.error);
+  }, []);
 
-    /* ② WebSocket ------------------------------------------------ */
+  /* ② myQnaNos 변경 시 ref에 최신 값 반영 ──────────────────────────────── */
+  useEffect(() => {
+    myQnaNosRef.current = myQnaNos;
+  }, [myQnaNos]);
+
+  /* ③ WebSocket 연결 (마운트 1회) ──────────────────────────────────────── */
+  useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`${BASE_URL}/ws`),
+      webSocketFactory: () => new SockJS(`/stomp`),
+      reconnectDelay: 5000,                // 연결 끊기면 5초마다 재시도
+      debug: () => {},                     // 필요 없으면 로그 억제
       onConnect: () => {
         client.subscribe('/sub/chat/summary', msg => {
           const m = JSON.parse(msg.body);
 
-          if (m.cust_id === 'system' && m.qna_class === 0) return; // system 안내
-          if (!myQnaNos.includes(m.qna_no)) return;                // 내 방만
+          // system 안내 & 내 방 필터
+          if (m.cust_id === 'system' && m.qna_class === 0) return;
+          if (!myQnaNosRef.current.includes(m.qna_no))       return;
 
-          setRooms(prev => { 
+          // rooms 상태 업데이트
+          setRooms(prev => {
             const exists = prev.find(r => r.qna_no === m.qna_no);
             if (exists) {
-              /* 더 최신(seq 큰) 메시지만 반영 */
               if (m.seq > exists.seq) {
                 return prev.map(r =>
                   r.qna_no === m.qna_no
-                    ? { ...r,
+                    ? {
+                        ...r,
                         lastMessage: m.content,
                         unread: true,
                         seq: m.seq,
-                        qna_type: m.qna_type,   // 종료 여부 업데이트
+                        qna_type: m.qna_type, // 종료 여부 최신화
                       }
                     : r
                 );
               }
               return prev; // 옛 메시지는 무시
             }
-            /* 새 방 */
+            // 새 채팅방
             return [{ ...m, lastMessage: m.content, unread: true }, ...prev];
           });
         });
       },
     });
+
     client.activate();
     stomp.current = client;
 
-    return () => client.deactivate();             // 클린업
-  }, [myQnaNos]);
+    return () => client.deactivate(); // 언마운트 시 한 번만 해제
+  }, []);
 
-  /* ③ 렌더 ------------------------------------------------------ */
+  /* ④ 렌더 ─────────────────────────────────────────────────────────────── */
   return (
     <div className="chat-room-list">
       <h2>내 문의내역</h2>
-			<div style={{ textAlign: 'center' }}>
+
+      <div style={{ textAlign: 'center' }}>
         <button onClick={goToChatUser}>채팅상담 시작</button>
       </div>
+
       <ul>
         {rooms.map(r => {
           const isClosed = r.qna_type === 2 || r.qna_type === '2';
@@ -114,9 +133,7 @@ function UserChatRoomList() {
               >
                 <div className="room-title">
                   {isClosed ? '상담사 답변완료' : '상담중'}
-                  {!isClosed && r.unread && (
-                    <span className="notification-dot" />
-                  )}
+                  {!isClosed && r.unread && <span className="notification-dot" />}
                 </div>
 
                 <div className="last-message">

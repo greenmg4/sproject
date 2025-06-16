@@ -30,7 +30,7 @@ export default function Cart() {
 
   // 장바구니 상세 불러오기
   const fetchCartDetail = (cust_id) => {
-    axios.post(`/cart/CartDetail`, { cust_id })
+    axios.post(`/api/cart/CartDetail`, { cust_id })
       .then(res => setCartDetail(res.data))
       .catch(err => console.error("장바구니 불러오기 실패", err));
   };
@@ -38,7 +38,7 @@ export default function Cart() {
   // 수량 변경
   const updateCnt = (prod_no, newCnt) => {
     if (newCnt < 1) return;
-    axios.post("/cart/updateCnt", {
+    axios.post("/api/cart/updateCnt", {
       cust_id,
       prod_no,
       cnt: newCnt
@@ -49,7 +49,7 @@ export default function Cart() {
   // 선택 삭제
   const DeletePro = () => {
     if (selectedItems.length === 0) return;
-    axios.post("/cart/deletePro", {
+    axios.post("/api/cart/deletePro", {
       cust_id,
       prod_no: selectedItems
     }).then(() => {

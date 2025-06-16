@@ -12,7 +12,7 @@ const TabComponent = () => {
     const navigate = useNavigate();
     useEffect(() => {
         axios
-        .get(`/cust/admincheck`, { withCredentials: true })
+        .get(`/api/cust/admincheck`, { withCredentials: true })
         .then(() => init())                              // 통과 시 데이터 로드
         .catch(() => {
             //alert('관리자 권한 없음');
