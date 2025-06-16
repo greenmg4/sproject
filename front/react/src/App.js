@@ -17,7 +17,7 @@ function App() {
 
   // 세션 로그인 상태 확인
   useEffect(() => {
-    axios.get('/cust/session-check', { withCredentials: true })
+    axios.get('/api/cust/session-check', { withCredentials: true })
       .then(res => {
         if (res.data.loggedIn) {
           setLoginInfo(res.data.user);
@@ -116,7 +116,7 @@ function App() {
   const onLogout = () => {
     console.log("로그아웃 함수 실행");
 
-    const url = "/cust/logout";
+    const url = "/api/cust/logout";
 
     axios.get(url, { withCredentials: true })
       .then(() => {

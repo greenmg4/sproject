@@ -3,8 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductUpdate.css';
 
-const BASE_URL = 'http://localhost:8080';
-
 export default function ProductUpdate() {
   const { prodNo } = useParams();
   const navigate   = useNavigate();
@@ -17,7 +15,7 @@ export default function ProductUpdate() {
   /* -------- 관리자 체크 + 데이터 로드 -------- */
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/cust/admincheck`, { withCredentials: true })
+      .get(`/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                             // 통과 → 상품 조회
       .catch(() => {
         alert('관리자 권한 없음');
@@ -26,7 +24,7 @@ export default function ProductUpdate() {
 
     function init() {
       axios
-        .get(`${BASE_URL}/product/detail`, {
+        .get(`/api/product/detail`, {
           params: { prodNo },
           withCredentials: true,
         })
@@ -38,7 +36,7 @@ export default function ProductUpdate() {
         .catch(err => console.error('상품 상세 조회 실패', err));
 
       axios
-        .get(`${BASE_URL}/product/productimage/one`, {
+        .get(`/api/product/productimage/one`, {
           params: { prodNo },
           withCredentials: true,
         })
@@ -57,7 +55,7 @@ export default function ProductUpdate() {
   /* -------- 업데이트 -------- */
   const handleUpdate = async () => {
     try {
-      await axios.put(`${BASE_URL}/product/update`, product, { withCredentials: true });
+      await axios.put(`/api/product/update`, product, { withCredentials: true });
 
       if (newImageFile) {
         const formData = new FormData();
@@ -66,7 +64,7 @@ export default function ProductUpdate() {
         formData.append('imgClass', img_class);
 
         await axios.post(
-          `${BASE_URL}/product/productimage/update`,
+          `/api/product/productimage/update`,
           formData,
           { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
         );

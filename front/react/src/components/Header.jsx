@@ -38,7 +38,7 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
 
     useEffect(() => {
         if (!isLoggedIn) return;
-        axios.get("http://localhost:8080/cust/admincheck", {
+        axios.get("/api/cust/admincheck", {
             withCredentials: true
         })
         .then(() => setIsAdmin(true))
@@ -351,8 +351,10 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
             {/*------------- 카테고리 메뉴 ---------------*/}
             <div className='header-category-container'>
                 {categories.map((item) => (
-                    <span key={item.id} className='header-category-box' data-tooltip-id={item.id}>
-                        <span onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, prod_nm: "", author_nm: "" }) }}>
+                    <span key={item.id} className='header-category-box' data-tooltip-id={item.id}
+                          onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, prod_nm: "", author_nm: "" }) }}
+                    >
+                        <span >
                             <Icon className='header-category-item' path={item.icon} size={1.4} />
                             <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
                         </span>

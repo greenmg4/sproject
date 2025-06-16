@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/cust")
+@RequestMapping("/api/cust")
 @RequiredArgsConstructor
 public class CustController { 
 
