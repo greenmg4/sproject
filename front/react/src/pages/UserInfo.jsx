@@ -65,7 +65,7 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
       <button onClick={goToAddressPage} style={{ marginTop: '20px' }}>배송지 관리</button>
       <button onClick={goToEditPage} style={{ marginTop: '10px', marginLeft: '10px' }}>내정보 수정</button>
       <button onClick={goToWithdraw} style={{ marginTop: '10px', marginLeft: '10px' }}>탈퇴하기</button>
-      <button onClick={orderList} style={{ marginTop: '10px', marginLeft: '10px' }}>결재 내역</button>
+      <button onClick={orderList} style={{ marginTop: '10px', marginLeft: '10px' }}>결제 내역</button>
     </div>
   );
 };
