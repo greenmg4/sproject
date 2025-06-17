@@ -4,6 +4,9 @@ import DaumPostcode from 'react-daum-postcode';
 import '../../styles/User/UserAddressF.css';
 
 const UserJoin = () => {
+
+      const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const [form, setForm] = useState({
     cust_id: '',
     password: '',
@@ -88,7 +91,7 @@ const UserJoin = () => {
     }
 
     try {
-      const res = await axios.post('/api/user/check-id', { cust_id: id });
+      const res = await axios.post(`${API_BASE_URL}/api/user/check-id`, { cust_id: id });
       if (res.data.available) {
         setIdValid(true);
         setIdCheckMessage('✅ 사용 가능한 아이디입니다.');
@@ -189,7 +192,7 @@ const UserJoin = () => {
     };
 
     try {
-      const res = await axios.post('/api/user/join', payload);
+      const res = await axios.post(`${API_BASE_URL}/api/user/join`, payload);
       const { success, message } = res.data;
       if (success) {
         alert(`🎉 ${message}`);

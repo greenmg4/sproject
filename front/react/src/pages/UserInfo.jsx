@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
+
+      const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
 
@@ -29,7 +32,7 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
   useEffect(() => {
       console.log("loginInfo 확인:", loginInfo);
   if (loginInfo && loginInfo.cust_id) {
-    axios.post('/api/user/info', { cust_id: loginInfo.cust_id }, { withCredentials: true })
+    axios.post(`${API_BASE_URL}/api/user/info`, { cust_id: loginInfo.cust_id }, { withCredentials: true })
       .then(res => {
         setUserInfo(res.data);
       })
@@ -65,7 +68,7 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
       <button onClick={goToAddressPage} style={{ marginTop: '20px' }}>배송지 관리</button>
       <button onClick={goToEditPage} style={{ marginTop: '10px', marginLeft: '10px' }}>내정보 수정</button>
       <button onClick={goToWithdraw} style={{ marginTop: '10px', marginLeft: '10px' }}>탈퇴하기</button>
-      <button onClick={orderList} style={{ marginTop: '10px', marginLeft: '10px' }}>결재 내역</button>
+      <button onClick={orderList} style={{ marginTop: '10px', marginLeft: '10px' }}>결제 내역</button>
     </div>
   );
 };

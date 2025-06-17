@@ -6,6 +6,9 @@ import '../../styles/AdminCustList.css';
 export default function AdminCustList() {
   const navigate = useNavigate();
 
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
   /* ---------- 상태 ---------- */
   const [users, setUsers]       = useState([]);
   const [editingId, setEditing] = useState(null);
@@ -25,13 +28,13 @@ export default function AdminCustList() {
   /* ---------- 데이터 로드 ---------- */
   const fetchAll = () =>
     axios
-      .get('/api/cust/list', { withCredentials:true })
+      .get(`${API_BASE_URL}/api/cust/list`, { withCredentials:true })
       .then(res => { setUsers(res.data); setFlag(false); });
 
   /* ---------- 관리자 체크 + 초기 로드 ---------- */
   useEffect(() => {
     axios
-      .get('/api/cust/admincheck', { withCredentials:true })
+      .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials:true })
       .then(() => fetchAll())
       .catch(() => {
         alert('관리자 권한 없음');
@@ -45,7 +48,7 @@ export default function AdminCustList() {
     if (!keyword.trim()) { alert('검색어를 입력하세요'); return; }
 
     axios
-      .get('/api/cust/search', {
+      .get(`${API_BASE_URL}/api/cust/search`, {
         params:{ type:searchType, keyword },
         withCredentials:true,
       })
@@ -59,7 +62,7 @@ export default function AdminCustList() {
 
   const saveGrade = id => {
     axios
-      .put('/api/cust/grade',
+      .put(`${API_BASE_URL}/api/cust/grade`,
            { cust_id:id, grade:tempGrade },
            { withCredentials:true })
       .then(()=>{ setUsers(p=>p.map(u=>u.cust_id===id?{...u,grade:tempGrade}:u)); cancelEdit(); })
@@ -69,7 +72,7 @@ export default function AdminCustList() {
   const suspend = id => {
     if(!window.confirm('해당 회원을 정지시키겠습니까?')) return;
     axios
-      .put('/api/cust/suspend',
+      .put(`${API_BASE_URL}/api/cust/suspend`,
            { cust_id:id },
            { withCredentials:true })
       .then(()=>setUsers(p=>p.map(u=>u.cust_id===id?{...u,status:3}:u)))
@@ -79,7 +82,7 @@ export default function AdminCustList() {
   const unsuspend = id => {
     if(!window.confirm('해당 회원의 정지를 해제하시겠습니까?')) return;
     axios
-      .put('/api/cust/unsuspend',
+      .put(`${API_BASE_URL}/api/cust/unsuspend`,
            { cust_id:id },
            { withCredentials:true })
       .then(()=>setUsers(p=>p.map(u=>u.cust_id===id?{...u,status:1}:u)))

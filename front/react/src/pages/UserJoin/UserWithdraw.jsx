@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
  * - cust_id는 세션에서 서버가 직접 가져가므로 프론트는 전달하지 않음
  */
 const UserWithdraw = ({ resetLoginInfo }) => {
+
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const [showConfirm, setShowConfirm] = useState(false); // 확인창 표시 여부
   const [withdrawSuccess, setWithdrawSuccess] = useState(false); // 탈퇴 성공 여부
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ const UserWithdraw = ({ resetLoginInfo }) => {
   const handleConfirmYes = async () => {
     try {
       // ❗ cust_id 전달 제거 → 서버에서 세션으로 cust_id를 확인함
-      const res = await axios.post('/cust/withdraw', {}, { withCredentials: true });
+      const res = await axios.post(`${API_BASE_URL}/api/cust/withdraw`, {}, { withCredentials: true });
 
       if (res.data.success) {
         setWithdrawSuccess(true);
