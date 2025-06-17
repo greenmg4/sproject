@@ -10,6 +10,10 @@
 		WHERE cust_id = #{cust_id} and status='1'
 	</select>
 	
+	<select id="findById" resultType="com.example.demo.model.CustDTO" parameterType="String">
+    SELECT * FROM custom WHERE id = #{id}
+  </select>
+	
 	    <!-- 전체 회원목록 (비밀번호 제외) -->
 	<select id="findAllWithoutPassword" resultType="com.example.demo.model.CustDTO">
 	    SELECT cust_id, cust_nm, phone, email,

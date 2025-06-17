@@ -15,6 +15,9 @@ public class CustServiceImpl implements CustService {
 	@Autowired
 	private CustMapper CustMapper;
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@Override
 	public String login(CustDTO cdto) {
 		return CustMapper.login(cdto);
@@ -67,14 +70,30 @@ public class CustServiceImpl implements CustService {
 
    
     //비밀번호 수정 및 확인
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+   
     
     @Override
     public boolean checkCurrentPassword(String cust_id, String rawPassword) {
         String encPwd = CustMapper.getEncryptedPassword(cust_id);
+        
+        System.out.println("🔐 확인용 로그:");
+        System.out.println("- 입력된 사용자 ID: " + cust_id);
+        System.out.println("- 사용자가 입력한 비밀번호: " + rawPassword);
+        System.out.println("- DB에서 가져온 암호화된 비밀번호: " + encPwd);
+        System.out.println("🔍 encPwd.equals(rawPassword): " + encPwd.equals(rawPassword));
+        System.out.println("encPwd.length(): " + encPwd.length());
+        System.out.println("rawPassword.length(): " + rawPassword.length());
+
+
+        
         if (encPwd == null) return false;
-        return passwordEncoder.matches(rawPassword, encPwd);
+
+        // ✅ 암호화 여부 판단
+        if (encPwd.startsWith("$2a$") || encPwd.startsWith("$2b$") || encPwd.startsWith("$2y$")) {
+            return passwordEncoder.matches(rawPassword, encPwd);
+        } else {
+            return encPwd.equals(rawPassword);
+        }
     }
 
     @Override

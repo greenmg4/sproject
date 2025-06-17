@@ -9,9 +9,11 @@ function PasswordCheck({ loginInfo }) {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("/cust/password/check", {
+      const res = await axios.post("api/cust/password/check", {
         cust_id: loginInfo?.cust_id,
         currentPassword
+      }, {
+        withCredentials: true
       });
       if (res.data === true) {
         navigate("/password-change");

@@ -57,7 +57,7 @@ public interface CustMapper {
     @Update("UPDATE custom SET password = #{newEncPwd}, upd_dtm = NOW() WHERE cust_id = #{cust_id}")
     void updatePassword(@Param("cust_id") String cust_id, @Param("newEncPwd") String newEncPwd);
 
-    
+    CustDTO findById(String id);
     
     java.util.List<CustDTO> findAllWithoutPassword();
     void updateStatusSimple(@Param("cust_id") String cust_id, @Param("status")  int status);
@@ -65,8 +65,7 @@ public interface CustMapper {
     void updateGradeSimple(@Param("cust_id") String cust_id, @Param("grade")   String grade);
     java.util.List<CustDTO> searchMember(@Param("type") String type, @Param("keyword") String keyword);
     
-    
-    
+        
 	String selectGradeByCustId(String cust_id); //cust_id로 등급 찾기
 
 	
