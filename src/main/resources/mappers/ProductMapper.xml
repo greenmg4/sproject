@@ -107,4 +107,11 @@
 	</select>
 	
 	
+	<update id="updateSuggestFlag">
+        UPDATE product
+        SET    suggest_yn = #{suggestYn}
+        WHERE  prod_no    = #{prodNo}
+    </update>
+	
+	
 </mapper>

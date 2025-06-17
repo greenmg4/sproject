@@ -25,6 +25,8 @@ public interface ProductMapper {
     void updateProduct(ProductDTO product);
     
     int deleteProduct(int prodNo);
+    
+    void updateSuggestFlag(@Param("prodNo") int prodNo, @Param("suggestYn") String suggestYn);
 
     
     // 상품 리스트 출력[박민혁]
