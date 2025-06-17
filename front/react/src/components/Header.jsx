@@ -292,11 +292,11 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                 <table style={{ width: '100%'}}>
                     <tbody>
                     <tr>
-                        <td style={{ width: '20%'}}>
+                        <td style={{ width: '20%', position:'relative'}}>
                             {/* 로고 영역 */}
                             <span className='header-logo'>
                                 <Link to="/">
-                                    <img style={{ width: '80px', height:'60px', float:'left', paddingLeft:'10px'}} src={"/" +"images/homeImages/main_logo.png"} alt="로고" />
+                                    <img style={{ width: '250px', height:'110px', float:'left', paddingTop:'7px'}} src={"/" +"images/homeImages/main_logo.png"} alt="로고" />
                                 </Link>
                             </span>
                         </td>
