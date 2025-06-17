@@ -54,10 +54,10 @@ const OrderList = () => {
         alert('수령 확인에 실패했습니다.');
       });
   };
-  const Ord_st1 = orders.filter(order => order.ord_st === "1");  // 결제 내역
-  const Ord_st2 = orders.filter(order => order.ord_st === "2");  // 수령 완료
-  const Ord_st3 = orders.filter(order => order.ord_st === "3");  // 주문 취소
-  const Ord_st4 = orders.filter(order => order.ord_st === "4");  // 반품
+  const Ord_st1 = orders.filter(order => order.ord_st === "1").slice(0, 3); // 결제 내역
+  const Ord_st2 = orders.filter(order => order.ord_st === "2").slice(0, 3); // 수령 완료
+  const Ord_st3 = orders.filter(order => order.ord_st === "3" || order.ord_st === "5").slice(0, 3); // 주문 취소 or 주문 취소 승인
+  const Ord_st4 = orders.filter(order => order.ord_st === "4" || order.ord_st === "6").slice(0, 3); // 반품 or 반품 승인
 
   return (
     <div className="admin-cust-list">
