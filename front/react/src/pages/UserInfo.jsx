@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
 
-      const API_BASE_URL =
+  const API_BASE_URL =
   process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);

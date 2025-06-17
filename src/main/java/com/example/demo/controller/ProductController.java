@@ -196,4 +196,15 @@ public class ProductController {
     }
     
     
+    
+    // 추천(Y/N) 토글
+    @PutMapping("/toggleSuggest")
+    public ResponseEntity<String> toggleSuggest(@RequestBody Map<String, String> body) {
+        int    prodNo    = Integer.parseInt(body.get("prodNo"));
+        String suggestYn = body.get("suggestYn");         // "Y" 또는 "N"
+        productService.updateSuggestFlag(prodNo, suggestYn);
+        return ResponseEntity.ok("추천 여부 변경 완료");
+    }
+    
+    
 }//class

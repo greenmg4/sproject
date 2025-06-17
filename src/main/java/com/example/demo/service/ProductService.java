@@ -15,6 +15,8 @@ public interface ProductService {
 	
     List<Map<String,Object>> getSuggestProductList(); // 추천상품조회
     
+    void updateSuggestFlag(int prodNo, String suggestYn);
+    
     // 회원 상품 리스트 출력[박민혁]
     List<ProductDTO> ProList(SearchCondDTO searchCond);
 	
