@@ -8,6 +8,24 @@ import "slick-carousel/slick/slick-theme.css";
 
 import React, { useEffect, useState } from "react";
 
+import { Icon } from "@mdi/react";
+import { mdiArrowLeftCircleOutline, mdiArrowRightCircleOutline } from '@mdi/js';
+
+const CustomPrevArrow = ({ onClick }) => (
+    <div className="statistics-slick-prev" onClick={onClick} style={{ left: "-40px", fontSize: "30px", cursor: "pointer", color:'rgb(76, 122, 103)' }}>
+        {/* <Icon path={mdiArrowLeftCircleOutline} size={2} color='rgb(69, 134, 126)' /> */}
+        ◀
+    </div>
+);
+
+const CustomNextArrow = ({ onClick }) => (
+    <div className="statistics-slick-next" onClick={onClick} style={{ right: "-40px", fontSize: "30px", cursor: "pointer", color:'rgb(76, 122, 103)' }}>
+        {/* <Icon path={mdiArrowRightCircleOutline} size={2} color='rgb(69, 134, 126)' /> */}
+        ▶
+    </div>
+);
+
+
 function MainDefault() {
     const navigate = useNavigate();
 
@@ -34,16 +52,19 @@ function MainDefault() {
     // 추천상품리스트 정보
     const [suggestResult, setSuggestResult] = useState([]);
 
-    const settings = {
-        dots: true,
-        infinite: suggestResult.length > 1,  // 요소가 하나면 무한 루프 비활성화
-        speed: 1200,
-        slidesToShow: suggestResult.length > 1 ? 2 : 1,  // 개수에 따라 동적 설정
-        slidesToScroll: 1,
-        autoplay: suggestResult.length > 1,  // 요소가 하나면 자동 슬라이드 비활성화
-        autoplaySpeed: 4000,    
-    };
-
+     const settings = {
+         dots: true,
+         infinite: suggestResult.length > 1,  // 요소가 하나면 무한 루프 비활성화
+         speed: 1200,
+         slidesToShow: suggestResult.length > 1 ? 2 : 1,  // 개수에 따라 동적 설정
+         slidesToScroll: 1,
+         autoplay: suggestResult.length > 1,  // 요소가 하나면 자동 슬라이드 비활성화
+         autoplaySpeed: 4000,
+         arrows: true,
+         prevArrow: <CustomPrevArrow />,
+         nextArrow: <CustomNextArrow />,
+     };
+    
     useEffect(() => {
         getSuggestProductList("/product/getSuggestProductList");
     }, []);
@@ -115,7 +136,7 @@ function MainDefault() {
                     <h3>{suggestResult[0].name}</h3>
                 </div>
             ) : (
-                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px"}}>
+                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px", overflow:'visible'}}>
                     <Slider {...settings}>
                         {suggestResult.map((product) => (
                             <div 

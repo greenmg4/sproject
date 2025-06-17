@@ -117,3 +117,10 @@
 }
   
 
+.statistics-slick-prev, .statistics-slick-next {
+    z-index: 1000;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
