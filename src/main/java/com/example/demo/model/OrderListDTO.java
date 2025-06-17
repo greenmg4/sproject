@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class OrderListDTO {
 	//[박민혁]
-	private String cust_id, product_summary, cust_nm, rcv_nm, ord_dtm;
+	private String cust_id, product_summary, cust_nm, rcv_nm, ord_dtm, ord_st;
 	private int ord_no, tot_amount;
 }

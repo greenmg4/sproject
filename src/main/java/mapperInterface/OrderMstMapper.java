@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.model.OrderDetailDTO;
 import com.example.demo.model.OrderMstDTO;
@@ -28,6 +30,18 @@ public interface OrderMstMapper {
 	        +" (#{item.ord_no}, #{item.prod_no}, #{item.buy_price}, #{item.cnt})"
 	       	+"</foreach> </script>"})
 	void insertOrderDetails(List<OrderDetailDTO> details);
+
+	// 상품 수령[박민혁]
+	@Update("UPDATE order_mst SET ord_st = #{ord_st} WHERE ord_no = #{ord_no}")
+	int ord_st2(@Param("ord_no") int ord_no, @Param("ord_st") int ord_st);
+
+	// 주문 취소[박민혁]
+	@Update("UPDATE order_mst SET ord_st = #{ord_st} WHERE ord_no = #{ord_no}")
+	int ord_st3(@Param("ord_no") int ord_no, @Param("ord_st") int ord_st);
+
+	// 반품[박민혁]
+	@Update("UPDATE order_mst SET ord_st = #{ord_st} WHERE ord_no = #{ord_no}")
+	int ord_st4(@Param("ord_no") int ord_no, @Param("ord_st") int ord_st);
 
 	
 
