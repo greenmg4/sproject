@@ -13,11 +13,11 @@ import mapperInterface.OrderListMapper;
 @RequiredArgsConstructor
 public class OrderListServiceImpl implements OrderListService{
 	
-	private final OrderListMapper olMapper;
+	private final OrderListMapper OLMapper;
 
 	@Override
 	public List<OrderListDTO> OrderList(String cust_id) {
-		return olMapper.OrderList(cust_id);
+		return OLMapper.OrderList(cust_id);
 	}
 	 
 	 

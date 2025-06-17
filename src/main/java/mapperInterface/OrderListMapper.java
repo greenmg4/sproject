@@ -17,7 +17,8 @@ public interface OrderListMapper {
 	@Select("SELECT o.ord_no, CONCAT(MIN(p.prod_nm), ' 등 ', COUNT(*), '개') AS product_summary,"
 			+" o.tot_amount, o.ord_dtm, c.cust_nm, o.rcv_nm FROM order_mst o"
 		    +" JOIN order_detail od ON o.ord_no = od.ord_no"
-			+" JOIN product p ON od.prod_no = p.prod_no JOIN custom c ON o.cust_id = c.cust_id"
+			+" JOIN product p ON od.prod_no = p.prod_no "
+			+" JOIN custom c ON o.cust_id = c.cust_id"
 			+" WHERE o.cust_id = #{cust_id} GROUP BY o.ord_no, o.tot_amount, o.ord_dtm, c.cust_nm, o.rcv_nm"
 			+" ORDER BY o.ord_dtm")
 	List<OrderListDTO> OrderList(String cust_id);
