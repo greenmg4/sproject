@@ -148,7 +148,7 @@ function MainDefault() {
                                     display: "flex", 
                                     justifyContent: "center", /* 가로 중앙 */
                                     alignItems: "center", /* 세로 중앙 */
-                                    height: "500px" /* 부모 요소 높이 지정 */
+                                    height: "500px" /* 부모 요소 높이 지정 500 */
                                 }}>
                                     <img 
                                         src={product.image} 
@@ -156,7 +156,7 @@ function MainDefault() {
                                         style={{ 
                                             //width: "100%", 
                                             //height: "auto", /* 비율 유지 */
-                                            height: "450px", /* 모든 이미지의 높이를 동일하게 설정 */
+                                            height: "450px", /* 모든 이미지의 높이를 동일하게 설정 450 */
                                             //objectFit: "contain" 
                                             objectFit: "cover" /* 이미지가 잘리지 않도록 조정 */
                                         }} 
