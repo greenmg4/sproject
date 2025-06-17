@@ -55,4 +55,36 @@ public class OrderMstController {
         ));
     }
     
+    // 상품 수령[박민혁]
+    @PutMapping("/{ord_no}/2")
+    public ResponseEntity<String> ord_st2(@PathVariable int ord_no) {
+        boolean success = OMService.ord_st2(ord_no);
+        if (success) {
+            return ResponseEntity.ok("수령 확인 완료");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수령 확인 실패");
+        }
+    }
+    // 주문 취소[박민혁]
+    @PutMapping("/{ord_no}/3")
+    public ResponseEntity<String> ord_st3(@PathVariable int ord_no) {
+        boolean success = OMService.ord_st3(ord_no);
+        if (success) {
+            return ResponseEntity.ok("수령 확인 완료");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수령 확인 실패");
+        }
+    }
+    
+    // 반품 [박민혁]
+    @PutMapping("/{ord_no}/4")
+    public ResponseEntity<String> ord_st4(@PathVariable int ord_no) {
+        boolean success = OMService.ord_st4(ord_no);
+        if (success) {
+            return ResponseEntity.ok("수령 확인 완료");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수령 확인 실패");
+        }
+    }
+    
 }

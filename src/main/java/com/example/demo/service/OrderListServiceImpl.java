@@ -15,10 +15,12 @@ public class OrderListServiceImpl implements OrderListService{
 	
 	private final OrderListMapper OLMapper;
 
+	// 결재내역 출력[박민혁]
 	@Override
 	public List<OrderListDTO> OrderList(String cust_id) {
 		return OLMapper.OrderList(cust_id);
 	}
+
 	 
 	 
 	 

@@ -1,26 +1,109 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../styles/AdminCustList.css';
 
 const OrderList = () => {
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/List') 
-      .then((res) => {
-        setOrders(res.data);
-      })
-      .catch((err) => {
-        console.error('결제 내역 불러오기 실패:', err);
-      });
+    fetchOrders();
   }, []);
 
+  const fetchOrders = () => {
+    axios.get(`${API_BASE_URL}/api/List`)
+      .then(res => setOrders(res.data))
+      .catch(err => console.error('결제 내역 불러오기 실패:', err));
+  };
+
+  // 수령 확인 버튼 클릭 이벤트
+  const handleConfirm = (ord_no) => {
+    axios.put(`${API_BASE_URL}/api/order/${ord_no}/2`)
+      .then(() => {
+        alert('수령이 확인되었습니다.');
+        fetchOrders(); // 상태 변경 후 목록 갱신
+      })
+      .catch(err => {
+        console.error('수령 확인 실패:', err);
+        alert('수령 확인에 실패했습니다.');
+      });
+  };
+
+  // 주문취소 클릭 이벤트
+  const handle3 = (ord_no) => {
+    axios.put(`${API_BASE_URL}/api/order/${ord_no}/3`)
+      .then(() => {
+        alert('주문 취소 요청되었습니다.');
+        fetchOrders(); // 상태 변경 후 목록 갱신
+      })
+      .catch(err => {
+        console.error('수령 확인 실패:', err);
+        alert('수령 확인에 실패했습니다.');
+      });
+  };
+
+  // 반품 클릭 이벤트
+  const handle4 = (ord_no) => {
+    axios.put(`${API_BASE_URL}/api/order/${ord_no}/4`)
+      .then(() => {
+        alert('반품 요청되었습니다.');
+        fetchOrders(); // 상태 변경 후 목록 갱신
+      })
+      .catch(err => {
+        console.error('수령 확인 실패:', err);
+        alert('수령 확인에 실패했습니다.');
+      });
+  };
+  const Ord_st1 = orders.filter(order => order.ord_st === "1");  // 결제 내역
+  const Ord_st2 = orders.filter(order => order.ord_st === "2");  // 수령 완료
+  const Ord_st3 = orders.filter(order => order.ord_st === "3");  // 주문 취소
+  const Ord_st4 = orders.filter(order => order.ord_st === "4");  // 반품
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>결제 내역</h2>
-      {orders.length === 0 ? (
+    <div className="admin-cust-list">
+      <h2>전체 결제 내역</h2>
+      {Ord_st1.length === 0 ? (
         <p>결제 내역이 없습니다.</p>
       ) : (
-        <table border="1" cellPadding="10" style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table border="1" cellPadding="6" style={{ borderCollapse:'collapse' }}>
+          <thead>
+            <tr>
+              <th>주문 번호</th>
+              <th>상품명</th>
+              <th>결제 금액</th>
+              <th>결제 일시</th>
+              <th>보낸이</th>
+              <th>수령인</th>
+              <th>수령 여부</th>
+              <th>주문 취소</th>
+              <th>반품</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Ord_st1.map(order => (
+              <tr key={order.ord_no}>
+                <td>{order.ord_no}</td>
+                <td>{order.product_summary}</td>
+                <td>{order.tot_amount.toLocaleString()}원</td>
+                <td>{formatDate(order.ord_dtm)}</td>
+                <td>{order.cust_nm}</td>
+                <td>{order.rcv_nm}</td>
+                <td>
+                  <button onClick={() => handleConfirm(order.ord_no)}>수령 확인</button>
+                </td>
+                <td><button onClick={() => handle3(order.ord_no)}>주문 취소</button></td>
+                <td><button onClick={() => handle4(order.ord_no)}>반품</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <hr />
+      <h2 style={{ marginTop: '40px' }}>수령 완료 상품 목록</h2>
+      {Ord_st2.length === 0 ? (
+        <p>수령 완료된 상품이 없습니다.</p>
+      ) : (
+        <table border="1" cellPadding="6" style={{ borderCollapse:'collapse' }}>
           <thead>
             <tr>
               <th>주문 번호</th>
@@ -32,7 +115,7 @@ const OrderList = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {Ord_st2.map(order => (
               <tr key={order.ord_no}>
                 <td>{order.ord_no}</td>
                 <td>{order.product_summary}</td>
@@ -45,7 +128,74 @@ const OrderList = () => {
           </tbody>
         </table>
       )}
+      <hr />
+      <h2 style={{ marginTop: '40px' }}>주문 취소 목록</h2>
+      {Ord_st3.length === 0 ? (
+        <p>주문 취소된 상품이 없습니다.</p>
+      ) : (
+        <table border="1" cellPadding="6" style={{ borderCollapse:'collapse' }}>
+          <thead>
+            <tr>
+              <th>주문 번호</th>
+              <th>상품명</th>
+              <th>결제 금액</th>
+              <th>결제 일시</th>
+              <th>보낸이</th>
+              <th>수령인</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Ord_st3.map(order => (
+              <tr key={order.ord_no}>
+                <td>{order.ord_no}</td>
+                <td>{order.product_summary}</td>
+                <td>{order.tot_amount.toLocaleString()}원</td>
+                <td>{formatDate(order.ord_dtm)}</td>
+                <td>{order.cust_nm}</td>
+                <td>{order.rcv_nm}</td>
+                <td>요청중</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <hr />
+
+      <h2 style={{ marginTop: '40px' }}>반품 요청 목록</h2>
+      {Ord_st4.length === 0 ? (
+        <p>반품 요청된 상품이 없습니다.</p>
+      ) : (
+        <table border="1" cellPadding="6" style={{ borderCollapse:'collapse' }}>
+          <thead>
+            <tr>
+              <th>주문 번호</th>
+              <th>상품명</th>
+              <th>결제 금액</th>
+              <th>결제 일시</th>
+              <th>보낸이</th>
+              <th>수령인</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Ord_st4.map(order => (
+              <tr key={order.ord_no}>
+                <td>{order.ord_no}</td>
+                <td>{order.product_summary}</td>
+                <td>{order.tot_amount.toLocaleString()}원</td>
+                <td>{formatDate(order.ord_dtm)}</td>
+                <td>{order.cust_nm}</td>
+                <td>{order.rcv_nm}</td>
+                <td>요청중</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
+    
   );
 };
 

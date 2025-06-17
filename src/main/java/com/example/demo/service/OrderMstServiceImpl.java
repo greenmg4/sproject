@@ -112,4 +112,27 @@ public class OrderMstServiceImpl implements OrderMstService {
 
         return ord_no;
     }
+
+    // 상품 수령[박민혁]
+	@Override
+	public boolean ord_st2(int ord_no) {
+		int update = OMMapper.ord_st2(ord_no, 2); // 2: 수령확인 상태
+        return update > 0;
+	}
+
+	// 주문 취소[박민혁]
+	@Override
+	public boolean ord_st3(int ord_no) {
+		int update = OMMapper.ord_st3(ord_no, 3); // 3: 주문 취소
+        return update > 0;
+	}
+
+	// 반품[박민혁]
+	@Override
+	public boolean ord_st4(int ord_no) {
+		int update = OMMapper.ord_st4(ord_no, 4); // 4: 반품
+        return update > 0;
+	}
+
+
 }
