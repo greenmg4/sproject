@@ -70,5 +70,12 @@
 	  WHERE cust_id = #{cust_id}
 	</update>
 	 
+	 <!-- 현재 비밀번호 가져오기 -->
+<select id="getPasswordById" parameterType="String" resultType="String">
+    SELECT password
+    FROM custom
+    WHERE cust_id = #{cust_id}
+</select>
+	 
 	
 </mapper>

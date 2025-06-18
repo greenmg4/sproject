@@ -80,20 +80,20 @@ public class CustServiceImpl implements CustService {
         System.out.println("- 입력된 사용자 ID: " + cust_id);
         System.out.println("- 사용자가 입력한 비밀번호: " + rawPassword);
         System.out.println("- DB에서 가져온 암호화된 비밀번호: " + encPwd);
-        System.out.println("🔍 encPwd.equals(rawPassword): " + encPwd.equals(rawPassword));
-        System.out.println("encPwd.length(): " + encPwd.length());
-        System.out.println("rawPassword.length(): " + rawPassword.length());
-
-
         
         if (encPwd == null) return false;
 
-        // ✅ 암호화 여부 판단
+        // 암호화 여부 판단
         if (encPwd.startsWith("$2a$") || encPwd.startsWith("$2b$") || encPwd.startsWith("$2y$")) {
             return passwordEncoder.matches(rawPassword, encPwd);
         } else {
             return encPwd.equals(rawPassword);
         }
+    }
+    
+    @Override
+    public String getPasswordById(String cust_id) {
+        return CustMapper.getPasswordById(cust_id); // mapper로 위임
     }
 
     @Override

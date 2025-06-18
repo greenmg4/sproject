@@ -14,7 +14,7 @@ function App() {
   process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginInfo, setLoginInfo] = useState(null);
+  const [loginInfo, setLoginInfo] = useState(undefined);
   const [isAdmin, setIsAdmin] = useState(false);
 
   // 세션 로그인 상태 확인

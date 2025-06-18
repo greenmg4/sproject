@@ -52,6 +52,8 @@ public interface CustMapper {
     // 1) 현재 비밀번호 확인
     @Select("SELECT password FROM custom WHERE cust_id = #{cust_id}")
     String getEncryptedPassword(@Param("cust_id") String cust_id);
+    
+    String getPasswordById(String cust_id);
 
     // 2) 새 비밀번호 암호화 후 저장
     @Update("UPDATE custom SET password = #{newEncPwd}, upd_dtm = NOW() WHERE cust_id = #{cust_id}")

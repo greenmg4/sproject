@@ -61,6 +61,12 @@ public class CustController {
         }
 
         if (matches) {
+        	
+        	session.setAttribute("loginID", cust_id);
+            session.setAttribute("grade", grade);
+            System.out.println("🧪 로그인 성공 - 세션 ID: " + session.getId());
+            System.out.println("🧪 세션 loginID 저장: " + session.getAttribute("loginID")); // 추가
+        	
             // Status 가 3 상태면 로그인 불가
             if (status == 3) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -115,11 +121,8 @@ public class CustController {
     
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false); // 기존 세션 가져옴
-		System.out.printf("로그아웃 되나");
-		
-		 if (session != null) {
-		        System.out.println("세션 존재: " + session.getId());  // 로그 추가
+        HttpSession session = request.getSession(false); // 기존 세션 가져옴		
+		 if (session != null) {		       
 		        session.invalidate(); // 세션 무효화
 		        System.out.println("세션 무효화 완료");
 		    } else {
@@ -224,35 +227,66 @@ public class CustController {
   
  // ➕ 1) 현재 비밀번호 확인
     @PostMapping("/password/check")
-    public ResponseEntity<?> checkPwd(@RequestBody Map<String, String> body, HttpSession session) {
+    public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> requestData, HttpSession session) {
+        String inputPw = requestData.get("password");
         String cust_id = (String) session.getAttribute("loginID");
+        
+        System.out.println("🧪 세션 로그인 ID 확인: " + cust_id); // 이 로그 확인
+        
         if (cust_id == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 상태 아님"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
         }
-        String current = body.get("currentPassword");
-        boolean ok = cservice.checkCurrentPassword(cust_id, current);
-        if (ok) return ResponseEntity.ok(Map.of("msg", "비밀번호 일치"));
-        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "비밀번호 불일치"));
+
+        String storedPw = cservice.getPasswordById(cust_id); // service에서 가져오도록 구현
+        if (storedPw == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 정보 없음");
+        }
+
+        boolean matches;
+        if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$") || storedPw.startsWith("$2y$")) {
+            matches = passwordEncoder.matches(inputPw, storedPw);
+        } else {
+            matches = inputPw.equals(storedPw);
+        }
+
+        if (matches) {
+            return ResponseEntity.ok(Map.of("result", true, "msg", "비밀번호 일치"));
+        } else {
+            return ResponseEntity.ok(Map.of("result", false, "msg", "비밀번호 불일치"));
+        }
     }
 
     // ➕ 2) 새 비밀번호 변경
+ // ➕ 2) 새 비밀번호 변경
     @PutMapping("/password/change")
     public ResponseEntity<?> changePwd(@RequestBody Map<String, String> body, HttpSession session) {
         String cust_id = (String) session.getAttribute("loginID");
         if (cust_id == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 상태 아님"));
         }
+
         String newPwd = body.get("newPassword");
-        // 백엔드에서 비밀번호 정책도 한 번 더 체크 (8자+영숫특)
+        System.out.println("입력된 새 비밀번호: " + newPwd);  // ✅ 디버깅용
+
+        // 백엔드에서 비밀번호 유효성 재검사 (8자 이상, 영문+숫자+특수문자 포함)
         if (newPwd.length() < 8
             || !newPwd.matches(".*[A-Za-z].*")
             || !newPwd.matches(".*\\d.*")
             || !newPwd.matches(".*[^A-Za-z0-9].*")) {
-            return ResponseEntity.badRequest().body(Map.of("msg", "비밀번호 정책 위반"));
+            return ResponseEntity.badRequest().body(Map.of("msg", "비밀번호는 8자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다."));
         }
-        cservice.changePassword(cust_id, newPwd);
-        return ResponseEntity.ok(Map.of("msg", "비밀번호 변경 완료"));
+
+        // 비밀번호 변경 (암호화는 서비스 내부에서 처리됨)
+        try {
+            cservice.changePassword(cust_id, newPwd);  // ⚠️ 여기서 암호화까지 해줌
+            return ResponseEntity.ok(Map.of("msg", "비밀번호가 성공적으로 변경되었습니다."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("msg", "비밀번호 변경 실패"));
+        }
     }
+
+
     
     
 } 

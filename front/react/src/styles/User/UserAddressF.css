@@ -80,3 +80,34 @@
   background-color: #6c757d;
   color: #fff;
 }
+
+.btn-edit{
+background-color: black;
+  color: white;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.btn-password {
+  background-color: white;
+  color: black;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 6px;
+}
+
+.btn-withdraw {
+  background-color: white;
+  color: gray;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid gray;
+  border-radius: 6px;
+}
