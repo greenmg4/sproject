@@ -43,4 +43,5 @@ public interface ProductMapper {
     void decreaseProdCnt(@Param("prod_no") int prod_no, @Param("cnt") int cnt);
     
     List<Map<String, Object>> getSuggestProductList(); // 추천상품리스트 조회.
+    List<Map<String, Object>> getRecentProductList(); // 최신상품리스트 조회.
 }

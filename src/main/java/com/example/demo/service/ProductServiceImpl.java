@@ -68,5 +68,10 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getSuggestProductList();
 	}
 	
+	//최신 상품 리스트 출력
+	@Override
+	public List<Map<String, Object>> getRecentProductList() {
+		return productMapper.getRecentProductList();
+	}
 	
 }

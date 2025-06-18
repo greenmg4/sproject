@@ -14,6 +14,7 @@ public interface ProductService {
     int deleteProduct(int prodNo);
 	
     List<Map<String,Object>> getSuggestProductList(); // 추천상품조회
+    List<Map<String,Object>> getRecentProductList(); // 최신상품조회
     
     void updateSuggestFlag(int prodNo, String suggestYn);
     
