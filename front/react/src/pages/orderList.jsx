@@ -154,7 +154,9 @@ const OrderList = () => {
                 <td>{formatDate(order.ord_dtm)}</td>
                 <td>{order.cust_nm}</td>
                 <td>{order.rcv_nm}</td>
-                <td>요청중</td>
+                <td>
+                  {order.ord_st == 3 ? '취소 진행중' : '취소 완료'}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -179,19 +181,21 @@ const OrderList = () => {
               <th>상태</th>
             </tr>
           </thead>
-          <tbody>
-            {Ord_st4.map(order => (
-              <tr key={order.ord_no}>
-                <td>{order.ord_no}</td>
-                <td>{order.product_summary}</td>
-                <td>{order.tot_amount.toLocaleString()}원</td>
-                <td>{formatDate(order.ord_dtm)}</td>
-                <td>{order.cust_nm}</td>
-                <td>{order.rcv_nm}</td>
-                <td>요청중</td>
-              </tr>
-            ))}
-          </tbody>
+            <tbody>
+              {Ord_st4.map(order => (
+                <tr key={order.ord_no}>
+                  <td>{order.ord_no}</td>
+                  <td>{order.product_summary}</td>
+                  <td>{order.tot_amount.toLocaleString()}원</td>
+                  <td>{formatDate(order.ord_dtm)}</td>
+                  <td>{order.cust_nm}</td>
+                  <td>{order.rcv_nm}</td>
+                  <td>
+                    {order.ord_st == 4 ? '반품 진행중' : '반품 완료'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
         </table>
       )}
     </div>
