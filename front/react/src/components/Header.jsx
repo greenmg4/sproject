@@ -112,8 +112,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
         navigate("product");
     };
 
-    const goToPL = () => {
-        navigate("productupload")
+    const goToRequest = () => {
+        navigate("request");
     }
 
     const callstatistics = (url) => {
@@ -139,6 +139,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
         alert("로그인이 필요합니다.");
         return;
     }
+
+
 
     // navigate 시 userInfo를 함께 넘김
     navigate("/userinfo", { state: { userInfo } });
@@ -274,7 +276,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                     <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span><span>|</span>
                     <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span><span>|</span>
                     <span onClick={goToCustList} className="header-menu-item">회원목록</span><span>|</span>
-                    <span onClick={goToPL} className="header-menu-item">상품업로드</span><span>|</span>
+                    <span onClick={goToRequest} className="header-menu-item">결제처리</span><span>|</span>
                     <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span><span>|</span>
                 </>
                 ) : (
@@ -360,28 +362,38 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
             {/*------------- 카테고리 메뉴 ---------------*/}
             <div>
                 <table style={{ width: '100%', tableLayout:'fixed'}}>
-                <tbody>
-                    
-                    <td style={{ width: '270px', minWidth:'270px', maxWidth:'270px', position:'relative'}} />
-                    
-                    <td>
-                        <div className='header-category-container' style={{overflow:'hidden'}}>
+                    <tbody>
+                        <tr>
+                        <td style={{ width:'270px', minWidth:'270px', maxWidth:'270px', position:'relative' }}></td>
+
+                        <td>
+                            <div className='header-category-container' style={{ overflow:'hidden' }}>
                             {categories.map((item) => (
-                                <span key={item.id} className='header-category-box' data-tooltip-id={item.id}
-                                    onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, prod_nm: "", author_nm: "" }) }}
+                                <span
+                                key={item.id}
+                                className='header-category-box'
+                                data-tooltip-id={item.id}
+                                onClick={() =>
+                                    goProList('/product/ProList', {
+                                    prod_no: '',
+                                    category: item.category,
+                                    prod_nm: '',
+                                    author_nm: '',
+                                    })
+                                }
                                 >
-                                    <span >
-                                        <Icon className='header-category-item' path={item.icon} size={1.4} />
-                                        <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
-                                    </span>
+                                <Icon className='header-category-item' path={item.icon} size={1.4} />
+                                <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: '13px' }} />
                                 </span>
                             ))}
-                        </div>
-                    </td>
-                    
-                    <td style={{ width: '270px', minWidth:'270px',  maxWidth:'270px', position:'relative'}} />
+                            </div>
+                        </td>
+
+                        <td style={{ width:'270px', minWidth:'270px', maxWidth:'270px', position:'relative' }}></td>
+                        </tr>
                     </tbody>
-                </table>              
+                </table>
+          
             </div>
 
 

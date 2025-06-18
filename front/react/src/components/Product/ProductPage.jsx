@@ -113,20 +113,28 @@ const toggleSuggest = (prod) => {
     <div className="product-page-container">
       <h2>📚 상품 목록</h2>
 
-      {/* 검색 바 */}
-      <div className="product-search-bar">
-        <select value={searchType} onChange={e => setSearchType(e.target.value)}>
-          <option value="all">통합검색</option>
-          <option value="author">저자 검색</option>
-        </select>
-        <input
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && searchProducts()}
-          placeholder="검색어를 입력하세요"
-        />
-        <button onClick={searchProducts}>검색</button>
-      </div>
+      {/* 검색 바 및 상품업로드 버튼 */}
+      <div className="product-search-bar-wrapper">
+          <div className="product-search-bar">
+            <select value={searchType} onChange={e => setSearchType(e.target.value)}>
+              <option value="all">통합검색</option>
+              <option value="author">저자 검색</option>
+            </select>
+            <input
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && searchProducts()}
+              placeholder="검색어를 입력하세요"
+            />
+            <button onClick={searchProducts}>검색</button>
+          </div>
+
+          <div className="upload-button-wrapper">
+            <button className="upload-product-btn" onClick={() => navigate('/productupload')}>상품업로드</button>
+          </div>
+        </div>
+
+
 
       {/* 상품 카드 그리드 */}
       <div className="product-grid">

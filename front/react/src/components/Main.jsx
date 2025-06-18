@@ -25,6 +25,7 @@ import OrderPayment from '../pages/OrderPayment';
 import UserChatRoomList from './ChatRoom/UserChatRoomList';
 import CustList from '../pages/Admin/AdminCustList';
 import OrderList from '../pages/orderList';
+import AdminOrderRequest from '../pages/Admin/AdminOrderRequest';
 
 
 function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
@@ -36,6 +37,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
           <Route path="/chat/:qna_no" element={<ChatRoom />} />
           <Route path="/userchatroomlist" element={<UserChatRoomList />} />
           <Route path="/product" element={<ProductPage />} />
+          <Route path="/request" element={<AdminOrderRequest />} />
           <Route path="/productupload" element={<ProductUpload />} />
             <Route path="/product/update/:prodNo" element={<ProductUpdate />} />
             <Route path='/' element={<MainDefault />} />

@@ -20,8 +20,16 @@ public class OrderListServiceImpl implements OrderListService{
 	public List<OrderListDTO> OrderList(String cust_id) {
 		return OLMapper.OrderList(cust_id);
 	}
+	
+	@Override
+    public List<OrderListDTO> adminOrderList() {   // ← 인터페이스와 동일
+        return OLMapper.adminOrderList();
+    }
 
-	 
+    @Override
+    public void updateOrderStatus(int ordNo, int status) {
+    	OLMapper.updateOrderStatus(ordNo, status);
+    }
 	 
 	 
 	 

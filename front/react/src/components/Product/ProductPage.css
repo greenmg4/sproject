@@ -177,3 +177,45 @@
 }
 
 
+.product-search-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.upload-product-btn {
+  padding: 0.6rem 1rem;
+  background-color: #3f5d45;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upload-product-btn:hover {
+  background-color: #2c4131;
+}
+
+
+.product-search-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.product-search-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.upload-button-wrapper {
+  position: absolute;
+  right: 0;
+}
+
+
