@@ -2,9 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,19 @@ public class OrderListController {
 	        }
 	        return OLService.OrderList(cust_id);
 	    }
+	
+	//어드민 결제 처리 내역 출력[김정민]
+	@GetMapping("/Admin/List")
+    public List<OrderListDTO> adminOrderList() {   // ← 서비스 메서드명 맞춤
+        return OLService.adminOrderList();
+    }
+
+    //결제 상태 업데이트[김정민]
+    @PutMapping("/order/{ordNo}/{status}")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable int ordNo,
+                                                  @PathVariable int status) {
+    	OLService.updateOrderStatus(ordNo, status);
+        return ResponseEntity.ok().build();
+    }
     
 }

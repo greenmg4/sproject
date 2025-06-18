@@ -26,7 +26,8 @@
     color: rgb(106, 184, 119);
     cursor: pointer;
 }
-/* ==================== icon menu ==================== */
+/* ==================== search menu ==================== */
+
 
 .header-search-container {
     height: 60px;
@@ -113,4 +114,12 @@
 }
 .header-category-container .header-category-box .header-category-item:focus {
     outline: none;
+}
+
+
+.header-logo {
+    position: absolute;
+    top: 10px; /* 원하는 위치 조정 */
+    left: 10px; /* 필요하면 조정 */
+    z-index: 10; /* 다른 요소 위에 표시 */
 }

@@ -62,11 +62,6 @@ public class CustController {
 
         if (matches) {
         	
-        	session.setAttribute("loginID", cust_id);
-            session.setAttribute("grade", grade);
-            System.out.println("🧪 로그인 성공 - 세션 ID: " + session.getId());
-            System.out.println("🧪 세션 loginID 저장: " + session.getAttribute("loginID")); // 추가
-        	
             // Status 가 3 상태면 로그인 불가
             if (status == 3) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -190,7 +185,7 @@ public class CustController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다");
         }
         return ResponseEntity.ok(cservice.searchMember(type, keyword));
-    }
+    } 
 
     // 탈퇴 
     @PostMapping("/withdraw")

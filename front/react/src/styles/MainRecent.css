@@ -1,0 +1,100 @@
+.recent-product-container {
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  width:100%;
+  
+}
+
+.recent-product-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.recent-product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto; /* 행의 크기는 자동 조정 */
+  gap: 20px;
+  padding-left : 20px;
+  padding-right : 20px;
+}
+
+
+.recent-product-card {
+  background: #fff;
+  border: 1px solid #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  width: 230px;
+  padding : 20px;
+  height: 300px;
+}
+
+.recent-product-card:hover {
+  /* transform: scale(1.03);*/
+   /* border: 1px solid #b6c1d1;*/
+   background-color: rgb(224, 237, 250);
+}
+
+.recent-product-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.recent-product-info {
+  padding: 15px;
+}
+
+.recent-product-name {
+  font-size: 18px;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.recent-product-price {
+  color: #d32f2f;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.recent-product-meta,
+.recent-product-category {
+  font-size: 13px;
+  color: #555;
+}
+
+.recent-loading {
+  font-weight: bold;
+  font-size: 30px;
+  height: 600px;
+  text-align: center;
+  line-height: 600px;
+}
+
+.recent-subject-font {
+  font-family: 'Times New Roman';
+  text-align: left;
+  font-size: 28px;
+  font-weight: 700;
+  color: rgb(124, 134, 31);
+  padding-left:200px;
+  padding-top: 5px;
+}
+
+.recent-gradient-box {
+  width: 100%;
+  background: linear-gradient(to right,
+    rgba(0, 0, 255, 0) 0%, 
+    rgba(140, 197, 152, 0.3) 25%, 
+    rgb(207, 228, 179) 50%, 
+    rgba(140, 197, 152, 0.3) 75%, 
+    rgba(0, 0, 255, 0) 100%);
+}
+

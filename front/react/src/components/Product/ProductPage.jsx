@@ -21,7 +21,6 @@ export default function ProductPage() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                              // 통과 시 데이터 로드
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace: true });
       });
 
@@ -73,6 +72,28 @@ export default function ProductPage() {
       });
   };
 
+  /* ---------- 추천 도서 토글 ---------- */
+const toggleSuggest = (prod) => {
+  const newFlag = prod.suggest_yn === 'Y' ? 'N' : 'Y';
+
+  axios.put(`${API_BASE_URL}/api/product/toggleSuggest`,
+            { prodNo: prod.prod_no, suggestYn: newFlag },
+            { withCredentials: true })
+       .then(() =>
+         // optimistic UI : 화면만 먼저 바꿔줌
+         setProducts(prev =>
+           prev.map(p =>
+             p.prod_no === prod.prod_no ? { ...p, suggest_yn: newFlag } : p
+           )
+         )
+       )
+       .catch(err => {
+         alert('추천여부 변경 실패');
+         console.error(err);
+       });
+};
+
+
   /* ---------- 기타 유틸 ---------- */
   const getImageByProdNo = prod_no => {
     const img = productImages.find(i => i.prod_no === prod_no);
@@ -91,20 +112,28 @@ export default function ProductPage() {
     <div className="product-page-container">
       <h2>📚 상품 목록</h2>
 
-      {/* 검색 바 */}
-      <div className="product-search-bar">
-        <select value={searchType} onChange={e => setSearchType(e.target.value)}>
-          <option value="all">통합검색</option>
-          <option value="author">저자 검색</option>
-        </select>
-        <input
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && searchProducts()}
-          placeholder="검색어를 입력하세요"
-        />
-        <button onClick={searchProducts}>검색</button>
-      </div>
+      {/* 검색 바 및 상품업로드 버튼 */}
+      <div className="product-search-bar-wrapper">
+          <div className="product-search-bar">
+            <select value={searchType} onChange={e => setSearchType(e.target.value)}>
+              <option value="all">통합검색</option>
+              <option value="author">저자 검색</option>
+            </select>
+            <input
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && searchProducts()}
+              placeholder="검색어를 입력하세요"
+            />
+            <button onClick={searchProducts}>검색</button>
+          </div>
+
+          <div className="upload-button-wrapper">
+            <button className="upload-product-btn" onClick={() => navigate('/productupload')}>상품업로드</button>
+          </div>
+        </div>
+
+
 
       {/* 상품 카드 그리드 */}
       <div className="product-grid">
@@ -129,8 +158,19 @@ export default function ProductPage() {
 
             <div className="product-actions">
               <button onClick={() => goToUpdateProductPage(p.prod_no)}>상품 수정</button>
-              <button onClick={() => productDelete(p.prod_no)}>상품 삭제</button>
+              <button onClick={() => productDelete(p.prod_no)}>상품 삭제</button>              
             </div>
+            <label className="toggle-wrapper">
+              <input
+                type="checkbox"
+                checked={p.suggest_yn === 'Y'}
+                onChange={() => toggleSuggest(p)}
+              />
+              <span className="toggle-label">
+                {p.suggest_yn === 'Y' ? '추천 도서' : '일반 도서'}
+              </span>
+              <span className="slider" />
+          </label>
           </div>
         ))}
       </div>

@@ -42,6 +42,12 @@ public class ProductServiceImpl implements ProductService {
     public int deleteProduct(int prodNo) {
     	return productMapper.deleteProduct(prodNo);
     }
+    
+    @Override
+    public void updateSuggestFlag(int prodNo, String suggestYn) {
+        productMapper.updateSuggestFlag(prodNo, suggestYn);
+    }
+
 
     
     // 상품 리스트 출력[박민혁]
@@ -62,5 +68,10 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getSuggestProductList();
 	}
 	
+	//최신 상품 리스트 출력
+	@Override
+	public List<Map<String, Object>> getRecentProductList() {
+		return productMapper.getRecentProductList();
+	}
 	
 }

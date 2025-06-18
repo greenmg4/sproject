@@ -40,7 +40,7 @@ function PasswordChange() {
       <div className="form-group">
       <input
         type="password"
-        placeholder="새 비밀번호 입력"
+        placeholder="새 비밀번호 입력_8자 이상 (영문/숫자/특수문자 포함)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -48,13 +48,15 @@ function PasswordChange() {
       <div className="form-group">
       <input
         type="password"
-        placeholder="새 비밀번호 확인"
+        placeholder="새 비밀번호 확인_8자 이상 (영문/숫자/특수문자 포함)"
         value={passwordConfirm}
         onChange={(e) => setPasswordConfirm(e.target.value)}
       />
       <br/>
       </div>
-      <button onClick={handleSubmit} className="btn-edit">비밀번호 수정하기</button>
+      <button onClick={handleSubmit} className="btn-edit"
+      style={{cursor:'pointer'}}
+      >비밀번호 수정하기</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );

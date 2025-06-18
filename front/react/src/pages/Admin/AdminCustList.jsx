@@ -37,7 +37,6 @@ export default function AdminCustList() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials:true })
       .then(() => fetchAll())
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace:true });
       });
   }, [navigate]);
@@ -121,7 +120,7 @@ export default function AdminCustList() {
             <th>ID</th><th>이름</th><th>전화</th><th>이메일</th>
             <th>주소</th><th>상세주소</th><th>우편</th>
             <th>성별</th><th>생일</th>
-            <th>상태</th><th>등급</th><th>액션</th>
+            <th>상태</th><th>등급</th><th>회원정지</th>
           </tr>
         </thead>
         <tbody>

@@ -112,8 +112,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
         navigate("product");
     };
 
-    const goToPL = () => {
-        navigate("productupload")
+    const goToRequest = () => {
+        navigate("request");
     }
 
     const callstatistics = (url) => {
@@ -139,6 +139,8 @@ function Header({ cust_nm, token, isLoggedIn, onLogout, userInfo: propUserInfo }
         alert("로그인이 필요합니다.");
         return;
     }
+
+
 
     // navigate 시 userInfo를 함께 넘김
     navigate("/userinfo", { state: { userInfo } });
@@ -241,7 +243,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
         <div>
 
             {/*------------- 최상단 메뉴 ---------------*/}
-            <div className="header-menu" >
+            <div className="header-menu" style={{overflow:'hidden'}} >
                 <Link to="/">
                     <Icon className='header-menu-item' path={mdiHome} size={1.4} data-tooltip-id="tooltip-home" />
                     <Tooltip id='tooltip-home' content="홈으로" delayShow={10} style={{ fontSize: "13px" }} />
@@ -274,7 +276,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                     <span onClick={goToChat} className="header-menu-item">채팅상담(관리자전용)</span><span>|</span>
                     <span onClick={goToProductPage} className="header-menu-item">상품목록(관리자전용)</span><span>|</span>
                     <span onClick={goToCustList} className="header-menu-item">회원목록</span><span>|</span>
-                    <span onClick={goToPL} className="header-menu-item">상품업로드</span><span>|</span>
+                    <span onClick={goToRequest} className="header-menu-item">결제처리</span><span>|</span>
                     <span onClick={() => callstatistics("/statistics/data")} className="header-menu-item">통계</span><span>|</span>
                 </>
                 ) : (
@@ -288,25 +290,28 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
 
             {/*------------- 조회 영역 ---------------*/}
             {/* <div className="headerTop"> */}
-            <div>          
-                <table style={{ width: '100%'}}>
+            <div>
+                <table style={{ width: '100%', tableLayout:'fixed'}}>
                     <tbody>
                     <tr>
-                        <td style={{ width: '20%'}}>
+                        {/* <td style={{ width: '20%', position:'relative'}}> */}
+                        <td style={{ width: '270px', minWidth:'270px', maxWidth:'270px', position:'relative'}}>
                             {/* 로고 영역 */}
                             <span className='header-logo'>
                                 <Link to="/">
-                                    <img style={{ width: '80px', height:'60px', float:'left', paddingLeft:'10px'}} src={"/" +"images/homeImages/main_logo.png"} alt="로고" />
+                                    <img style={{ width: '250px', height:'110px', float:'left', paddingTop:'7px'}} src={"/" +"images/homeImages/main_logo.png"} alt="로고" />
                                 </Link>
                             </span>
                         </td>
-                        <td style={{ width: '60%'}}>
-                            <div className='header-search-container'>
-                            <span className='header-search-box'>
+                        {/* <td className='header-search-resize' style={{ width: '60%'}}> */}
+                        <td style={{ width:'100%', minwidth:'1000px', maxWidth:'1000px', overflow:'hidden'}}>
+                            <div className='header-search-container' >
+                            <span className='header-search-box' >
                                 <select 
                                     className='header-search-item' id="search-category" name="search-category"
                                     value={searchType}
                                     onChange={(e) => setSearchType(e.target.value)}
+                                    style={{width:'20%'}}
                                 >
                                     <option value="A">통합 검색</option>
                                     <option value="author">저자 검색</option>
@@ -314,6 +319,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
 
                                 <input 
                                     style={{ width: "240px", height:"24px", border:"none", outline:"none" }} 
+                                    // style={{ width: "60%", height:"24px", border:"none", outline:"none" }} 
                                     type="text" 
                                     placeholder="검색어를 입력하세요" 
                                     value={searchInput}
@@ -323,6 +329,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
 
                                 <span 
                                     className='header-search-button'
+                                    style={{width:'10%'}}
                                     onClick={handleSearch}
                                 >
                                     <Icon className='header-search-item' path={mdiMagnify} size={1.4}  />
@@ -330,10 +337,11 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                             </span>
                             </div>
                         </td>
-
-                        <td style={{ width: '20%'}}> 
+                    
+                        {/* <td style={{ width: '20%'}}>  */}
+                        <td style={{ width: '270px', minWidth:'270px', maxWidth:'270px'}}> 
                             <div className='header-search-container'>
-                            <span className='header-search-login-info'>
+                            <span>
                                 {/* 로그인/로그아웃 조건부 표시 */}
                                 {isLoggedIn ? (
                                     <> <span style={{ color: 'green' }}><strong>{cust_nm}</strong> 님 환영합니다!</span> </>
@@ -352,17 +360,40 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
 			
 
             {/*------------- 카테고리 메뉴 ---------------*/}
-            <div className='header-category-container'>
-                {categories.map((item) => (
-                    <span key={item.id} className='header-category-box' data-tooltip-id={item.id}
-                          onClick={() => { goProList("/product/ProList", { prod_no:"" , category: item.category, prod_nm: "", author_nm: "" }) }}
-                    >
-                        <span >
-                            <Icon className='header-category-item' path={item.icon} size={1.4} />
-                            <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: "13px" }} />
-                        </span>
-                    </span>
-                ))}
+            <div>
+                <table style={{ width: '100%', tableLayout:'fixed'}}>
+                    <tbody>
+                        <tr>
+                        <td style={{ width:'270px', minWidth:'270px', maxWidth:'270px', position:'relative' }}></td>
+
+                        <td>
+                            <div className='header-category-container' style={{ overflow:'hidden' }}>
+                            {categories.map((item) => (
+                                <span
+                                key={item.id}
+                                className='header-category-box'
+                                data-tooltip-id={item.id}
+                                onClick={() =>
+                                    goProList('/product/ProList', {
+                                    prod_no: '',
+                                    category: item.category,
+                                    prod_nm: '',
+                                    author_nm: '',
+                                    })
+                                }
+                                >
+                                <Icon className='header-category-item' path={item.icon} size={1.4} />
+                                <Tooltip id={item.id} content={item.tooltip} top='-40%' style={{ fontSize: '13px', overflow:'visible', zIndex:'10000', position:'fixed'}} />
+                                </span>
+                            ))}
+                            </div>
+                        </td>
+
+                        <td style={{ width:'270px', minWidth:'270px', maxWidth:'270px', position:'relative' }}></td>
+                        </tr>
+                    </tbody>
+                </table>
+          
             </div>
 
 

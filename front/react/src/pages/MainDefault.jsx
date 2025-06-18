@@ -8,6 +8,26 @@ import "slick-carousel/slick/slick-theme.css";
 
 import React, { useEffect, useState } from "react";
 
+import MainRecent from "./MainRecent"
+
+import { Icon } from "@mdi/react";
+import { mdiArrowLeftCircleOutline, mdiArrowRightCircleOutline } from '@mdi/js';
+
+const CustomPrevArrow = ({ onClick }) => (
+    <div className="statistics-slick-prev" onClick={onClick} style={{ left: "-40px", fontSize: "30px", cursor: "pointer", color:'rgb(76, 122, 103)' }}>
+        {/* <Icon path={mdiArrowLeftCircleOutline} size={2} color='rgb(69, 134, 126)' /> */}
+        ◀
+    </div>
+);
+
+const CustomNextArrow = ({ onClick }) => (
+    <div className="statistics-slick-next" onClick={onClick} style={{ right: "-40px", fontSize: "30px", cursor: "pointer", color:'rgb(76, 122, 103)' }}>
+        {/* <Icon path={mdiArrowRightCircleOutline} size={2} color='rgb(69, 134, 126)' /> */}
+        ▶
+    </div>
+);
+
+
 function MainDefault() {
     const navigate = useNavigate();
 
@@ -34,16 +54,19 @@ function MainDefault() {
     // 추천상품리스트 정보
     const [suggestResult, setSuggestResult] = useState([]);
 
-    const settings = {
-        dots: true,
-        infinite: suggestResult.length > 1,  // 요소가 하나면 무한 루프 비활성화
-        speed: 1200,
-        slidesToShow: suggestResult.length > 1 ? 2 : 1,  // 개수에 따라 동적 설정
-        slidesToScroll: 1,
-        autoplay: suggestResult.length > 1,  // 요소가 하나면 자동 슬라이드 비활성화
-        autoplaySpeed: 4000,    
-    };
-
+     const settings = {
+         dots: true,
+         infinite: suggestResult.length > 1,  // 요소가 하나면 무한 루프 비활성화
+         speed: 1200,
+         slidesToShow: suggestResult.length > 1 ? 2 : 1,  // 개수에 따라 동적 설정
+         slidesToScroll: 1,
+         autoplay: suggestResult.length > 1,  // 요소가 하나면 자동 슬라이드 비활성화
+         autoplaySpeed: 4000,
+         arrows: true,
+         prevArrow: <CustomPrevArrow />,
+         nextArrow: <CustomNextArrow />,
+     };
+    
     useEffect(() => {
         getSuggestProductList("/product/getSuggestProductList");
     }, []);
@@ -95,61 +118,73 @@ function MainDefault() {
     };
 
     return (
-        <div className='body_container'>
+        <div>
             <hr></hr>
             {/* <h3>~~ Main 영역 ~~</h3> */}
+
             <div id="contents">
 
-            {suggestResult.length === 0 ? (
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "630px" }}>
-                    <img alt="MainImage" src="images/homeImages/library01.png" width={1200} height={600} />
-                </div>
+                {suggestResult.length === 0 ? (
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "630px" }}>
+                        <img alt="MainImage" src="images/homeImages/library01.png" width={1200} height={600} />
+                    </div>
 
-            ) : suggestResult.length === 1 ? (
-                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px" }}>
-                    <img src={suggestResult[0].image} 
-                         alt={suggestResult[0].name} 
-                        style={{ height: "500px", objectFit: "cover" }}
-                        onDoubleClick={() => handleDoublClick(suggestResult[0])}
-                    />
-                    <h3>{suggestResult[0].name}</h3>
-                </div>
-            ) : (
-                <div style={{ width: "80%", margin: "0 auto", paddingTop: "20px"}}>
-                    <Slider {...settings}>
-                        {suggestResult.map((product) => (
-                            <div 
-                                key={product.prod_no} 
-                                onDoubleClick={() => handleDoublClick(product)} 
-                                style={{ cursor: "pointer" }}
-                            >
-                                <div style={{ 
-                                    display: "flex", 
-                                    justifyContent: "center", /* 가로 중앙 */
-                                    alignItems: "center", /* 세로 중앙 */
-                                    height: "500px" /* 부모 요소 높이 지정 */
-                                }}>
-                                    <img 
-                                        src={product.image} 
-                                        alt={product.name} 
-                                        style={{ 
-                                            //width: "100%", 
-                                            //height: "auto", /* 비율 유지 */
-                                            height: "450px", /* 모든 이미지의 높이를 동일하게 설정 */
-                                            //objectFit: "contain" 
-                                            objectFit: "cover" /* 이미지가 잘리지 않도록 조정 */
-                                        }} 
-                                    />
+                ) : suggestResult.length === 1 ? (
+                    <div style={{ width: "80%", margin: "0 auto"}}>
+                        <img src={suggestResult[0].image} 
+                            alt={suggestResult[0].name} 
+                            style={{ height: "500px", objectFit: "cover" }}
+                            onDoubleClick={() => handleDoublClick(suggestResult[0])}
+                        />
+                        <h3>{suggestResult[0].name}</h3>
+                    </div>
+                ) : (
+                    <div style={{ width: "70%", margin: "0 auto", paddingTop: "20px", overflow:'visible'}}>
+                        <Slider {...settings}>
+                            {suggestResult.map((product) => (
+                                <div 
+                                    key={product.prod_no} 
+                                    onDoubleClick={() => handleDoublClick(product)} 
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    <div style={{ 
+                                        display: "flex", 
+                                        justifyContent: "center", /* 가로 중앙 */
+                                        alignItems: "center", /* 세로 중앙 */
+                                        height: "400px" /* 부모 요소 높이 지정 */
+                                    }}>
+                                        <img 
+                                            src={product.image} 
+                                            alt={product.name} 
+                                            style={{ 
+                                                //width: "100%", 
+                                                //height: "auto", /* 비율 유지 */
+                                                height: "390px", /* 모든 이미지의 높이를 동일하게 설정 */
+                                                //objectFit: "contain" 
+                                                objectFit: "cover" /* 이미지가 잘리지 않도록 조정 */
+                                            }} 
+                                        />
+                                    </div>
+                                    <h3>{product.name}</h3>
                                 </div>
-                                <h3>{product.name}</h3>
-                            </div>
 
-                        ))}
-                    </Slider>
-                </div>
-            )}
-
+                            ))}
+                        </Slider>
+                    </div>
+                )}
             </div>
+
+            <div>
+                <img alt="BannerImage" 
+                        src="images/recommendation/banner001.png"  
+                        style={{marginTop:'50px', width:'100%' }}
+                />
+            </div>
+
+            <div style={{ marginBottom:'40px' }}>
+                <MainRecent />
+            </div>
+
         </div>
     );  
 }

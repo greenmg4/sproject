@@ -34,6 +34,7 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
 
   // 사용자 로그인 여부 확인 및 정보 가져오기
   useEffect(() => {
+    if (loginInfo === undefined) return;
     if (!loginInfo || !loginInfo.cust_id) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -186,6 +187,7 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
           <button
             type="submit"
             className="btn-edit"
+            style={{cursor:'pointer'}}
           >
            내정보 수정하기
           </button>
@@ -194,6 +196,7 @@ const UserEdit = ({ loginInfo, isLoggedIn }) => {
             type="button"
              onClick={goToPassword}
             className="btn-password"
+            style={{cursor:'pointer'}}
           >
             비밀번호 수정하기
           </button>

@@ -25,6 +25,8 @@ public interface ProductMapper {
     void updateProduct(ProductDTO product);
     
     int deleteProduct(int prodNo);
+    
+    void updateSuggestFlag(@Param("prodNo") int prodNo, @Param("suggestYn") String suggestYn);
 
     
     // 상품 리스트 출력[박민혁]
@@ -41,4 +43,5 @@ public interface ProductMapper {
     void decreaseProdCnt(@Param("prod_no") int prod_no, @Param("cnt") int cnt);
     
     List<Map<String, Object>> getSuggestProductList(); // 추천상품리스트 조회.
+    List<Map<String, Object>> getRecentProductList(); // 최신상품리스트 조회.
 }

@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function OrderPayment() {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:8080';
+  
   const {
     product,
     cust_id,
@@ -129,7 +131,7 @@ export default function OrderPayment() {
       async (rsp) => {
         if (rsp.success) {
           try {
-            const response = await fetch("/api/order/save", {
+            const response = await fetch(`${API_BASE_URL}/api/order/save`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -187,7 +189,7 @@ export default function OrderPayment() {
 
     const fetchDefaultAddress = async () => {
       try {
-        const res = await fetch(`/api/address/default/${cust_id}`);
+        const res = await fetch(`${API_BASE_URL}/api/address/default/${cust_id}`);
         if (!res.ok) throw new Error("기본 배송지를 불러올 수 없습니다.");
         const data = await res.json();
 
@@ -210,7 +212,7 @@ export default function OrderPayment() {
 
   const fetchDiscountInfo = async () => {
     try {
-      const res = await fetch(`/api/order/discount/${cust_id}`);
+      const res = await fetch(`${API_BASE_URL}/api/order/discount/${cust_id}`);
       if (!res.ok) throw new Error("할인 정보를 불러올 수 없습니다.");
       const data = await res.json();
       setDiscRate(data.disc_rate);
