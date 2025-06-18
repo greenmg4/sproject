@@ -60,11 +60,12 @@ export default function MainRecent() {
     };
 
     return (
-        
-
+        <div>
+        <h2 className="recent-gradient-box">최 신 도 서</h2>
         <div className="recent-product-container">
-            <h2 className="">최 신 도 서</h2>
-            <div style={{textAlign:'center'}} >
+            
+
+
                 <div className="recent-product-grid"  >
                     {recentResult.map((item, i) => (
                         <div className="recent-product-card"
@@ -86,8 +87,9 @@ export default function MainRecent() {
                         </div>
                     ))}
                 </div>
-            </div>
+            
+
         </div>
-        
+        </div>
     );
 }

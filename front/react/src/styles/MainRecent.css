@@ -1,7 +1,9 @@
 .recent-product-container {
-  padding: 30px;
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  width:100%;
   
-  margin: auto;
 }
 
 .recent-product-title {
@@ -12,12 +14,11 @@
 
 .recent-product-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5개씩 표시 */
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto; /* 행의 크기는 자동 조정 */
   gap: 20px;
   padding-left : 20px;
   padding-right : 20px;
-  width: 1200px;
 }
 
 
@@ -29,8 +30,9 @@
   transition: transform 0.2s ease;
   text-decoration: none;
   color: inherit;
-  width: 250px;
+  width: 230px;
   padding : 20px;
+  height: 300px;
 }
 
 .recent-product-card:hover {
@@ -84,4 +86,10 @@
   color: rgb(124, 134, 31);
   padding-left:200px;
   padding-top: 5px;
+}
+
+.recent-gradient-box {
+  width: 300px;
+  height: 150px;
+  background: linear-gradient(to right, rgba(0, 0, 255, 1) 50%, rgba(0, 0, 255, 0) 100%);
 }
