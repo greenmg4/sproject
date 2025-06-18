@@ -383,7 +383,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
                                 }
                                 >
                                 <Icon className='header-category-item' path={item.icon} size={1.4} />
-                                <Tooltip id={item.id} content={item.tooltip} delayShow={10} style={{ fontSize: '13px' }} />
+                                <Tooltip id={item.id} content={item.tooltip} top='-40%' style={{ fontSize: '13px', overflow:'visible', zIndex:'10000', position:'fixed'}} />
                                 </span>
                             ))}
                             </div>

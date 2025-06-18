@@ -195,6 +195,19 @@ public class ProductController {
 		}
     }
     
+    // 최신상품 조회
+    @GetMapping("/getRecentProductList")
+    public ResponseEntity<?> getRecentProductList() {
+    	
+ 		List<Map<String,Object>> list = productService.getRecentProductList();
+    	if ( list !=null && list.size() >= 0 ) {  // 추천상품이 없을 수도 있으므로 0도 포함.	
+			return ResponseEntity.ok().body(list);
+		} else {
+			return ResponseEntity
+				  .status(HttpStatus.BAD_GATEWAY) 
+				  .body("getRecentProductList Error");
+		}
+    }
     
     
     // 추천(Y/N) 토글

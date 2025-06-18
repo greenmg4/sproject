@@ -106,6 +106,31 @@
 		   AND status = '1'
 	</select>
 	
+	<!-- 최신 상품 조회 -->
+	<select id="getRecentProductList" resultType="map">
+		SELECT p.prod_no
+		     , p.category
+		     , (select b.detail_nm from comm_cd a, comm_cd_detail b where a.cd_id = '104' and a.cd_id = b.cd_id and b.detail_cd = p.category LIMIT 1 ) as category_nm
+		     , p.prod_nm
+		     , prod_price
+		     , prod_cnt
+		     , publisher
+		     , book_desc
+		     , suggest_yn
+		     , img_path
+		     , CASE WHEN img_path IS NULL OR img_path = '' THEN ''
+		            ELSE SUBSTRING_INDEX(img_path, '/', -1)
+		        END AS img_file_nm
+		     , author_nm
+		     , reg_dtm
+		  FROM PRODUCT p
+		     , PRODUCT_IMG i 
+		 WHERE 1=1
+		   AND p.prod_no = i.prod_no
+		   AND status = '1'
+         order by REG_DTM desc
+         limit 5
+	</select>
 	
 	<update id="updateSuggestFlag">
         UPDATE product
