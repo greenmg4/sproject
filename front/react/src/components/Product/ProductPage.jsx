@@ -21,7 +21,6 @@ export default function ProductPage() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                              // 통과 시 데이터 로드
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace: true });
       });
 

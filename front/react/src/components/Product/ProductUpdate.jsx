@@ -21,7 +21,6 @@ export default function ProductUpdate() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                             // 통과 → 상품 조회
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace: true });
       });
 

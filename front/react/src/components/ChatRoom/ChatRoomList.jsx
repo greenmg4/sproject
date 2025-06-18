@@ -19,7 +19,6 @@ function ChatRoomList() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials: true })
       .then(() => init())                               // 통과 → 초기화
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace: true });
       });
 

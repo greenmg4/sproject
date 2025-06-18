@@ -1,30 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // 추가
 import '../../styles/AdminCustList.css';
 
 const AdminCancelRefund = () => {
   const API = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+  const navigate = useNavigate(); // 추가
 
   const [cancelReq, setCancelReq] = useState([]);
   const [refundReq, setRefundReq] = useState([]);
 
-  /* ───── 목록 가져오기 ───── */
-  useEffect(() => { fetchData(); }, []);
+  /* ───── 최초 마운트 시: 관리자 체크 + 데이터 불러오기 ───── */
+  useEffect(() => {
+    axios.get(`${API}/api/cust/admincheck`, { withCredentials: true })
+         .then(() => fetchData())  // 인증 성공 시 fetchData 실행
+         .catch(() => {
+           navigate('/', { replace: true }); // 인증 실패 시 홈으로 리다이렉트
+         });
+  }, [navigate]);
 
+  /* ───── 목록 가져오기 ───── */
   const fetchData = () => {
     axios.get(`${API}/api/Admin/List`)
          .then(res => {
-           setCancelReq(res.data.filter(o => o.ord_st == 3)); // 3  또는 "3"
-           setRefundReq(res.data.filter(o => o.ord_st == 4)); // 4  또는 "4"
+           setCancelReq(res.data.filter(o => o.ord_st == 3));
+           setRefundReq(res.data.filter(o => o.ord_st == 4));
          })
          .catch(console.error);
   };
 
   /* ───── 승인 처리 ───── */
   const approve = (order) => {
-    const nextStatus = order.ord_st == 3 ? 5 : 6;   // 3→5 , 4→6
+    const nextStatus = order.ord_st == 3 ? 5 : 6;
 
-    // UI 먼저 갱신 (optimistic update)
     if (order.ord_st == 3) {
       setCancelReq(prev => prev.filter(o => o.ord_no !== order.ord_no));
     } else {
@@ -36,9 +44,8 @@ const AdminCancelRefund = () => {
          .catch(err => {
            alert('승인이 실패했습니다. 다시 시도해 주세요.');
            console.error(err);
-           // 실패 시 원상 복구
            if (order.ord_st == 3) setCancelReq(prev => [...prev, order]);
-           else                    setRefundReq(prev => [...prev, order]);
+           else                   setRefundReq(prev => [...prev, order]);
          });
   };
 

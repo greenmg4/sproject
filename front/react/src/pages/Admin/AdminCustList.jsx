@@ -37,7 +37,6 @@ export default function AdminCustList() {
       .get(`${API_BASE_URL}/api/cust/admincheck`, { withCredentials:true })
       .then(() => fetchAll())
       .catch(() => {
-        alert('관리자 권한 없음');
         navigate('/', { replace:true });
       });
   }, [navigate]);
