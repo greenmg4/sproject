@@ -181,7 +181,7 @@ function MainDefault() {
                 />
             </div>
 
-            <div>
+            <div style={{ marginBottom:'40px' }}>
                 <MainRecent />
             </div>
 
