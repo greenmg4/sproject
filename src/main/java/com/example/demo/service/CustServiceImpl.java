@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.CustDTO;
@@ -13,6 +14,9 @@ import mapperInterface.CustMapper;
 public class CustServiceImpl implements CustService {
 	@Autowired
 	private CustMapper CustMapper;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Override
 	public String login(CustDTO cdto) {
@@ -64,7 +68,40 @@ public class CustServiceImpl implements CustService {
         return result > 0;
 	}
 
-
+   
+    //비밀번호 수정 및 확인
+   
     
+    @Override
+    public boolean checkCurrentPassword(String cust_id, String rawPassword) {
+        String encPwd = CustMapper.getEncryptedPassword(cust_id);
+        
+        System.out.println("🔐 확인용 로그:");
+        System.out.println("- 입력된 사용자 ID: " + cust_id);
+        System.out.println("- 사용자가 입력한 비밀번호: " + rawPassword);
+        System.out.println("- DB에서 가져온 암호화된 비밀번호: " + encPwd);
+        
+        if (encPwd == null) return false;
+
+        // 암호화 여부 판단
+        if (encPwd.startsWith("$2a$") || encPwd.startsWith("$2b$") || encPwd.startsWith("$2y$")) {
+            return passwordEncoder.matches(rawPassword, encPwd);
+        } else {
+            return encPwd.equals(rawPassword);
+        }
+    }
+    
+    @Override
+    public String getPasswordById(String cust_id) {
+        return CustMapper.getPasswordById(cust_id); // mapper로 위임
+    }
+
+    @Override
+    public void changePassword(String cust_id, String newRawPassword) {
+        String newEnc = passwordEncoder.encode(newRawPassword);
+        CustMapper.updatePassword(cust_id, newEnc);
+    }
+    
+
     
 }

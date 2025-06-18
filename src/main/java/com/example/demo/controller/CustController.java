@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // ✅ 추가된 암호화 비교용
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,41 +25,55 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/cust")
+@RequestMapping("api/cust")
 @RequiredArgsConstructor
 public class CustController { 
 
     @Autowired
     private CustService cservice;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // ✅ 암호화 비교용 인스턴스
+
     //로그인 [박민혁] / 등급 가져오기 [김정민]
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CustDTO cdto, HttpSession session) {
-        String cust_pw = cservice.login(cdto);
         String cust_id = cdto.getCust_id();
+        String input_pw = cdto.getPassword(); // 사용자가 입력한 비밀번호
+        
+        String cust_pw = cservice.login(cdto); // DB에서 가져온 저장된 비밀번호 (암호화 또는 평문)
         String cust_nm = cservice.search_name(cust_id);
-    	String grade = cservice.selectGradeByCustId(cust_id); //등급 가져오기
-    	int    status  = cservice.selectStatusByCustId(cust_id); //상태값 조회
+        String grade = cservice.selectGradeByCustId(cust_id);
+        int status  = cservice.selectStatusByCustId(cust_id);
 
         if (cust_pw == null) {
             // 아이디 없음
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("msg", "아이디가 존재하지 않습니다."));
-        } else if (cust_pw.equals(cdto.getPassword())) {
+        }
+
+        // ✅ 암호화 여부 체크: bcrypt인지 확인 후 matches(), 아니면 평문 비교
+        boolean matches;
+        if (cust_pw.startsWith("$2a$") || cust_pw.startsWith("$2b$") || cust_pw.startsWith("$2y$")) {
+            matches = passwordEncoder.matches(input_pw, cust_pw);
+        } else {
+            matches = cust_pw.equals(input_pw);
+        }
+
+        if (matches) {
         	
-        	// Status 가 3 상태면 로그인 불가
-        	if (status == 3) {           // 3 = 정지고객
+            // Status 가 3 상태면 로그인 불가
+            if (status == 3) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                     .body(Map.of("msg", "정지된 계정입니다. 관리자에게 문의하세요."));
+                    .body(Map.of("msg", "정지된 계정입니다. 관리자에게 문의하세요."));
             }
-        	
             // 로그인 성공
-        	session.setAttribute("loginID", cust_id);
-        	session.setAttribute("grade", grade); //등급 저장
+            session.setAttribute("loginID", cust_id);
+            session.setAttribute("grade", grade); //등급 저장
             return ResponseEntity.ok(Map.of(
                 "cust_id", cust_id,
                 "cust_nm", cust_nm,
-                "status", status, // 상태값 JSON포함 
+                "status", status,
                 "msg", "로그인 성공"
             ));
         } else {
@@ -101,11 +116,8 @@ public class CustController {
     
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false); // 기존 세션 가져옴
-		System.out.printf("로그아웃 되나");
-		
-		 if (session != null) {
-		        System.out.println("세션 존재: " + session.getId());  // 로그 추가
+        HttpSession session = request.getSession(false); // 기존 세션 가져옴		
+		 if (session != null) {		       
 		        session.invalidate(); // 세션 무효화
 		        System.out.println("세션 무효화 완료");
 		    } else {
@@ -173,7 +185,7 @@ public class CustController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다");
         }
         return ResponseEntity.ok(cservice.searchMember(type, keyword));
-    }
+    } 
 
     // 탈퇴 
     @PostMapping("/withdraw")
@@ -206,4 +218,70 @@ public class CustController {
     }
     
     
-}
+    //비밀번호 확인 및 수정 
+  
+ // ➕ 1) 현재 비밀번호 확인
+    @PostMapping("/password/check")
+    public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> requestData, HttpSession session) {
+        String inputPw = requestData.get("password");
+        String cust_id = (String) session.getAttribute("loginID");
+        
+        System.out.println("🧪 세션 로그인 ID 확인: " + cust_id); // 이 로그 확인
+        
+        if (cust_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+        }
+
+        String storedPw = cservice.getPasswordById(cust_id); // service에서 가져오도록 구현
+        if (storedPw == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 정보 없음");
+        }
+
+        boolean matches;
+        if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$") || storedPw.startsWith("$2y$")) {
+            matches = passwordEncoder.matches(inputPw, storedPw);
+        } else {
+            matches = inputPw.equals(storedPw);
+        }
+
+        if (matches) {
+            return ResponseEntity.ok(Map.of("result", true, "msg", "비밀번호 일치"));
+        } else {
+            return ResponseEntity.ok(Map.of("result", false, "msg", "비밀번호 불일치"));
+        }
+    }
+
+    // ➕ 2) 새 비밀번호 변경
+ // ➕ 2) 새 비밀번호 변경
+    @PutMapping("/password/change")
+    public ResponseEntity<?> changePwd(@RequestBody Map<String, String> body, HttpSession session) {
+        String cust_id = (String) session.getAttribute("loginID");
+        if (cust_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 상태 아님"));
+        }
+
+        String newPwd = body.get("newPassword");
+        System.out.println("입력된 새 비밀번호: " + newPwd);  // ✅ 디버깅용
+
+        // 백엔드에서 비밀번호 유효성 재검사 (8자 이상, 영문+숫자+특수문자 포함)
+        if (newPwd.length() < 8
+            || !newPwd.matches(".*[A-Za-z].*")
+            || !newPwd.matches(".*\\d.*")
+            || !newPwd.matches(".*[^A-Za-z0-9].*")) {
+            return ResponseEntity.badRequest().body(Map.of("msg", "비밀번호는 8자 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다."));
+        }
+
+        // 비밀번호 변경 (암호화는 서비스 내부에서 처리됨)
+        try {
+            cservice.changePassword(cust_id, newPwd);  // ⚠️ 여기서 암호화까지 해줌
+            return ResponseEntity.ok(Map.of("msg", "비밀번호가 성공적으로 변경되었습니다."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("msg", "비밀번호 변경 실패"));
+        }
+    }
+
+
+    
+    
+} 
