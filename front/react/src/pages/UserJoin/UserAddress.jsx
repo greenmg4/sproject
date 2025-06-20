@@ -118,14 +118,15 @@ function UserAddress({ loginInfo }) {
                 />
 
                 <div>
-                  {/* ✅ 기본배송지 문구 표시 */}
+                  {/* 기본배송지 문구 표시 */}
                   {addr.default_yn === 'Y' && (
                     <span className="default-badge">기본배송지</span>
                   )}
 
                   {/* 주소 정보 출력 */}
                   <p>주소명: {addressClassMap[addr.addr_class] || addr.addr_class}</p>
-                  <p>[{addr.zip}] {addr.address1} {addr.address2}</p>
+                  <p>[{addr.zip}] {addr.address1} </p>
+                   <p> {addr.address2}</p>
                   <p>{addr.rcv_nm} / {addr.rcv_phone}</p>
                 </div>
               </div>

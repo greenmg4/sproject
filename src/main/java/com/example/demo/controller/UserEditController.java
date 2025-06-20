@@ -19,6 +19,8 @@ public class UserEditController {
     @PostMapping("/update")
     public String updateUserInfo(@RequestBody UserInfoDTO dto) {
         int result = userInfoService.updateUserInfo(dto);
+     // 🔥 주소도 같이 업데이트
+        userInfoService.updateOrInsertAddress(dto);        
         return result > 0 ? "success" : "fail";
     }
 }
