@@ -32,11 +32,19 @@
       address2 = #{address2},
       zip = #{zip},
       gender = #{gender},
-      birthday = #{birthday}
+      birthday = #{birthday},
+      upd_dtm = Now()
     WHERE cust_id = #{cust_id}
   </update>
   
-  
+  <update id="updateUserAddress" parameterType="map">
+  UPDATE custom
+  SET address1 = #{address1},
+      address2 = #{address2},
+      zip = #{zip}
+  WHERE cust_id = #{cust_id}
+</update>
+
   
   
   

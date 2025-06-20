@@ -38,5 +38,10 @@
   WHERE seq = #{seq}
 </update>
   
+  <select id="findDefaultAddress" parameterType="String" resultType="com.example.demo.model.AddressDTO">
+  SELECT * FROM delivery_addr
+  WHERE cust_id = #{cust_id}
+  LIMIT 1
+</select>
 
 </mapper>

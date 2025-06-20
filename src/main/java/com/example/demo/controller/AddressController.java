@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.AddressDTO;
+import com.example.demo.model.UserInfoDTO;
 import com.example.demo.service.AddressService;
+import com.example.demo.service.UserInfoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class AddressController {
 
     private final AddressService addressService;
+    private final UserInfoService userInfoService; 
 
     @GetMapping("/list/{custId}")
     public List<AddressDTO> list(@PathVariable String custId) {
@@ -52,8 +55,12 @@ public class AddressController {
     
     @PutMapping("/update")  // 수정 기능 추가
     public void update(@RequestBody AddressDTO dto) {
+    	//배송지 수정
         addressService.updateAddress(dto);
+        
+        userInfoService.updateUserAddress(dto.getCust_id(), dto.getAddress1(), dto.getAddress2(), dto.getZip());
     }
+    
 
     // 기본 주소 호출[박민혁]
     @GetMapping("/default/{custId}")

@@ -22,7 +22,8 @@ public interface AddressMapper {
     		+ " cust_id = #{custId} AND default_yn = 'Y' LIMIT 1")
     AddressDTO DefaultAddress(String custId);
     
-    
+    AddressDTO findDefaultAddress(String cust_id);
+
     
     
 }

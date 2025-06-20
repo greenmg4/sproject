@@ -1,0 +1,82 @@
+.user-info-container {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 30px 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.user-info-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #222;
+}
+
+.user-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-info-item {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.user-info-label {
+  font-weight: 600;
+  color: #555;
+  width: 110px;
+  display: inline-block;
+  text-align: left;
+}
+
+.user-info-value {
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* 버튼 스타일 (배송지, 수정 버튼 공통) */
+.user-info-btn {
+background-color: #818a0f;
+  color: white;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 16px;
+  border: none; 
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+/* 결제 내역 버튼 */
+.user-info-order-btn {
+  margin-left: 10px;
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #353905;
+}
+
+/* 탈퇴하기는 텍스트 버튼 */
+.user-info-withdraw-text {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: gray;
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+}
