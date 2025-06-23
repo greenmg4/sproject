@@ -49,7 +49,7 @@ const UserInfoPage = ({ loginInfo, isLoggedIn }) => {
       </ul>
 
       <button className="user-info-btn" onClick={goToAddressPage}>배송지 관리</button>
-      <button className="user-info-btn" onClick={goToEditPage}>내정보 수정</button>
+      <button className="user-info-btn2" onClick={goToEditPage}>내정보 수정</button>
       <button className="user-info-withdraw-text" onClick={goToWithdraw}>탈퇴하기</button>
     </div>
   );
