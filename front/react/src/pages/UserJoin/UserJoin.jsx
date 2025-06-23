@@ -236,7 +236,6 @@ const UserJoin = () => {
             onChange={handleChange}
             placeholder="영문+숫자 포함 8자리(필수)"
           />
-          {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
         </div>
         <div className="form-group">
           <label>비밀번호 확인</label>
@@ -246,12 +245,20 @@ const UserJoin = () => {
             onChange={handleConfirmPasswordChange}
             placeholder="비밀번호 확인"
           />
-          {passwordMatchMessage && (
-            <p style={{ color: passwordMatchMessage.startsWith('✅') ? 'green' : 'red' }}>
-              {passwordMatchMessage}
-            </p>
-          )}
-          {formErrors.confirmPassword && <p style={{ color: 'red' }}>{formErrors.confirmPassword}</p>}
+          {/* ✅ 모든 비밀번호 관련 메시지를 여기에 한 번에 출력 */}
+  <div style={{ marginTop: '5px' }}>
+    {passwordError && (
+      <p style={{ color: 'red' }}>{passwordError}</p> // 비밀번호 유효성 검사 실패
+    )}
+    {formErrors.confirmPassword && (
+      <p style={{ color: 'red' }}>{formErrors.confirmPassword}</p> // 비밀번호 불일치
+    )}
+    {passwordMatchMessage && !formErrors.confirmPassword && !passwordError && (
+      <p style={{ color: passwordMatchMessage.startsWith('✅') ? 'green' : 'red' }}>
+        {passwordMatchMessage}
+      </p> // ✅ 또는 ❌ 비밀번호 일치 여부 메시지
+    )}
+  </div>
         </div>
 
         {/* 이름, 생일, 성별 */}
