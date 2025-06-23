@@ -77,6 +77,7 @@
   border: none;
   color: #2d8cf0;
   cursor: pointer;
+  font-size: large;
 }
 
 .btn-delete {
@@ -84,6 +85,7 @@
   border: none;
   color: #f5222d;
   cursor: pointer;
+  font-size: large;
 }
 
 .address-container {

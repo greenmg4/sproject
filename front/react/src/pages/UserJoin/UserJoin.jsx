@@ -166,7 +166,7 @@ const UserJoin = () => {
     if (!form.phone.trim()) errors.phone = '전화번호를 입력해주세요.';
     if (!form.emailUser.trim()) errors.emailUser = '이메일을 입력해주세요.';
     if (!form.emailDomain.trim()) errors.emailDomain = '이메일 도메인을 선택해주세요.';
-    if (!form.birthday.trim()) errors.birthday = '생일을 입력해주세요.';
+    if (!form.birthday.trim()) errors.birthday = '생일을 입력해주세요.(필수)';
     if (!form.gender.trim()) errors.gender = '성별을 선택해주세요';
     
 
@@ -218,7 +218,7 @@ const UserJoin = () => {
             value={form.cust_id}
             onChange={handleChange}
             onBlur={handleIdBlur}
-            placeholder="영문+숫자 최대 20자"
+            placeholder="영문+숫자 최대 20자(필수)"
           />
           {idCheckMessage && (
             <p style={{ color: idValid ? 'green' : 'red' }}>{idCheckMessage}</p>
@@ -234,7 +234,7 @@ const UserJoin = () => {
             name="password"
             value={form.password}
             onChange={handleChange}
-            placeholder="비밀번호"
+            placeholder="영문+숫자 포함 8자리(필수)"
           />
           {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
         </div>
@@ -261,7 +261,7 @@ const UserJoin = () => {
             name="cust_nm"
             value={form.cust_nm}
             onChange={handleChange}
-            placeholder="이름"
+            placeholder="이름(필수)"
           />
           {formErrors.cust_nm && <p style={{ color: 'red' }}>{formErrors.cust_nm}</p>}
         </div>
@@ -273,7 +273,7 @@ const UserJoin = () => {
         <div className="form-group">
           <label>성별</label>
           <select name="gender" value={form.gender} onChange={handleChange}>
-            <option value="">성별 선택</option>
+            <option value="">성별 선택(필수)</option>
             <option value="1">남자</option>
             <option value="2">여자</option>
           </select>
@@ -300,7 +300,7 @@ const UserJoin = () => {
               name="emailUser"
               value={form.emailUser}
               onChange={handleChange}
-              placeholder="이메일"
+              placeholder="이메일(필수)"
             />@
             <select
               name="emailDomain"
@@ -337,7 +337,7 @@ const UserJoin = () => {
               name="address1"
               value={form.address1 ? `[${form.zip}] ${form.address1}` : ''}
               readOnly
-              placeholder="주소를 검색해주세요"
+              placeholder="주소를 검색해주세요(선택)"
             />
             <span
               style={{
@@ -345,9 +345,10 @@ const UserJoin = () => {
                 top: '50%',
                 right: '10px',
                 transform: 'translateY(-50%)',
-                color: 'blue',
+                color: '#166333',
                 cursor: 'pointer',
-                fontWeight: 'bold',
+                fontWeight: 'bold'
+                
               }}
               onClick={() => setIsPostcodeOpen(true)}
             >
@@ -394,7 +395,7 @@ const UserJoin = () => {
         )}
 
 
-        <button type="submit">회원가입</button>
+        <button type="submit" className='submit' >회원가입</button>
       </form>
     </div>
   );

@@ -73,7 +73,7 @@
 }
 
 .btn-submit {
-  background-color: olive;
+  background-color: #2d8cf0;
   color: #fff;
   margin-right: 10px;
   cursor:'pointer'
@@ -117,4 +117,20 @@ background-color: black;
   border: 1px solid gray;
   border-radius: 6px;
   cursor:'pointer'
+}
+
+.submit{
+  background-color: #166333;
+  color: white;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid gray;
+  border-radius: 6px;
+  cursor:'pointer',
+
+}
+
+.submit:hover{
+  background-color: #166333;
 }

@@ -76,7 +76,7 @@ function UserAddressF({ loginInfo, onSave, isEdit = false, existingData = {} }) 
 
   return (
     <div className="user-address-form">
-      <h2 className="form-title">{isEdit ? '📌 배송지 수정' : '📌 배송지 추가'}</h2>
+      <h2 className="form-title">{isEdit ? ' 배송지 수정' : ' 배송지 추가'}</h2>
 
       {/* addr_class */}
       <div className="form-group">
