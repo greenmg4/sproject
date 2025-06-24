@@ -137,6 +137,39 @@
         SET    suggest_yn = #{suggestYn}
         WHERE  prod_no    = #{prodNo}
     </update>
+    
+    <!-- [김정민] 모든정보를 포함한 상품검색 -->
+    <select id="ProListDetail"
+        parameterType="com.example.demo.model.SearchCondDTO"
+        resultType="com.example.demo.model.ProductDTO">
+	  SELECT p.prod_no
+	       , p.prod_nm
+	       , p.prod_price
+	       , p.category
+	       , p.status
+	       , p.prod_cnt
+	       , p.publisher
+	       , p.author_nm
+	       , DATE_FORMAT(p.reg_dtm, '%Y-%m-%d %H:%i:%s') AS reg_dtm
+	       , DATE_FORMAT(p.upd_dtm, '%Y-%m-%d %H:%i:%s') AS upd_dtm
+	       , p.book_desc
+	       , p.suggest_yn
+	       , i.img_path          <!-- 썸네일 -->
+	  FROM  product p
+	  LEFT JOIN product_img i
+	         ON p.prod_no = i.prod_no
+	        AND i.img_class = '01'
+	  WHERE 1 = 1
+	    <if test="category  != null and category  != ''">
+	      AND p.category  = #{category}
+	    </if>
+	    <if test="prod_nm   != null and prod_nm   != ''">
+	      AND p.prod_nm  LIKE CONCAT('%', #{prod_nm}, '%')
+	    </if>
+	    <if test="author_nm != null and author_nm != ''">
+	      AND p.author_nm LIKE CONCAT('%', #{author_nm}, '%')
+	    </if>
+	</select>
 	
 	
 </mapper>

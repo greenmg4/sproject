@@ -45,7 +45,7 @@ export default function ProductPage() {
     };
 
     axios
-      .post(`${API_BASE_URL}/api/product/proList`, searchCond, { withCredentials: true })
+      .post(`${API_BASE_URL}/api/product/searchDetail`, searchCond, { withCredentials: true })
       .then(res => setProducts(res.data))
       .catch(err => {
         console.error('검색 실패:', err);
