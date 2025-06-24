@@ -6,6 +6,7 @@ import { apiCall } from '../../service/apiService.js';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
+  
 function StatisticsProd() {
     const chartRef = useRef(null);
 
@@ -170,11 +171,17 @@ function StatisticsProd() {
         }); //apiCall
     };
     
-    const handleDateChange = (url, page = 1) => {
+    const handleDateChange = (url, page = 1, resetPage = false) => {
         const newDate = dateRef.current.value;
         setSelectedDate(newDate);
-    
-        const requestData = { searchDate: newDate, limit: itemsPerPage, offset: (page - 1) * itemsPerPage };
+        if (resetPage) setCurrentPage(1);
+        else setCurrentPage(page);
+        
+        const requestData = { 
+            searchDate: newDate, 
+            limit: itemsPerPage, 
+            offset: (page - 1) * itemsPerPage 
+        };
         
         // alert(`newDate: ${newDate}, limit:${itemsPerPage}, offset:${(page - 1) * itemsPerPage}`)
 
@@ -246,13 +253,17 @@ function StatisticsProd() {
                             onChange={(e) => setSelectedDate(e.target.value)}
                         />
                         
-                        <button className="search-condition" onClick={() => handleDateChange("/statistics/salesbyproductlist")}>
+                        <button className="search-condition" onClick={() => handleDateChange("/statistics/salesbyproductlist", 1, true)}                        >
                             조회
                         </button>
 
                     </div>
                     <br/>
+
                     <div >
+                        <div style={{fontSize: "14px", fontWeight: "bold", textAlign: "center", color: "rgb(23, 148, 54)"}}>
+                            ⬇ 12시 방향부터 시계방향(판매순위)
+                        </div>
                         <canvas ref={chartRef} width="320" height="320"/>
                     </div>
                 </div>
@@ -273,24 +284,27 @@ function StatisticsProd() {
                         <table className="statistics-table-border" style={{ width: "1000px", borderCollapse: "collapse" }}>
                             <thead>
                                 <tr>
-                                    <th style={{ width: '36%', height:'50px'}}>상품명</th>
-                                    <th style={{ width: '20%', height:'50px'}}>상품가격</th>
-                                    <th style={{ width: '12%', height:'50px'}}>판매개수</th>
-                                    <th style={{ width: '20%', height:'50px'}}>총판매금액</th>
-                                    <th style={{ width: '12%', height:'50px'}}>재고수량</th>
+                                <th style={{ width: '8%', height:'50px' }}>판매순위</th>
+                                <th style={{ width: '36%', height:'50px' }}>상품명</th>
+                                <th style={{ width: '12%', height:'50px' }}>상품가격</th>
+                                <th style={{ width: '12%', height:'50px' }}>판매개수</th>
+                                <th style={{ width: '20%', height:'50px' }}>총판매금액</th>
+                                <th style={{ width: '12%', height:'50px' }}>재고수량</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {productData.map((item, index) => (
                                     <tr key={index}>
-                                        <td>{item.prodNm}</td>
-                                        <td>{item.prodPrice}</td>
-                                        <td>{item.prodSumCnt}</td>
-                                        <td>{item.prodSumBuyPrice}</td>
-                                        <td>{item.prodCnt}</td>
+                                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 순번 계산 */}
+                                    <td>{item.prodNm}</td>
+                                    <td>{item.prodPrice}</td>
+                                    <td>{item.prodSumCnt}</td>
+                                    <td>{item.prodSumBuyPrice}</td>
+                                    <td>{item.prodCnt}</td>
                                     </tr>
                                 ))}
                             </tbody>
+
                         </table>
                         <br />
                         <br />
