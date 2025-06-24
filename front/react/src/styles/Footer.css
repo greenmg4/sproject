@@ -8,13 +8,15 @@
 }
 
 .footer_content {
+
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-
+	box-sizing: border-box;
   /*max-width: 1100px;*/
   /*margin: 0 auto;*/
 
+	
   width: 100%;
   padding-left: 25px;
 
