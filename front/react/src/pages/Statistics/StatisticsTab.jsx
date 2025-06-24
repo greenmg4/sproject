@@ -37,7 +37,7 @@ const TabComponent = () => {
     ];
 
     return (
-        <div className="statistics-background" style={{ width: '100%', height: '670px',  overflowX:'hidden', overflowY:'scroll'}}>            
+        <div className="statistics-background" style={{   padding:'20px' }}>            
             <div className='statistics-tab'>
                 {tabs.map((tab, index) => (
                     <div

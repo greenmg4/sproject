@@ -231,7 +231,7 @@ function StatisticsProd() {
 
     
     return (
-        <div className="statistics-background"  style={{ height: "620px", overflow: "hidden" }} >
+        <div className="statistics-background"  style={{ height: "590px", overflow: "hidden" }} >
             <div className="statistics-title">
                     상품판매 정보
             </div>
@@ -280,7 +280,7 @@ function StatisticsProd() {
                         </select>
                     </div>
 
-                    <div style={{ height: "420px", alignSelf: "stretch", textAlign: "center", padding: "10px", backgroundColor: "#f5f5f5" }}>
+                    <div style={{ height: "400px", alignSelf: "stretch", textAlign: "center", padding: "10px", backgroundColor: "#f5f5f5" }}>
                         <table className="statistics-table-border" style={{ width: "1000px", borderCollapse: "collapse" }}>
                             <thead>
                                 <tr>
