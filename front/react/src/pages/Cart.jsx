@@ -129,7 +129,7 @@ export default function Cart() {
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
             <label>
               <input type="checkbox" checked={isAllSelected} onChange={toggleSelectAll}
-                style={{ marginRight: '5px' }} />
+                style={{ marginRight: '10px' }} />
                 전체 선택
             </label>
           </div>
@@ -143,7 +143,9 @@ export default function Cart() {
                 marginBottom: '10px',
                 display: 'flex',
                 alignItems: 'center', 
-                gap: '20px'
+                gap: '20px',
+                margin: '20px',
+                borderRadius: '10px',
               }}
             >
               <input type="checkbox" checked={selectedItems.includes(item.prod_no)} onChange={() => toggleSelectOne(item.prod_no)}/>
@@ -153,9 +155,31 @@ export default function Cart() {
                 <p>가격: {item.prod_price.toLocaleString()}원</p>
                 <div>
                   수량:
-                  <button onClick={() => updateCnt(item.prod_no, item.cnt - 1)}>-</button>
+                  <button onClick={() => updateCnt(item.prod_no, item.cnt - 1)}
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      border: '1px solid #ccc',
+                      borderRadius: '5px',
+                      backgroundColor: '#f8f9fa',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                    }}>-</button>
                   <span style={{ margin: '0 10px' }}>{item.cnt}</span>
-                  <button onClick={() => updateCnt(item.prod_no, item.cnt + 1)}>+</button>
+                  <button onClick={() => updateCnt(item.prod_no, item.cnt + 1)}
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      border: '1px solid #ccc',
+                      borderRadius: '5px',
+                      backgroundColor: '#f8f9fa',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                    }}>
+                    +
+                  </button>
                 </div>
                 <p>합계: {(item.prod_price * item.cnt).toLocaleString()}원</p>
               </div>

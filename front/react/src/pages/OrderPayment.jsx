@@ -83,7 +83,7 @@ export default function OrderPayment() {
   const openPostcodePopup = () => {
     new window.daum.Postcode({
       oncomplete: (data) => {
-        setPostcode(data.zonecode);     // 이 값이 zip 변수에 들어가므로 백엔드와 맞춤
+        setPostcode(data.zonecode);
         setAddress(data.address);  // address1
       },
     }).open();
