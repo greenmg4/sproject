@@ -142,7 +142,7 @@ export default function Cart() {
                 padding: '10px',
                 marginBottom: '10px',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'center', 
                 gap: '20px'
               }}
             >
