@@ -9,7 +9,7 @@ import StaticsticsProd from "./StatisticsProd"
 const Statistics = () => {
 
     return (
-        <div style={{  height: "610px"}} >
+        <div style={{  height: "580px"}} >
 
             <div className="statistics-title">
                     매출 정보
