@@ -75,17 +75,16 @@ function ChatRoomList() {
   /* ② 렌더링 ---------------------------------------------------- */
 return (
   <div className="chat-room-list">
-    {/* ── 상단 툴바: 고객 ID 검색 페이지로 이동 ── */}
     <div className="chat-room-toolbar">
       <button
         className="search-room-btn"
         onClick={() => navigate("/adminchatlist")}
       >
-        전체 상담내역
+        상담기록 검색
       </button>
     </div>
 
-    <h2>상담 목록</h2>
+    <h2>현재 상담목록</h2>
 
     <ul>
       {rooms.map(r => (

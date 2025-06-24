@@ -119,7 +119,7 @@ function MainDefault() {
 
     return (
         <div>
-            <hr></hr>
+            
             {/* <h3>~~ Main 영역 ~~</h3> */}
 
             <div id="contents">

@@ -360,7 +360,7 @@ console.log("로그인된 사용자 ID:", userInfo?.cust_id);
 			
 
             {/*------------- 카테고리 메뉴 ---------------*/}
-            <div>
+            <div style={{borderBottom: '2px solid  #e0e0e0', paddingBottom:'4px'}}>
                 <table style={{ width: '100%', tableLayout:'fixed'}}>
                     <tbody>
                         <tr>

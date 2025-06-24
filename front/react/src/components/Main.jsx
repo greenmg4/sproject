@@ -34,6 +34,7 @@ import AdminChatRoomList from './ChatRoom/AdminChatRoomList';
 
 function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
     return (
+        <div style={{  minHeight: '620px'}}>
         <div>
         <Routes>
           {/* <Route path="/" element={<Main />} /> */}
@@ -67,6 +68,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
             <Route path="/order/payment" element={<OrderPayment />} />
             <Route path="/orderList" element={<OrderList/>} />
         </Routes>
+        </div>
         </div>
     );
 }
