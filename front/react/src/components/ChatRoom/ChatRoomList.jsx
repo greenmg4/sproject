@@ -81,7 +81,7 @@ return (
         className="search-room-btn"
         onClick={() => navigate("/adminchatlist")}
       >
-        전체 채팅내역
+        전체 상담내역
       </button>
     </div>
 
