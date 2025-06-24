@@ -23,4 +23,8 @@ public interface ProductService {
 	
     // 회원 상품 디테일 출력[박민혁]
     ProductDTO ProDetail(int prod_no);
+    
+    // [김정민] 모든정보를 포함한 상품검색
+    List<ProductDTO> searchProductDetail(SearchCondDTO cond);
+
 }
