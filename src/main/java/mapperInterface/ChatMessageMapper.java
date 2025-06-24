@@ -17,4 +17,5 @@ public interface ChatMessageMapper {
     
     String selectRoomCreator(@Param("qna_no") int qnaNo);
     String selectCustName(String custId);
+    List<ChatMessageDTO> selectClosedRoomsByCustId(@Param("custId") String custId);
 }

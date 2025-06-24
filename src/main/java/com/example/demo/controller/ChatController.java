@@ -93,4 +93,10 @@ public class ChatController {
         String session_id = (String) session.getAttribute("loginID");
         return service.getUserChatList(session_id);
     }
+    
+    @GetMapping("/search")
+    public List<ChatMessageDTO> getClosedRoomsByCustId(@RequestParam String custId) {
+        return service.getClosedRoomsByCustId(custId);
+    }
+    
 }

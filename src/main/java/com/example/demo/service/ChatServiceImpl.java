@@ -82,6 +82,10 @@ public class ChatServiceImpl implements ChatService {
         return mapper.selectCustName(custId);
     }
     
-    
+    @Override
+    public List<ChatMessageDTO> getClosedRoomsByCustId(String custId) {
+        return mapper.selectClosedRoomsByCustId(custId);
+    }
+
 
 }

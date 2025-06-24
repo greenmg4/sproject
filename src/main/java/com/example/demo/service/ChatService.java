@@ -16,4 +16,7 @@ public interface ChatService {
     String findRoomCreator(int qnaNo); 
     String findCustName(String custId);
 
+    List<ChatMessageDTO> getClosedRoomsByCustId(String custId);
+
+
 }

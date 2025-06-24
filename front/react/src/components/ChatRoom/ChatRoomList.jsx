@@ -73,30 +73,42 @@ function ChatRoomList() {
   }, [navigate]);
 
   /* ② 렌더링 ---------------------------------------------------- */
-  return (
-    <div className="chat-room-list">
-      <h2>상담 목록</h2>
-      <ul>
-        {rooms.map(r => (
-          <li key={r.qna_no}>
-            <Link to={`/chat/${r.qna_no}`} className="chat-room">
-              <div className="room-title">
-                {r.room_create_id
-                  ? `${r.room_create_id}님의 문의`
-                  : r.cust_id === 'system'
-                  ? '고객 문의'
-                  : `${r.cust_id}님의 문의`}
-                {r.unread && <span className="notification-dot" />}
-              </div>
-              <div className="last-message">
-                {r.lastMessage || '(메시지 없음)'}
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+return (
+  <div className="chat-room-list">
+    {/* ── 상단 툴바: 고객 ID 검색 페이지로 이동 ── */}
+    <div className="chat-room-toolbar">
+      <button
+        className="search-room-btn"
+        onClick={() => navigate("/adminchatlist")}
+      >
+        전체 채팅내역
+      </button>
     </div>
-  );
+
+    <h2>상담 목록</h2>
+
+    <ul>
+      {rooms.map(r => (
+        <li key={r.qna_no}>
+          <Link to={`/chat/${r.qna_no}`} className="chat-room">
+            <div className="room-title">
+              {r.room_create_id
+                ? `${r.room_create_id}님의 문의`
+                : r.cust_id === 'system'
+                ? '고객 문의'
+                : `${r.cust_id}님의 문의`}
+              {r.unread && <span className="notification-dot" />}
+            </div>
+            <div className="last-message">
+              {r.lastMessage || '(메시지 없음)'}
+            </div>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 }
 
 export default ChatRoomList;
