@@ -9,25 +9,25 @@
   font-family: Arial, sans-serif;
 }
 
-.form-title {
+.address-form-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 30px;
   text-align: center;
 }
 
-.form-group {
+.address-form-group {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.address-form-group label {
   display: block;
   margin-bottom: 6px;
   font-weight: bold;
 }
 
-.form-group input,
-.form-group select {
+.address-form-group input,
+.address-form-group select {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -50,7 +50,7 @@
   cursor: pointer;
 }
 
-.postcode-box {
+.address-postcode-box {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -62,8 +62,8 @@
   cursor:'pointer'
 }
 
-.btn-submit,
-.btn-cancel {
+.address-btn-submit,
+.address-btn-cancel {
   padding: 10px 20px;
   font-size: 14px;
   border: none;
@@ -72,20 +72,20 @@
   cursor:'pointer'
 }
 
-.btn-submit {
+.address-btn-submit {
   background-color: #2d8cf0;
   color: #fff;
   margin-right: 10px;
   cursor:'pointer'
 }
 
-.btn-cancel {
+.address-btn-cancel {
   background-color: #6c757d;
   color: #fff;
   cursor:'pointer'
 }
 
-.btn-edit{
+.withdraw-btn-edit{
 background-color: black;
   color: white;
   padding: 12px 20px;
@@ -119,19 +119,20 @@ background-color: black;
   cursor:'pointer'
 }
 
-.submit{
+.user-submit{
+  margin-top: 6%;
   background-color: #166333;
   color: white;
   padding: 12px 20px;
   width: 100%;
   font-size: 16px;
-  border: 1px solid gray;
+  border: none;
   border-radius: 6px;
   cursor:'pointer',
 
 }
 
-.submit:hover{
-  background-color: #166333;
+.user-submit:hover{
+  background-color: #2d8cf0;
 }
 

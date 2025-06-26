@@ -85,7 +85,7 @@ const UserJoinP = () => {
             onChange={() => handleCheckboxChange('terms')}
           /> 
           <br/>
-        <textarea readOnly value={`[이용약관] 여기에 약관 내용을 삽입합니다...`} />
+        <textarea readOnly value={`[이용약관] 개인정보 수집∙활용에 동의합니다.`} />
         <label className="checkbox-container"><br/><br/>
           
           
