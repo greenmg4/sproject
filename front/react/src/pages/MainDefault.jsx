@@ -13,6 +13,8 @@ import MainRecent from "./MainRecent"
 import { Icon } from "@mdi/react";
 import { mdiArrowLeftCircleOutline, mdiArrowRightCircleOutline } from '@mdi/js';
 
+import NoticePopup from '../pages/Admin/NoticePopup';
+
 const CustomPrevArrow = ({ onClick }) => (
     <div className="statistics-slick-prev" onClick={onClick} style={{ left: "-40px", fontSize: "30px", cursor: "pointer", color:'rgb(76, 122, 103)' }}>
         {/* <Icon path={mdiArrowLeftCircleOutline} size={2} color='rgb(69, 134, 126)' /> */}
@@ -119,7 +121,8 @@ function MainDefault() {
 
     return (
         <div>
-            <hr></hr>
+            
+            <NoticePopup />
             {/* <h3>~~ Main 영역 ~~</h3> */}
 
             <div id="contents">

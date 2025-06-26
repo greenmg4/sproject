@@ -44,4 +44,8 @@ public interface ProductMapper {
     
     List<Map<String, Object>> getSuggestProductList(); // 추천상품리스트 조회.
     List<Map<String, Object>> getRecentProductList(); // 최신상품리스트 조회.
+    
+    //[김정민] 모든정보를 포함한 상품검색
+    List<ProductDTO> ProListDetail(SearchCondDTO cond);
+
 }

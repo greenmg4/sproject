@@ -88,7 +88,15 @@
 
 /* 마지막 메시지 */
 .last-message {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: #444;
   line-height: 1.4;
+}
+
+.qna-dtm{
+  font-size: 0.8rem;
+  color:#777;
+  margin-top:0.15rem;
+  float: right;
+  margin: -10px;
 }

@@ -1,0 +1,39 @@
+/* 팝업 본체: 가로·세로 380 px로 고정 -------------------- */
+.popup-wrapper {
+  position: fixed;
+  top: 27%;
+  left: 38%;
+  transform: translate(-50%, -50%);
+  z-index: 2147483647;
+
+  width: 450px;           /* ← 원하는 고정값 */
+  height: 450px;          /* ← 원하는 고정값 */
+
+  background: #fff;
+  border-radius: 12px;
+  padding: 0;             /* 여백 없이 이미지만 꽉 차게 두고 싶다면 0 */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+  overflow: hidden;       /* 이미지가 넘칠 때 잘라내기 */
+  cursor: move;           /* 드래그 UX */
+}
+
+/* 이미지는 박스를 꽉 채우되 비율 유지 -------------------- */
+.popup-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* 잘라도 되면 cover, 전부 보이려면 contain */
+}
+
+/* 닫기 버튼: 하단에 겹쳐서 띄우는 방식(예시) -------------- */
+.btn-close {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border: none;
+  padding: 0.6rem 0;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}

@@ -74,4 +74,11 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.getRecentProductList();
 	}
 	
+	//[김정민] 모든정보를 포함한 상품검색
+	@Override
+	public List<ProductDTO> searchProductDetail(SearchCondDTO cond){
+	    return productMapper.ProListDetail(cond);
+	}
+
+	
 }

@@ -28,11 +28,14 @@ import CustList from '../pages/Admin/AdminCustList';
 import OrderList from '../pages/orderList';
 import PasswordChange from '../pages/UserJoin/PasswordChange';
 import AdminOrderRequest from '../pages/Admin/AdminOrderRequest';
+import NoticeAdmin from '../pages/Admin/NoticeAdmin'
+import AdminChatRoomList from './ChatRoom/AdminChatRoomList';
 
 
 
 function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
     return (
+        <div style={{  minHeight: '620px'}}>
         <div>
         <Routes>
           {/* <Route path="/" element={<Main />} /> */}
@@ -41,13 +44,15 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
           <Route path="/userchatroomlist" element={<UserChatRoomList />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/request" element={<AdminOrderRequest />} />
+          <Route path="/noticeadmin" element={<NoticeAdmin />} />
           <Route path="/productupload" element={<ProductUpload />} />
             <Route path="/product/update/:prodNo" element={<ProductUpdate />} />
             <Route path='/' element={<MainDefault />} />
             <Route path="/test/memberlist" element={<DbTestList />} />
             <Route path="/userjoinp" element={<UserJoinP />} />
             <Route path="/login" 
-                   element={<Login onLoginSubmit={onLoginSubmit}/>}/>            
+                   element={<Login onLoginSubmit={onLoginSubmit}/>}/>
+            <Route path="/adminchatlist" element={<AdminChatRoomList/>} />                             
             <Route path="/userjoin" element={<UserJoin />} />
             <Route path="/userinfo" element={<UserInfo loginInfo={loginInfo} isLoggedIn={isLoggedIn} />} />
             <Route path="/useredit" element={<UserEdit loginInfo={loginInfo} isLoggedIn={isLoggedIn} />} />
@@ -65,6 +70,7 @@ function Main({onLoginSubmit, isLoggedIn, loginInfo, resetLoginInfo}) {
             <Route path="/order/payment" element={<OrderPayment />} />
             <Route path="/orderList" element={<OrderList/>} />
         </Routes>
+        </div>
         </div>
     );
 }

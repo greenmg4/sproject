@@ -191,7 +191,7 @@ const StatisticsYear = () => {
                 </div>
             </div>
             
-            <div className="statistics-table-container"  style={{height: '340px'}}>
+            <div className="statistics-table-container"  style={{height: '320px'}}>
                 <Bar data={dataY} options={optionsY} />
             </div>
             <div className="statistics-table-container">

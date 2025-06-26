@@ -88,5 +88,18 @@
 	    WHERE  cust_id = #{custId}
 	</select>
 	
+	<select id="selectClosedRoomsByCustId"
+	        parameterType="string"
+	        resultType="com.example.demo.model.ChatMessageDTO">
+	  SELECT qna_no,   
+	         cust_id,     
+	         qna_dtm      
+	  FROM   qna
+	  WHERE  qna_type = 2  
+	    AND  seq      = 2  
+	    AND  cust_id  = #{custId}
+	  ORDER  BY qna_no DESC
+	</select>
+	
   
 </mapper>

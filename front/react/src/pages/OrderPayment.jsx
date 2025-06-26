@@ -83,8 +83,8 @@ export default function OrderPayment() {
   const openPostcodePopup = () => {
     new window.daum.Postcode({
       oncomplete: (data) => {
-        setPostcode(data.zip);     // 이 값이 zip 변수에 들어가므로 백엔드와 맞춤
-        setAddress(data.address);       // address1
+        setPostcode(data.zonecode);
+        setAddress(data.address);  // address1
       },
     }).open();
   };
@@ -103,20 +103,19 @@ export default function OrderPayment() {
       return;
     }
 
+    
+    const merchant_uid = `order_${new Date().getTime()}`;
+    const productName = isCart
+    ? `${items[0].prod_nm} 외 ${items.length - 1}건`
+    : items[0]?.prod_nm;
+    
     const IMP = window.IMP;
     if (!IMP) {
       alert("결제 모듈이 로딩되지 않았습니다.");
       return;
     }
-
-    const merchant_uid = `order_${new Date().getTime()}`;
-    const productName = isCart
-      ? `${items[0].prod_nm} 외 ${items.length - 1}건`
-      : items[0]?.prod_nm;
-
     IMP.request_pay(
       {
-        //pg: "kakaopay.TC0ONETIME",
         pg: "html5_inicis.INIpayTest",
         pay_method: "card",
         merchant_uid,
@@ -259,12 +258,12 @@ const handlePhoneChange = (e) => {
             <input type="text" placeholder="전화번호" value={phone} onChange={handlePhoneChange} style={inputStyle}/>
             
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-              <input type="text" placeholder="우편번호" value={zip} readOnly style={{ ...inputStyle, flex: 1 }}/>
+              <input type="text" placeholder="우편번호" value={zip} style={{ ...inputStyle, flex: 1 }}/>
               <button onClick={openPostcodePopup}
                 style={{padding: "10px 16px", fontSize: "14px", backgroundColor: "#3498db", color: "#fff", 
                   border: "none", borderRadius: "4px", cursor: "pointer", whiteSpace: "nowrap",}}>배송지 입력</button>
             </div>
-            <input type="text" placeholder="주소" value={address1} readOnly  style={inputStyle}/>
+            <input type="text" placeholder="주소" value={address1} style={inputStyle}/>
             <input type="text" placeholder="상세주소" value={address2} onChange={(e) => setDetailAddress(e.target.value)} style={inputStyle}/>
           </div>
         </section>

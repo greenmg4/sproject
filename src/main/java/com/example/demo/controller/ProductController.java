@@ -220,4 +220,12 @@ public class ProductController {
     }
     
     
+    @PostMapping("/searchDetail")
+    public ResponseEntity<List<ProductDTO>> searchProductDetail(
+            @RequestBody SearchCondDTO cond){
+        return ResponseEntity.ok(productService.searchProductDetail(cond));
+    }
+
+    
+    
 }//class

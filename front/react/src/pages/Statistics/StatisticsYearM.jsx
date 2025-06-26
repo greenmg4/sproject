@@ -155,7 +155,7 @@ const StatisticsYearM = () => {
                     <label className="search-title" >Month</label>
                     <input type="month" className="search-condition" value={selectedYm}  ref={monthRef} onChange={(event) => handleMonthChange("/statistics/monthsaleslist")}/>
                 </div>
-                <div className="statistics-table-container" style={{height: '340px'}}>
+                <div className="statistics-table-container" style={{height: '320px'}}>
                     <Bar data={dataYm} options={optionsYm} />
                 </div>
 
@@ -185,7 +185,7 @@ const StatisticsYearM = () => {
                         <td>일</td>
                     </tr>
                     <tr>
-                        <th style={{ color: 'rgb(172, 59, 59)' }}>최대 월매출</th>
+                        <th style={{ color: 'rgb(172, 59, 59)' }}>최대 일매출</th>
                         <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.maxMonthAmount}`}</td>   
                         <td>원</td>
                     </tr>
@@ -195,7 +195,7 @@ const StatisticsYearM = () => {
                         <td>일</td>
                     </tr>
                     <tr>
-                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 월매출</th>
+                        <th style={{ color: 'rgb(7, 70, 5)' }}>최소 일매출</th>
                         <td style={{ textAlign: 'right', borderBottom: '2px solid rgb(171, 202, 174)'}}>{`${monthResult.minMonthAmount}`}</td>
                         <td>원</td>
                     </tr>
