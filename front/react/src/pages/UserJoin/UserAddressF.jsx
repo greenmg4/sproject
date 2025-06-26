@@ -76,10 +76,10 @@ function UserAddressF({ loginInfo, onSave, isEdit = false, existingData = {} }) 
 
   return (
     <div className="user-address-form">
-      <h2 className="form-title">{isEdit ? ' 배송지 수정' : ' 배송지 추가'}</h2>
+      <h2 className="address-form-title">{isEdit ? ' 배송지 수정' : ' 배송지 추가'}</h2>
 
       {/* addr_class */}
-      <div className="form-group">
+      <div className="address-form-group">
         <label>주소명</label>
         <select name="addr_class" value={form.addr_class} onChange={handleChange}>
           <option value="">선택하세요</option>
@@ -90,19 +90,19 @@ function UserAddressF({ loginInfo, onSave, isEdit = false, existingData = {} }) 
       </div>
 
       {/* 수신자 이름 */}
-      <div className="form-group">
+      <div className="address-form-group">
         <label>받는 사람</label>
         <input name="rcv_nm" value={form.rcv_nm} onChange={handleChange} />
       </div>
 
       {/* 수신자 전화 */}
-      <div className="form-group">
+      <div className="address-form-group">
         <label>전화번호</label>
         <input name="rcv_phone" value={form.rcv_phone} onChange={handleChange} />
       </div>
 
       {/* 주소 + 검색 */}
-      <div className="form-group address1-group">
+      <div className="address-form-group address1-group">
         <label>주소</label>
         <input
           name="address1"
@@ -113,13 +113,13 @@ function UserAddressF({ loginInfo, onSave, isEdit = false, existingData = {} }) 
       </div>
 
       {showAddress2 && (
-        <div className="form-group">
+        <div className="address-form-group">
           <input name="address2" value={form.address2} onChange={handleChange} placeholder="상세주소" />
         </div>
       )}
 
       {isPostcodeOpen && (
-        <div className="postcode-box">
+        <div className="address-postcode-box">
           <DaumPostcode
             onComplete={handlePostcodeComplete}
             autoClose
@@ -129,8 +129,8 @@ function UserAddressF({ loginInfo, onSave, isEdit = false, existingData = {} }) 
       )}
 
       <div className="button-group">
-        <button onClick={handleSubmit} className="btn-submit">저장</button>
-        <button onClick={() => navigate('/useraddress')} className="btn-cancel">닫기</button>
+        <button onClick={handleSubmit} className="address-btn-submit">저장</button>
+        <button onClick={() => navigate('/useraddress')} className="address-btn-cancel">닫기</button>
       </div>
     </div>
   );

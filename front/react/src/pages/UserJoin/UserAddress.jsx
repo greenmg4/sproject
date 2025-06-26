@@ -99,7 +99,7 @@ function UserAddress({ loginInfo }) {
     <div className="address-container">
       <h2 className="address-title">배송지 관리</h2>
 
-      <button className="btn-add" onClick={handleAddAddress}>
+      <button className="address-btn-add" onClick={handleAddAddress}>
         배송지 추가
       </button>
 
@@ -120,7 +120,7 @@ function UserAddress({ loginInfo }) {
                 <div>
                   {/* 기본배송지 문구 표시 */}
                   {addr.default_yn === 'Y' && (
-                    <span className="default-badge">기본배송지</span>
+                    <span className="address-default-badge">기본배송지</span>
                   )}
 
                   {/* 주소 정보 출력 */}
@@ -132,8 +132,8 @@ function UserAddress({ loginInfo }) {
               </div>
 
               <div className="address-buttons">
-                <button onClick={() => handleModify(addr)} className="btn-modify">수정</button>
-                <button onClick={() => handleDelete(addr.seq)} className="btn-delete">삭제</button>
+                <button onClick={() => handleModify(addr)} className="address-btn-modify">수정</button>
+                <button onClick={() => handleDelete(addr.seq)} className="address-btn-delete">삭제</button>
               </div>
             </li>
           ))
@@ -142,7 +142,7 @@ function UserAddress({ loginInfo }) {
         )}
       </ul>
 
-      <button className="btn-default" onClick={handleSetDefault}>
+      <button className="address-btn-default" onClick={handleSetDefault}>
         선택된 주소를 기본배송지로 설정
       </button>
     </div>

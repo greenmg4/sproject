@@ -470,7 +470,7 @@ const UserJoin = () => {
         )}
 
 
-        <button type="submit" className='submit' >회원가입</button>
+        <button type="user-submit" className='user-submit' >회원가입</button>
       </form>
     </div>
   );

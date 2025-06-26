@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Modal from './Modal'; // ❗ 최종 확인용 모달은 계속 사용
-
-/**
- * 회원 탈퇴 페이지
- */
+import Modal from './Modal'; 
+/*회원 탈퇴*/
 const UserWithdraw = ({ resetLoginInfo }) => {
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
@@ -94,12 +91,13 @@ const UserWithdraw = ({ resetLoginInfo }) => {
       {/* 탈퇴 확인 문구 표시되면 이 영역이 나타남 */}
       {showPrompt && (
         <div>
-          <p style={{ marginBottom: '20px' }}>
+          <p style={{ marginBottom: '20px' }}
+                  >
             정말 탈퇴하시겠습니까? <br />
             <span style={{ color: 'red' }}>탈퇴 완료 시 복구가 불가능합니다.</span>
           </p>
 
-          {/* "예" 텍스트 (작게 표시) */}
+          {/* "예" 텍스트*/}
           <p
             onClick={handleFirstYesClick}
             style={{
@@ -113,9 +111,9 @@ const UserWithdraw = ({ resetLoginInfo }) => {
             예
           </p>
 
-          {/* "아니오" 버튼 (btn-edit 스타일) */}
+          {/* "아니오" 버튼 */}
           <button 
-          className="btn-edit" 
+          className="withdraw-btn-edit" 
           onClick={handleCancel}
           style={{cursor: 'pointer'}}>
             아니오
@@ -126,9 +124,10 @@ const UserWithdraw = ({ resetLoginInfo }) => {
       {/* 최종 모달 알림창 (혜택 사라짐 경고) */}
       {showFinalModal && (
         <Modal
+        
           visible={true}
           message={
-            <>
+            < >
               탈퇴 시 모든 회원 혜택과 적립금이 사라지며 <br />
               복구가 어렵습니다. <br />
               <strong>정말 탈퇴 하시겠습니까?</strong>

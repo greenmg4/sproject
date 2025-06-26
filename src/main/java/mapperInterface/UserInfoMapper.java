@@ -13,9 +13,9 @@ public interface UserInfoMapper {
     int updateUserInfo(UserInfoDTO dto); // 수정용
     
     void updateUserAddress(@Param("cust_id") String cust_id,
-            @Param("address1") String address1,
-            @Param("address2") String address2,
-            @Param("zip") String zip);
+			            @Param("address1") String address1,
+			            @Param("address2") String address2,
+			            @Param("zip") String zip);
     
     void updateProfileImg(String custId, String imgUrl);
 
