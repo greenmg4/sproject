@@ -33,6 +33,8 @@ const UserJoin = () => {
 
   const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
   const [showAddress2, setShowAddress2] = useState(false);
+  const [isDomainSelectOpen, setIsDomainSelectOpen] = useState(false); // 도메인 선택창 토글 상태
+
 
       // 🔹 추가된 상태 (상단 useState 부분에 추가)
     const [addr_class, setAddrClass] = useState('01'); // 기본값 '집'
@@ -48,6 +50,22 @@ const UserJoin = () => {
     if (nums.length < 8) return `${nums.slice(0, 3)}-${nums.slice(3)}`;
     return `${nums.slice(0, 3)}-${nums.slice(3, 7)}-${nums.slice(7)}`;
   };
+
+    //이메일
+    const toggleDomainSelect = () => {
+    setIsDomainSelectOpen(prev => !prev);
+    };
+
+    const handleDomainChange = (e) => {
+      const value = e.target.value;
+      if (value === 'other') {
+        setForm(prev => ({ ...prev, emailDomain: 'other', emailDomainOther: '' }));
+      } else {
+        setForm(prev => ({ ...prev, emailDomain: value, emailDomainOther: '' }));
+      }
+      setIsDomainSelectOpen(false);
+    };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -188,7 +206,7 @@ const UserJoin = () => {
       address2: form.address2,
       birthday: form.birthday,
       gender: form.gender,
-      addr_class: addr_class // ✅ addr_class 추가 전달 (주소지 구분)
+      addr_class: addr_class // addr_class 추가 전달 (주소지 구분)
     };
 
     try {
@@ -245,7 +263,7 @@ const UserJoin = () => {
             onChange={handleConfirmPasswordChange}
             placeholder="비밀번호 확인"
           />
-          {/* ✅ 모든 비밀번호 관련 메시지를 여기에 한 번에 출력 */}
+          {/* 모든 비밀번호 관련 메시지를 여기에 한 번에 출력 */}
   <div style={{ marginTop: '5px' }}>
     {passwordError && (
       <p style={{ color: 'red' }}>{passwordError}</p> // 비밀번호 유효성 검사 실패
@@ -300,41 +318,91 @@ const UserJoin = () => {
         </div>
 
         {/* 이메일 */}
-        <div className="form-group">
-          <label>이메일</label>
-          <div style={{ display: 'flex' }}>
-            <input
-              name="emailUser"
-              value={form.emailUser}
-              onChange={handleChange}
-              placeholder="이메일(필수)"
-            />@
-            <select
-              name="emailDomain"
-              value={form.emailDomain}
-              onChange={handleChange}
-            >
-              <option value="">선택</option>
-              <option value="naver.com">naver.com</option>
-              <option value="daum.net">daum.net</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="other">직접입력</option>
-            </select>
-            {form.emailDomain === 'other' && (
-              <input
-                name="emailDomainOther"
-                value={form.emailDomainOther}
-                onChange={handleChange}
-                placeholder="직접입력"
-              />
-            )}
-          </div>
-          {(formErrors.emailUser || formErrors.emailDomain) && (
-            <p style={{ color: 'red' }}>
-              {formErrors.emailUser || formErrors.emailDomain}
-            </p>
-          )}
+        {/* 이메일 */}
+<div className="form-group">
+  <label>이메일</label>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+    {/* 이메일 앞부분 */}
+    <input
+      name="emailUser"
+      value={form.emailUser}
+      onChange={handleChange}
+      placeholder="이메일 아이디"
+      style={{ flex: 1 }}
+    />
+    <span>@</span>
+
+    {/* 직접입력일 때 */}
+    {form.emailDomain === 'other' ? (
+      <div style={{ position: 'relative', flex: 1 }}>
+        {/* 직접입력 도메인 input */}
+        <input
+          name="emailDomainOther"
+          value={form.emailDomainOther}
+          onChange={handleChange}
+          placeholder="도메인 입력"
+          style={{ width: '100%', paddingRight: '25px' }}
+        />
+        {/* ▼ 아이콘 */}
+        <div
+          onClick={toggleDomainSelect}
+          style={{
+            position: 'absolute',
+            right: '5px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            pointerEvents: 'auto',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            userSelect: 'none',
+          }}
+        >
+          ▼
         </div>
+
+        {/* 도메인 드롭다운 */}
+        {isDomainSelectOpen && (
+          <select
+            value={form.emailDomain}
+            onChange={handleDomainChange}
+            size={4}
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              width: '100%',
+              zIndex: 10,
+            }}
+          >
+            <option value="">선택</option>
+            <option value="naver.com">naver.com</option>
+            <option value="daum.net">daum.net</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="other">직접입력</option>
+          </select>
+        )}
+      </div>
+    ) : (
+      <select
+        name="emailDomain"
+        value={form.emailDomain}
+        onChange={handleChange}
+        style={{ flex: 1 }}
+      >
+        <option value="">선택</option>
+        <option value="naver.com">naver.com</option>
+        <option value="daum.net">daum.net</option>
+        <option value="gmail.com">gmail.com</option>
+        <option value="other">직접입력</option>
+      </select>
+    )}
+  </div>
+
+  {(formErrors.emailUser || formErrors.emailDomain) && (
+    <p style={{ color: 'red' }}>{formErrors.emailUser || formErrors.emailDomain}</p>
+  )}
+</div>
+
 
         {/* 주소 검색 */}
         <div className="form-group address1-group">
@@ -381,7 +449,7 @@ const UserJoin = () => {
           </div>
         )}
 
-         {/* ▶ 추가된 주소지 구분 셀렉트 — showAddress2 기준으로만 노출 */}
+         {/* 추가된 주소지 구분 셀렉트 — showAddress2 기준으로만 노출 */}
         {showAddress2 && (
           <div className="form-group">
               <label>주소지 구분</label>

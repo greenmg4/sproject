@@ -16,5 +16,7 @@ public interface UserInfoMapper {
             @Param("address1") String address1,
             @Param("address2") String address2,
             @Param("zip") String zip);
+    
+    void updateProfileImg(String custId, String imgUrl);
 
 }

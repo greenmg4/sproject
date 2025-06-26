@@ -55,9 +55,23 @@ public class UserInfoServiceImpl implements UserInfoService {
     
     @Override
     public void updateUserAddress(String cust_id, String address1, String address2, String zip) {
-        System.out.println("📌 custom 주소 업데이트 시도: " + cust_id + ", " + address1); // ✅ 로그 확인
+        System.out.println("📌 custom 주소 업데이트 시도: " + cust_id + ", " + address1); // 로그 확인
         userInfoMapper.updateUserAddress(cust_id, address1, address2, zip);
     }
+    
+    
+    @Override
+    public void updateProfileImg(String custId, String imgUrl) {
+    	 userInfoMapper.updateProfileImg(custId, imgUrl);
+    	
+    }
+    
+    @Override
+    public void deleteProfileImg(String custId) {
+    	userInfoMapper.updateProfileImg(custId, null); // null로 초기화	
+    	
+    }
+    
 
 
 }

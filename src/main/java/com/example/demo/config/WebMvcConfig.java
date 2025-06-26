@@ -26,6 +26,9 @@ public class WebMvcConfig implements WebMvcConfigurer  {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploadimages/**")
                 .addResourceLocations("file:///C:/Users/USER/git/sproject/uploadimages/");
+        registry.addResourceHandler("/profile/**")
+        		.addResourceLocations("file:///C:/Users/USER/git/sproject/profile/");
+
         // ↑ 실제 파일 시스템 경로를 매핑
     }
 	
