@@ -64,7 +64,7 @@ const OrderList = () => {
 
   return (
     <div className="admin-cust-list">
-      <h2>전체 결제 내역</h2>
+      <h2>결제 내역</h2>
       {Ord_st1.length === 0 ? (
         <p>결제 내역이 없습니다.</p>
       ) : (
