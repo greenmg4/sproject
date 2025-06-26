@@ -21,6 +21,7 @@ public class UserInfoDTO {
     private String gender;
     private String birthday;
     private String grade;
+    private String profile_img;
     private int tot_buy_amt;
 
 

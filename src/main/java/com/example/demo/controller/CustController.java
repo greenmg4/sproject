@@ -52,7 +52,7 @@ public class CustController {
                 .body(Map.of("msg", "아이디가 존재하지 않습니다."));
         }
 
-        // ✅ 암호화 여부 체크: bcrypt인지 확인 후 matches(), 아니면 평문 비교
+        // 암호화 여부 체크: bcrypt인지 확인 후 matches(), 아니면 평문 비교
         boolean matches;
         if (cust_pw.startsWith("$2a$") || cust_pw.startsWith("$2b$") || cust_pw.startsWith("$2y$")) {
             matches = passwordEncoder.matches(input_pw, cust_pw);
@@ -220,7 +220,7 @@ public class CustController {
     
     //비밀번호 확인 및 수정 
   
- // ➕ 1) 현재 비밀번호 확인
+ // 1) 현재 비밀번호 확인
     @PostMapping("/password/check")
     public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> requestData, HttpSession session) {
         String inputPw = requestData.get("password");
@@ -251,8 +251,7 @@ public class CustController {
         }
     }
 
-    // ➕ 2) 새 비밀번호 변경
- // ➕ 2) 새 비밀번호 변경
+ // 2) 새 비밀번호 변경
     @PutMapping("/password/change")
     public ResponseEntity<?> changePwd(@RequestBody Map<String, String> body, HttpSession session) {
         String cust_id = (String) session.getAttribute("loginID");
@@ -261,7 +260,7 @@ public class CustController {
         }
 
         String newPwd = body.get("newPassword");
-        System.out.println("입력된 새 비밀번호: " + newPwd);  // ✅ 디버깅용
+        System.out.println("입력된 새 비밀번호: " + newPwd);  // 디버깅
 
         // 백엔드에서 비밀번호 유효성 재검사 (8자 이상, 영문+숫자+특수문자 포함)
         if (newPwd.length() < 8

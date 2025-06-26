@@ -22,15 +22,15 @@ public class UserJoinController {
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserJoinDTO userDto) {
-        // ✅ 기존 기능: 중복 ID 체크
+        // 중복 ID 체크
         if (userJoinService.isCustIdExists(userDto.getCust_id())) {
             return ResponseEntity.ok(Map.of("success", false, "message", "이미 존재하는 아이디입니다."));
         }
 
-        // ✅ 기존 기능: custom 테이블에 회원정보 저장
+        // custom 테이블에 회원정보 저장
         userJoinService.joinUser(userDto);
 
-        // ✅ 추가 기능: delivery_addr 테이블에도 동일 주소 저장
+        // delivery_addr 테이블에도 동일 주소 저장
         AddressDTO address = new AddressDTO();
         address.setCust_id(userDto.getCust_id());       // 회원 ID 연결
         address.setAddr_class("01");               		// 주소 구분용 분류
@@ -43,7 +43,7 @@ public class UserJoinController {
 
         addressService.addAddress(address);             // ✅ 배송지 저장 실행
 
-        // ✅ 응답: 회원가입 + 주소 저장 모두 정상
+        // 응답- 회원가입 + 주소 저장 모두 정상
         return ResponseEntity.ok(Map.of("success", true, "message", "회원가입이 완료되었습니다."));
     }
 

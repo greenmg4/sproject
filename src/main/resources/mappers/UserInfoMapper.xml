@@ -6,46 +6,54 @@
 <mapper namespace="mapperInterface.UserInfoMapper">
 
   <select id="getUserInfoById" parameterType="String" resultType="com.example.demo.model.UserInfoDTO">
-  SELECT cust_id,
-         cust_nm,
-         phone,
-         email,
-         address1,
-         address2,
-         zip,
-         gender,
-         birthday,
-         grade,
-         tot_buy_amt
-  FROM custom
-  WHERE cust_id = #{cust_id}
-  </select>
+		  SELECT cust_id,
+		         cust_nm,
+		         phone,
+		         email,
+		         address1,
+		         address2,
+		         zip,
+		         gender,
+		         birthday,
+		         grade,
+		         tot_buy_amt,
+		         profile_img
+		  FROM custom
+		  WHERE cust_id = #{cust_id}
+		  </select>
   
   
   <update id="updateUserInfo" parameterType="com.example.demo.model.UserInfoDTO">
-    UPDATE custom
-    SET 
-      cust_nm = #{cust_nm},
-      phone = #{phone},
-      email = #{email},
-      address1 = #{address1},
-      address2 = #{address2},
-      zip = #{zip},
-      gender = #{gender},
-      birthday = #{birthday},
-      upd_dtm = Now()
-    WHERE cust_id = #{cust_id}
+		    UPDATE custom
+		    SET 
+		      cust_nm = #{cust_nm},
+		      phone = #{phone},
+		      email = #{email},
+		      address1 = #{address1},
+		      address2 = #{address2},
+		      zip = #{zip},
+		      gender = #{gender},
+		      birthday = #{birthday},
+		      upd_dtm = Now()
+		    WHERE cust_id = #{cust_id}
   </update>
   
   <update id="updateUserAddress" parameterType="map">
-  UPDATE custom
-  SET address1 = #{address1},
-      address2 = #{address2},
-      zip = #{zip}
-  WHERE cust_id = #{cust_id}
-</update>
+		  UPDATE custom
+		  SET address1 = #{address1},
+		      address2 = #{address2},
+		      zip = #{zip}
+		  WHERE cust_id = #{cust_id}
+	</update>
 
-  
+ 
+
+  <!-- 프로필 이미지 경로 업데이트 -->
+  <update id="updateProfileImg">
+    UPDATE custom
+    SET profile_img = #{imgUrl}
+    WHERE cust_id = #{custId}
+  </update>
   
   
 
