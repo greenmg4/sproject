@@ -87,7 +87,7 @@
 }
 
 /* 마지막 메시지 */
-.last-message {
+.chat-last-message {
   font-size: 1.2rem;
   color: #444;
   line-height: 1.4;

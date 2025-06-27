@@ -33,7 +33,7 @@
   background: #fff;
 }
 
-.btn-upload {
+.notice-btn-upload {
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
   font-weight: bold;
@@ -44,7 +44,7 @@
   cursor: pointer;
   transition: background 0.25s;
 }
-.btn-upload:hover {
+.notice-btn-upload:hover {
   background-color: #2c4131;
 }
 
@@ -105,7 +105,7 @@
 }
 
 /* 삭제 버튼 */
-.btn-delete {
+.notice-btn-delete {
   padding: 0.35rem 0.9rem;
   font-size: 0.85rem;
   color: #fff;
@@ -115,7 +115,7 @@
   cursor: pointer;
   transition: background 0.25s;
 }
-.btn-delete:hover {
+.notice-btn-delete:hover {
   background-color: #884444;
 }
 

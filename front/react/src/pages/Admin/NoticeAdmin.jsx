@@ -69,7 +69,7 @@ export default function NoticeAdmin() {
           <option value="01">이벤트</option>
           <option value="02">안내</option>
         </select>
-        <button type="submit" className="btn-upload">
+        <button type="submit" className="notice-btn-upload">
           업로드
         </button>
       </form>
@@ -92,7 +92,7 @@ export default function NoticeAdmin() {
                   <span className="slider"></span>
                 </label>
 
-                <button className="btn-delete" onClick={() => del(n.notice_no)}>
+                <button className="notice-btn-delete" onClick={() => del(n.notice_no)}>
                   삭제
                 </button>
               </div>

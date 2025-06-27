@@ -228,7 +228,7 @@ function ChatRoom() {
           전송
         </button>
           <button
-            className="finish-btn"
+            className="chat-finish-btn"
             onClick={finish}
             disabled={chatEnded}>
             문의 종료
