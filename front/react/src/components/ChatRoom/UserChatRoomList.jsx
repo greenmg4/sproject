@@ -155,7 +155,7 @@ function UserChatRoomList() {
                 </div>
 
                 <div className="last-line">
-                  <span className="last-message">
+                  <span className="chat-last-message">
                     {r.lastMessage || '(메시지 없음)'}
                   </span>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="qna-dtm">

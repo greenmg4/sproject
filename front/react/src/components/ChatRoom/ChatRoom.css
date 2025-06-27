@@ -126,13 +126,13 @@
 }
 
 /* 상담사 종료 버튼 */
-.finish-btn {
+.chat-finish-btn {
   background: #c16161;
 }
-.finish-btn:hover {
+.chat-finish-btn:hover {
   background: #a44444;
 }
-.finish-btn:disabled {
+.chat-finish-btn:disabled {
   background-color: #aaa;
 }
 
