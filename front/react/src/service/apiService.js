@@ -44,7 +44,7 @@ export async function apiCall(url, method, requestData, token) {
 
   console.log(`** apiCall options.method=${options.method}`);
   console.log(`** apiCall options.url=${options.url}`);
-  console.log(`** apiCall options.data=${options.headers}`);
+  console.log(`** apiCall options.data=${options.data}`);
 
   // 1.3) Axios 요청
   return await axios(options)

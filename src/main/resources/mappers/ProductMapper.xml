@@ -98,8 +98,8 @@
 		     , CASE WHEN img_path IS NULL OR img_path = '' THEN ''
 		            ELSE SUBSTRING_INDEX(img_path, '/', -1)
 		        END AS img_file_nm
-		  FROM PRODUCT p
-		     , PRODUCT_IMG i 
+		  FROM product p
+		     , product_img i 
 		 WHERE 1=1
 		   AND p.prod_no = i.prod_no
 		   AND suggest_yn = 'Y'
@@ -123,8 +123,8 @@
 		        END AS img_file_nm
 		     , author_nm
 		     , reg_dtm
-		  FROM PRODUCT p
-		     , PRODUCT_IMG i 
+		  FROM product p
+		     , product_img i 
 		 WHERE 1=1
 		   AND p.prod_no = i.prod_no
 		   AND status = '1'

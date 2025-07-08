@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
+spring:
+  application:
+    name: sproject
+
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ls-e557910a83338a192e6f3225480229145c8155ca.czg84uqaemqm.ap-northeast-2.rds.amazonaws.com:3306/sdb?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: alsehfdl01^^
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+mybatis:
+  mapper-locations: classpath:/mappers/*Mapper.xml
+  type-aliases-package: com.example.demo.domain
+
+logging:
+  level:
+    com.example.demo: INFO

@@ -19,25 +19,25 @@ function App() {
 
   // 세션 로그인 상태 확인
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/cust/session-check`, { withCredentials: true })
-      .then(res => {
-        if (res.data.loggedIn) {
-          setLoginInfo(res.data.user);
-          setIsLoggedIn(true);
-          setIsAdmin(res.data.user?.role === 'admin');
-        } else {
-          setLoginInfo(res.data);
-          setIsLoggedIn(true);
-          setIsAdmin(res.data.grade === 'A');
-        }
-      })
-      .catch(err => {
-        console.log("세션 체크 실패:", err);
-        setIsLoggedIn(false);
-        setLoginInfo(null);
-        setIsAdmin(false);
-      });
-  }, []);
+      axios.get(`${API_BASE_URL}/api/cust/session-check`, { withCredentials: true })
+        .then(res => {
+          if (res.data.loggedIn) {
+            setLoginInfo(res.data.user);
+            setIsLoggedIn(true);
+            setIsAdmin(res.data.user?.role === 'admin');
+          } else {
+            setLoginInfo(null);
+            setIsLoggedIn(false);
+            setIsAdmin(false);
+          }
+        })
+        .catch(err => {
+          console.log("세션 체크 실패:", err);
+          setIsLoggedIn(false);
+          setLoginInfo(null);
+          setIsAdmin(false);
+        });
+    }, []);
 
   // 로그인 상태 초기화 함수 (추가)
   const resetLoginInfo = () => {
