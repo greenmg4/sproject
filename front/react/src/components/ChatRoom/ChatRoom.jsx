@@ -28,9 +28,16 @@ function ChatRoom() {
 
   const stomp = useRef(null);
   const isCounselor = grade === 'A';
+  const scrollRef = useRef(null);
 
   const API_BASE_URL =
   process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
+
+  // 채팅입력되어 chatList가 변할때마다 스크롤
+  useEffect(() => {
+  scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+}, [chatList]);
 
   // ① 로그인 사용자 정보
   useEffect(() => {
@@ -215,6 +222,7 @@ function ChatRoom() {
             </div>
           );
         })}
+        <div ref={scrollRef} />
       </div>
 
       <div className="inputbox">
